@@ -1,0 +1,103 @@
+<div id="rpa" class="row" style="margin-bottom: 0; height: 100%; top: 0; bottom: 0">
+    <div class="col s8 hide-on-small-only" style="padding:0; height: 100%">
+        <img src="../assets/images/1.jpg" style="width:100%;height: 100%"/>
+    </div>
+    <div class="col s12 m4 l4" style="height: 100%">
+        <div class="row">
+            <div class="col s12 m12 l12 center-align">
+                <h4>Autolink</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <form [formGroup]="preguntasUserFrom" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input type="text" class="validate" name = "username" formControlName="username" id="id_username" autofocus required/>
+                            <label for="id_username">Usuario</label>
+                        </div>
+                    </div>
+                    
+
+                    <div class="input-field" style="display:inline-block;padding: 20px;">
+                        <label for="pregunta1">Pregunta 1</label><br/><br/>
+                        <p-dropdown [options]="preguntasList" formControlName="pregunta1" [(ngModel)]="_preguntaSelect1" class="validate" required></p-dropdown>
+                        <p>Pregunta seleccionada: {{_preguntaSelect1 ? _preguntaSelect1.nombre : 'none'}}</p>
+
+                    </div>
+
+                    <div class="row" style="display:inline-block;padding: 20px;">
+                        <div class="input-field col s12">
+                            <input type="text" name = "resp1" formControlName="resp1" class="validate" id="resp1" required/>
+                            <label for="resp1">Respuesta</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field" style="display:inline-block;padding: 20px;">
+                        <label for="pregunta2">Pregunta 2</label><br/><br/>
+                        <p-dropdown [options]="preguntasList" formControlName="pregunta2" [(ngModel)]="_preguntaSelect2" class="validate" required></p-dropdown>
+                        <p>Pregunta seleccionada: {{_preguntaSelect2 ? _preguntaSelect2.nombre : 'none'}}</p>
+                    </div>
+
+                    <div class="row" style="display:inline-block;padding: 20px;">
+                        <div class="input-field col s12">
+                            <input type="text" name = "resp2" formControlName="resp2" class="validate" id="resp2" required/>
+                            <label for="resp2">Respuesta</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field" style="display:inline-block;padding: 20px;">
+                        <label for="pregunta3">Pregunta 3</label><br/><br/>
+                        <p-dropdown [options]="preguntasList" formControlName="pregunta1" [(ngModel)]="_preguntaSelect3" class="validate" required></p-dropdown>
+                        <p>Pregunta seleccionada: {{_preguntaSelect3 ? _preguntaSelect3.nombre : 'none'}}</p>
+                    </div>
+
+                    <div class="row" style="display:inline-block;padding: 20px;">
+                        <div class="input-field col s12">
+                            <input type="text" name = "resp3" formControlName="resp3" class="validate" id="resp3" required/>
+                            <label for="resp3">Respuesta</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">vpn_key</i>
+                            <input type="password" name = "pwd" formControlName="pwd" class="validate" id="id_pwd" required/>
+                            <label for="id_pwd">Contrase&ntilde;a</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">vpn_key</i>
+                            <input type="password" name = "pwd_repeat" formControlName="pwd_repeat" class="validate" id="id_pwd_repeat" required/>
+                            <label for="id_pwd">Repetir Contrase&ntilde;a</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <button class="waves-effect waves-light btn" (click)='preguntasUser()'><i class="material-icons left">check</i>Generar</button>
+                            <!-- <button [disabled]="!preguntasUserFrom.valid" class="waves-effect waves-light btn" (click)='preguntasUser()'><i class="material-icons left">check</i>Generar</button>-->
+                        </div>
+                    </div>
+                    <div class="row right">
+                        <div class="col s12">
+                            <a href="#" target="_blank">
+                                <img src="../assets/images/fb_32.png" alt="Facebook Autolink" title="Facebook Autolink"/>
+                            </a>
+                            <a href="#" target="_blank">
+                                <img src="../assets/images/twitter_32.png" alt="Twitter" title="Twitter Autolink"/>
+                            </a>
+                            <a href="#" target="_blank">
+                                <img src="../assets/images/ig_32.png" alt="Instagram" title="Instagram Autolink"/>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                </form>
+            </div>
+        </div>
+        <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    </div>
+</div>

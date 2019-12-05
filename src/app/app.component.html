@@ -1,0 +1,8 @@
+<div class="row" style="height:100%">
+    <div class="col-sm-3" style="padding-left:0; padding-right:0">
+        <app-header *ngIf="isLoggedIn()"></app-header>
+    </div>
+    <div class="col-sm-9" style="background-color: #f8f8f8;">
+    <router-outlet></router-outlet>
+    </div>
+</div>

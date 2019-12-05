@@ -1,0 +1,185 @@
+<section style="margin-bottom:60px">
+    <div style="float:right;padding-top:15px">
+        <span style="font-weight:bold; font-size:39px">
+            Registro de Talleres
+        </span>
+    </div>
+    <div style="clear:both"></div>
+</section>
+  <div>
+        <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        <p-table #dt [columns]="cols" [value]="talleres" [paginator]="true" [rows]="3"   [responsive]="true" [(selection)]="_tallerSelected" dataKey="nombre" class="table">
+            <ng-template pTemplate="caption">
+                <div style="text-align: right">        
+                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 3em">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Cargo</th>
+                    <th>Direcci&oacute;n</th>
+                    <th>Raz&oacute;n Social</th>
+                    <th>Estado</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr [pSelectableRow]="rowData">
+                    <td>
+                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td>{{rowData.nombre}}</td>
+                    <td>{{rowData.usuario.usuario}}</td>
+                    <td>{{rowData.cargo}}</td>
+                    <td>{{rowData.direccion}}</td>
+                    <td>{{rowData.razonsocial}}</td>
+                    <td>{{rowData.estado}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+  </div>
+<div style="color:#94a1aa; text-align: center;" id="pag">
+    <span id="nw" style="float:right">
+        <button class="btn-al" (click)='agregarTaller()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">add</i>
+            NUEVO TALLER
+        </button>
+        <button class="btn-al" (click)='editarTaller()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">edit</i>
+            EDITAR TALLER
+        </button>
+        <button class="btn-al" (click)='verTaller()'>
+            <i class="material-icons" style="vertical-align:middle">visibility</i>
+            VER TALLER
+        </button>
+    </span>
+    <div style="clear:both"></div>
+</div>
+  
+  <!-- MODAL PARA AGREGAR TALLER -->
+  <p-dialog header="Ingrese un nuevo taller" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="registrarTallerForm">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" formControlName="nombre" class="validate form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="razonSocial">Raz&oacute;n Social</label>
+            <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control" required />                        
+        </div>
+        <div class="form-group">
+            <label for="direccion">Direcci&oacute;n</label>
+            <input type="text" id="direccion" formControlName="direccion" class="validate form-control" required />                        
+        </div>
+        <div class="form-group">
+            <label for="telefono">Telefono</label>
+            <input type="text" id="telefono" formControlName="telefono" class="validate form-control" required />                        
+        </div>
+        <div class="form-group">
+            <label for="estadoUsuario">Estado</label>
+            <p-dropdown [options]="estadosTaller" formControlName="estadoTaller" [(ngModel)]="_estadoTaller" class="validate" [style]="{'width':'100%'}" required ></p-dropdown>
+        </div>
+        <div class="form-group"> 
+            <label for="usuario">Usuario</label>
+            <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado" class="validate" [style]="{'width':'100%'}" required ></p-dropdown>
+        </div>
+        <div class="form-group">
+            <label for="usuario">Cargo</label>
+            <input type="text" id="cargo" formControlName="cargo" class="validate form-control" required />
+        </div>
+        <div class="form-group">
+            <button [disabled]="!registrarTallerForm.valid" type="submit" name="action" (click)="guardarTaller()" class="btn btn-primary">
+            Guardar nuevo taller
+            <i class="material-icons right" style="vertical-align: middle;">send</i>
+            </button>
+        </div>
+        </form> 
+  </p-dialog>
+  
+  <!-- MODAL PARA EDITAR TALLER -->
+  <p-dialog header="Actualización de taller" [(visible)]="dialogEditTlr" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="updateTallerForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <input pInputText id="idTlr" formControlName="idTlr" style="visibility:hidden"/>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled/>                
+            </div>
+            <div class="form-group">
+                <label for="razonSocial">Raz&oacute;n social</label>
+                <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control" required/>                
+            </div>
+            <div class="form-group">
+                <label for="direccion">Direcci&oacute;n</label>
+                <input type="text" id="direccion" formControlName="direccion" class="validate form-control" required/>                
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" formControlName="telefono" class="validate form-control" required/>                
+            </div>
+            <div class="form-group">
+                <label for="estadoTaller">Estado</label>
+                <p-dropdown [options]="estadosTaller" formControlName="estadoTaller" [(ngModel)]="_estadoTaller" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" formControlName="cargo" class="validate form-control" required/>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!updateTallerForm.valid" class="btn btn-primary" type="submit" name="action" (click)="actualizarTaller()">
+                    Actualizar taller
+                    <i class="material-icons right" style="vertical-align: middle;">send</i>
+                </button>
+            </div>
+        </p-panel>
+    </form>
+  </p-dialog>
+
+
+  <!-- MODAL PARA VISUALIZAR TALLER -->
+  <p-dialog header="Ver Taller" [(visible)]="dialogVerTaller" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verTallerForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" formControlName="usuario" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="razonSocial">Raz&oacute;n social</label>
+                <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Direcci&oacute;n</label>
+                <input type="text" id="direccion" formControlName="direccion" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" formControlName="telefono" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" formControlName="cargo" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="estadoT">Estado</label>
+                <input type="text" id="estadoT" formControlName="estadoTaller" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="fechaC">Fecha de creaci&oacute;n</label>
+                <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate form-control" disabled/>
+            </div>
+        </p-panel>
+    </form> 
+</p-dialog>
+ 

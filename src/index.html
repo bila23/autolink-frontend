@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Autolink</title>
+    <base href="/">
+    <style>
+        html body{height: 100%; min-height: 100%;}
+        ul.menu{
+            font-weight: bold; list-style-type: none; font-size:1.2rem; padding-top:20px;
+        }
+        ul.menu li{
+            padding:15px; text-align: center
+        }
+        ul.menu li a{color: #000}
+        .lme{
+            height:8px;position: absolute;width: 50%;
+        }
+        .ui-table table td, .table th{
+            border-top: 0;
+        }
+        .ui-table table thead th {
+            color: #30ccd3;
+            border-bottom: 2px solid #30ccd3;
+        }
+        .ui-table table tbody:before {
+            content:"@";
+            display:block;
+            line-height:10px;
+            text-indent:-99999px;
+        }
+        .ui-table table tbody tr:hover{
+            color:#30ccd3;
+            border:1px solid #ececec;
+            background-color: #fff;
+            border-radius:25px;
+            box-shadow: 0px 6px 45px -10px grey;
+        }
+        .ui-table table tbody tr:hover td:first-child {
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+        }
+        .ui-table table tbody tr:hover td:last-child {
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+        .ui-table table tbody tr:hover .delete{
+            color:#d13535;
+        }
+        #pag{
+            position: relative;
+        }
+        button{
+            outline:none;border: 1px solid transparent;vertical-align:middle;text-align:center;display:inline-block;border-radius:15px;padding:8px 10px;font-weight: bold;
+        }
+        button:active {
+            border: none;
+            box-shadow: 0 2px #666;
+            transform: translateY(1px);
+        }
+        button:hover{
+            box-shadow: 0 5px 10px rgba(0,0,0,.15);
+            border: none;
+        }
+        .btn-al{
+            background-color:#30ccd3;border-color: #30ccd3;color:#fff
+        }
+        body .ui-dialog{
+            top:15px !important;
+        }
+    </style>
+  </head>
+  <body>
+      <div class="container-fluid" style="height: 100%;  min-height: 100%;  position: absolute;  top: 0;  right: 0;  bottom: 0;">
+          <app-root></app-root>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
+  </body>
+</html>
