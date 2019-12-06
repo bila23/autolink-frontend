@@ -1,120 +1,114 @@
-  <div class="row">
-    <div class="col s12">
-        <h5 class="left">Administraci&oacute;n de Modelos</h5>
-        <a style="margin-top:15.853px" class="btn-floating purple darken-4 modal-trigger" ><i class="material-icons" (click)='agregarModelo()'>add</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating yellow darken-1" ><i class="material-icons" (click)='editarModelo()'>edit</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating blue modal-trigger" ><i class="material-icons" (click)='verModelo()'>visibility</i></a>
-        <span style="clear:both"></span>
+<section style="margin-bottom:60px">
+    <div style="float:right;padding-top:15px">
+        <span style="font-weight:bold; font-size:39px">
+            Administraci&oacute;n de Modelos
+        </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col s12">
-        <p-growl [value]="msgs" sticky="sticky"></p-growl>
-        <p-table #dt [columns]="cols" [value]="modelosView" [paginator]="true" [rows]="10" [responsive]="true" totalRecords="100" [(selection)]="_modeloSelected" dataKey="nombre">
-            <ng-template pTemplate="caption">
-                <div style="text-align: right">        
-                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                    <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th style="width: 3em">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
-                    <th *ngFor="let col of columns">
-                        {{col.header}}
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
-                    <td>
-                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                    </td>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-                <ul>
-                    <li *ngFor="let mdl of _modeloSelected" style="text-align: left">
-                        {{mdl.id + ' - ' + mdl.nombre + ' - ' + mdl.idmarca }}
-                    </li>
-                </ul>
-            </ng-template>
-        </p-table>
-    </div>
-  </div>
+    <div style="clear:both"></div>
+</section>
+
+<div>
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <p-table #dt [columns]="cols" [value]="modelosView" [paginator]="true" [rows]="10" [responsive]="true" totalRecords="100" [(selection)]="_modeloSelected" dataKey="nombre" class="table">
+        <ng-template pTemplate="caption">
+            <div style="text-align: right">        
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Estado</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td>{{rowData.nombre}}</td>
+                <td>{{rowData.marca}}</td>
+                <td>{{rowData.estado}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<div style="color:#94a1aa; text-align: center;" id="pag">
+    <span id="nw" style="float:right">
+        <button class="btn-al" (click)='agregarModelo()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">add</i>
+            NUEVO MODELO
+        </button>
+        <button class="btn-al" (click)='editarModelo()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">edit</i>
+            EDITAR MODELO
+        </button>
+        <button class="btn-al" (click)='verModelo()'>
+            <i class="material-icons" style="vertical-align:middle">visibility</i>
+            VER MODELO
+        </button>
+    </span>
+    <div style="clear:both"></div>
+</div>
   
-  <!-- MODAL PARA AGREGAR MODELO -->
-  <p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <h5 class="modal-title">Ingrese un nuevo modelo</h5>
-             <form [formGroup]="registrarModeloForm">
-            <p-panel [showHeader]="false">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <div class="input-field">
-                        <input type="text" id="nombre" formControlName="nombre" class="validate" required/>
-                        <label for="user">Nombre</label>
-                    </div>
-                    <div class="input-field">
-                        <label for="marcaModelo">Marca del modelo</label><br/><br/>
-                        <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada" class="validate" required></p-dropdown>
-                        <p>Marca del modelo seleccionada: {{_marcaSeleccionada ? _marcaSeleccionada: 'none'}}</p>
-                    </div>
-                    <div class="input-field">
-                        <label for="estadoModelo">Estado</label><br/><br/>
-                        <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo" class="validate" required></p-dropdown>
-                        <p>Estado seleccionado: {{_estadoModelo ? _estadoModelo : 'none'}}</p>
-                    </div>
-                    <div class="input-field">
-                        <button [disabled]="!registrarModeloForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="guardarModelo()">Guardar
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                </div>   
-            </p-panel> 
-        </form> 
-    </div>
-  </p-dialog>
+<!-- MODAL PARA AGREGAR MODELO -->
+<p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="registrarModeloForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <label for="user">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" required/>
+            </div>
+            <div class="form-group">
+                <label for="marcaModelo">Marca del modelo</label>
+                <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <label for="estadoModelo">Estado</label>
+                <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!registrarModeloForm.valid" class="btn btn-primary" type="submit" name="action" (click)="guardarModelo()">
+                    Guardar nuevo modelo
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </p-panel> 
+    </form> 
+</p-dialog>
   
   <!-- MODAL PARA EDITAR MODELO -->
-  <p-dialog [(visible)]="dialogEditMdl" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <!-- <h5 class="modal-title">Actualizacion de usuario</h5> -->
-             <form [formGroup]="updateModeloForm">
-            <p-panel [showHeader]="false">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <div class="input-field">
-                        <input pInputText id="idMdl" formControlName="idMdl" style="visibility:hidden"/>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="nombre" formControlName="nombre" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                      <label for="marcaModelo">Marca del modelo</label><br/><br/>
-                      <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada" class="validate" required></p-dropdown>
-                      <p>Tipo seleccionado: {{_marcaSeleccionada ? _marcaSeleccionada : 'none'}}</p>
-                  </div>
-                    <div class="input-field">
-                      <label for="estadoModelo">Estado</label><br/><br/>
-                      <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo" class="validate" required></p-dropdown>
-                      <p>Estado seleccionado: {{_estadoModelo ? _estadoModelo : 'none'}}</p>
-                  </div>
-                    <div class="input-field">
-                        <button [disabled]="!updateModeloForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="actualizarModelo()">Actualizar
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                </div>   
-            </p-panel> 
-        </form> 
-    </div>
-  </p-dialog>
+<p-dialog [(visible)]="dialogEditMdl" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+<form [formGroup]="updateModeloForm">
+    <p-panel [showHeader]="false">
+        <div class="form-group">
+            <input pInputText id="idMdl" formControlName="idMdl" style="visibility:hidden"/>
+        </div>
+        <div class="form-group">
+            <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled/>
+        </div>
+        <div class="form-group">
+            <label for="marcaModelo">Marca del modelo</label>
+            <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="form-group">
+            <label for="estadoModelo">Estado</label>
+            <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="form-group">
+            <button [disabled]="!updateModeloForm.valid" class="btn btn-primary" type="submit" name="action" (click)="actualizarModelo()">
+                Guardar nuevo modelo
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </p-panel> 
+</form> 
+</p-dialog>
     
   <!-- MODAL PARA VISUALIZAR MODELO -->
   <p-dialog [(visible)]="dialogVerMdl" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
