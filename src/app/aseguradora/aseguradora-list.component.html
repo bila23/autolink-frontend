@@ -1,195 +1,190 @@
-<div class="row">
-    <div class="col s12">
-        <h5 class="left">Administraci&oacute;n de Aseguradoras</h5>
-        <a style="margin-top:15.853px" class="btn-floating purple darken-4 modal-trigger" ><i class="material-icons" (click)='agregarAseguradora()'>add</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating yellow darken-1" ><i class="material-icons" (click)='editarAseguradora()'>edit</i></a>
-        <a style="margin-top:15.853px" class="btn-floating blue modal-trigger" ><i class="material-icons" (click)='verAseguradora()'>visibility</i></a>
-        <span style="clear:both"></span>
+<section style="margin-bottom:60px">
+    <div style="float:right;padding-top:15px">
+        <span style="font-weight:bold; font-size:39px">
+            Administraci&oacute;n de Aseguradoras
+        </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col s12">
-            <p-growl [value]="msgs" sticky="sticky"></p-growl>
-        <p-table #dt [columns]="cols" [value]="aseguradoras" [paginator]="true" [rows]="6"   [responsive]="true" [(selection)]="_aseguradoraSelected" dataKey="nombre">
-            <ng-template pTemplate="caption">
-                <div style="text-align: right">        
-                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                    <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th style="width: 3em">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
-                    <th *ngFor="let col of columns">
-                        {{col.header}}
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
-                    <td>
-                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                    </td>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>    
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-                <ul>
-                    <li *ngFor="let aseg of _aseguradoraSelected" style="text-align: left">
-                        {{aseg.id + ' - ' + aseg.nombre}}
-                    </li>
-                </ul>
-            </ng-template>
-        </p-table>
-    </div>
-  </div>
+    <div style="clear:both"></div>
+</section>
+
+<div> 
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <p-table #dt [columns]="cols" [value]="aseguradoras" [paginator]="true" [rows]="6"   [responsive]="true" [(selection)]="_aseguradoraSelected" dataKey="nombre" class="table">
+        <ng-template pTemplate="caption">
+            <div style="text-align: right">        
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>Nombre</th>
+                <th>Raz&oacute;n Social</th>
+                <th>Usuario</th>
+                <th>Cargo</th>
+                <th>NIT</th>
+                <th>Estado</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td>{{rowData.nombre}}</td>
+                <td>{{rowData.razonsocial}}</td>
+                <td>{{rowData.usuario.usuario}}</td>
+                <td>{{rowData.cargo}}</td>
+                <td>{{rowData.nit}}</td>
+                <td>{{rowData.estado}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div style="color:#94a1aa; text-align: center;" id="pag">
+    <span id="nw" style="float:right">
+        <button class="btn-al" (click)='agregarAseguradora()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">add</i>
+            NUEVO ASEGURADORA
+        </button>
+        <button class="btn-al" (click)='editarAseguradora()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">edit</i>
+            EDITAR ASEGURADORA
+        </button>
+        <button class="btn-al" (click)='verAseguradora()'>
+            <i class="material-icons" style="vertical-align:middle">visibility</i>
+            VER ASEGURADORA
+        </button>
+    </span>
+    <div style="clear:both"></div>
+</div>
+
+
   
   <!-- MODAL PARA AGREGAR ASEGURADORA -->
-  <p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <h5 class="modal-title">Ingrese una aseguradora</h5>
-             <form [formGroup]="registrarAseguradoraForm">
+  <p-dialog header="Ingrese una nueva aseguradora" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+        <form [formGroup]="registrarAseguradoraForm">
             <p-panel [showHeader]="false">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <div class="input-field">
-                        <input type="text" id="name" formControlName="nombre" class="validate" required/>
-                        <label for="name">Nombre</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="razonSocial" formControlName="razonSocial" class="validate" required/>
-                        <label for="razonSocial">Razon Social</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="nit" formControlName="nit" class="validate" required/>
-                        <label for="nit">NIT</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="iva" formControlName="iva" class="validate" required/>
-                        <label for="iva">IVA</label>
-                    </div>
-                    <div class="input-field" style="display:inline-block;padding: 5px;">
-                        <label for="estadoAseguradora">Estado</label><br/><br/>
-                        <p-dropdown [options]="estadosAseguradora" formControlName="estadoAseguradora" [(ngModel)]="_estadoAseguradora" class="validate" required></p-dropdown>
-                        <p>Estado seleccionado: {{_estadoAseguradora ? _estadoAseguradora : 'none'}}</p>
-                    </div>
-                    <div class="input-field" style="display:inline-block;padding: 20px;">
-                        <label for="usuario">Usuario</label><br/><br/>
-                        <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado" class="validate" required></p-dropdown>
-                        <p>Usuario seleccionado: {{_userSeleccionado ? _userSeleccionado.nombre : 'none'}}</p>
-                    </div>
-                    <div class="input-field" style="display:inline-block;padding: 20px;">
-                        <input type="text" id="cargo" formControlName="cargo" class="validate" required/>
-                        <label for="usuario">cargo</label><br/><br/>
-                    </div>
-                    <div class="input-field">
-                            <button [disabled]="!registrarAseguradoraForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="guardarAseguradora()">Guardar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" formControlName="nombre" class="validate form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label for="razonSocial">Raz&oacute;n Social</label>
+                    <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label for="nit">NIT</label>
+                    <input type="text" id="nit" formControlName="nit" class="validate form-control" required/>   
+                </div>
+                <div class="form-group">
+                    <label for="iva">IVA</label>
+                    <input type="text" id="iva" formControlName="iva" class="validate form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label for="estadoAseguradora">Estado</label>
+                    <p-dropdown [options]="estadosAseguradora" formControlName="estadoAseguradora" [(ngModel)]="_estadoAseguradora" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label for="usuario">Usuario</label>
+                    <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label for="usuario">Cargo</label>
+                    <input type="text" id="cargo" formControlName="cargo" class="validate form-control" required/>
+                </div>
+                <div class="form-group">
+                    <button [disabled]="!registrarAseguradoraForm.valid" class="btn btn-primary" type="submit" name="action" (click)="guardarAseguradora()">
+                        Guardar nueva aseguradora
+                        <i class="material-icons right">send</i>
+                    </button>
                 </div>   
             </p-panel> 
         </form> 
-    </div>
   </p-dialog>
   
   <!-- MODAL PARA EDITAR ASEGURADORA -->
-  <p-dialog [(visible)]="dialogEditAseg" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-        <div class="ui-grid ui-grid-responsive ui-fluid">
-            <!-- <h5 class="modal-title">Actualizacion de usuario</h5> -->
-                 <form [formGroup]="updateAsegForm">
-                <p-panel [showHeader]="false">
-                  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                        <div class="input-field">
-                            <input pInputText id="idAseg" formControlName="idAseg" style="visibility:hidden"/>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="nombre" formControlName="nombre" class="validate" disabled/>
-                            <!-- <label for="name">Nombre</label> -->
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="razonSocial" formControlName="razonSocial" class="validate" required/>
-                            <!-- <label for="name">Nombre</label> -->
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="nit" formControlName="nit" class="validate" required/>
-                            <!-- <label for="name">Nombre</label> -->
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="iva" formControlName="iva" class="validate" required/>
-                            <!-- <label for="name">Nombre</label> -->
-                        </div>
-                        
-                        <div class="input-field" style="display:inline-block;padding: 20px;">
-                            <label for="estadoTaller">Estado</label><br/><br/>
-                            <p-dropdown [options]="estadosAseguradora" formControlName="estadoAseg" [(ngModel)]="_estadoAseguradora" class="validate" required></p-dropdown>
-                            <p>Estado seleccionado: {{_estadoAseguradora ? _estadoAseguradora : 'none'}}</p>
-                        </div>
-                        <div class="input-field" style="display:inline-block;padding: 20px;">
-                            <label for="usuario">Usuario</label><br/><br/>
-                            <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado" class="validate" required></p-dropdown>
-                            <p>Usuario seleccionado: {{_userSeleccionado ? _userSeleccionado.nombre : 'none'}}</p>
-                        </div>
-                        <div class="input-field" style="display:inline-block;padding: 20px;">
-                            <input type="text" id="cargo" formControlName="cargo" class="validate" required/>
-                            <label for="usuario">cargo</label><br/><br/>
-                        </div>
-                        <div class="input-field">
-                            <button [disabled]="!updateAsegForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="actualizarAseguradora()">Actualizar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>   
-                </p-panel> 
-            </form> 
+  <p-dialog header="Actualización de aseguradora" [(visible)]="dialogEditAseg" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="updateAsegForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <input pInputText id="idAseg" formControlName="idAseg" style="visibility:hidden"/>
+            </div>
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled/>        
         </div>
+        <div class="form-group">
+            <label for="razonSocial">Raz&oacute;n Social</label>
+            <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="nit">NIT</label>
+            <input type="text" id="nit" formControlName="nit" class="validate form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="iva">IVA</label>
+            <input type="text" id="iva" formControlName="iva" class="validate form-control" required/>
+        </div>
+        <div class="form-group">            
+            <label for="estadoAseg">Estado</label>
+            <p-dropdown [options]="estadosAseguradora" formControlName="estadoAseg" [(ngModel)]="_estadoAseguradora" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="form-group">
+            <label for="cargo">Cargo</label>
+            <input type="text" id="cargo" formControlName="cargo" class="validate form-control" required/>
+        </div>
+        <div class="input-field">
+            <button [disabled]="!updateAsegForm.valid" class="btn btn-primary" type="submit" name="action" (click)="actualizarAseguradora()">
+                Actualizar aseguradora
+                <i class="material-icons right" style="vertical-align: middle;">send</i>
+            </button>
+        </div>
+    </p-panel> 
+    </form> 
       </p-dialog>
 
   <!-- MODAL PARA VISUALIZAR ASEGURADORA -->
-  <p-dialog [(visible)]="dialogVerAseg" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-      <div class="ui-grid ui-grid-responsive ui-fluid">
-          <!-- <h5 class="modal-title">Informacion de taller</h5> -->
-               <form [formGroup]="verAseguradoraForm">
-              <p-panel [showHeader]="false">
-                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <h5 class="valign-wrapper">
-                        <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text" id="idAseg" formControlName="nombre" class="validate" disabled/>
-                    </h5>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="razonSocial" formControlName="razonSocial" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="nit" formControlName="nit" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="iva" formControlName="iva" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="estadoA" formControlName="estadoAseguradora" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="usuario" formControlName="usuario" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="cargo" formControlName="cargo" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate" disabled/>
-                    </div>
-                  </div>   
-              </p-panel> 
-          </form> 
-      </div>
+  <p-dialog header="Ver Aseguradora" [(visible)]="dialogVerAseg" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verAseguradoraForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled/>        
+            </div>
+            <div class="form-group">
+                <label for="razonSocial">Raz&oacute;n Social</label>
+                <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="nit">NIT</label>
+                <input type="text" id="nit" formControlName="nit" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="iva">IVA</label>
+                <input type="text" id="iva" formControlName="iva" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">            
+                <label for="estadoAseg">Estado</label>
+                <input type="text" id="estadoA" formControlName="estadoAseguradora" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" formControlName="usuario" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" formControlName="cargo" class="validate form-control" disabled/>
+            </div>
+        </p-panel> 
+    </form> 
     </p-dialog>
  

@@ -1,135 +1,121 @@
-<div class="row">
-    <div class="col s12">
-        <h5 class="left">Administraci&oacute;n de Marcas</h5>
-        <a style="margin-top:15.853px" class="btn-floating purple darken-4 modal-trigger" ><i class="material-icons" (click)='agregarMarca()'>add</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating yellow darken-1" ><i class="material-icons" (click)='editarMarca()'>edit</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating blue modal-trigger" ><i class="material-icons" (click)='verMarca()'>visibility</i></a>
-        <span style="clear:both"></span>
+<section style="margin-bottom:60px">
+    <div style="float:right;padding-top:15px">
+        <span style="font-weight:bold; font-size:39px">
+            Administraci&oacute;n de Marcas
+        </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col s12">
-            <p-growl [value]="msgs" sticky="sticky"></p-growl>
-        <p-table #dt [columns]="cols" [value]="marcas" [paginator]="true" [rows]="6"   [responsive]="true" [(selection)]="_marcaSelected" dataKey="nombre">
-            <ng-template pTemplate="caption">
-                <div style="text-align: right">        
-                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                    <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th style="width: 3em">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
-                    <th *ngFor="let col of columns">
-                        {{col.header}}
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
-                    <td>
-                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                    </td>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>    
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-                <ul>
-                    <li *ngFor="let mrc of _marcaSelected" style="text-align: left">
-                        {{mrc.id + ' - ' + mrc.nombre}}
-                    </li>
-                </ul>
-            </ng-template>
-        </p-table>
-    </div>
-  </div>
+    <div style="clear:both"></div>
+</section>
+
+<div>
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <p-table #dt [columns]="cols" [value]="marcas" [paginator]="true" [rows]="6"   [responsive]="true" [(selection)]="_marcaSelected" dataKey="nombre" class="table">
+        <ng-template pTemplate="caption">
+            <div style="text-align: right">        
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>Nombre</th>
+                <th>Estado</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td>{{rowData.nombre}}</td>
+                <td>{{rowData.estado}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div style="color:#94a1aa; text-align: center;" id="pag">
+    <span id="nw" style="float:right">
+        <button class="btn-al" (click)='agregarMarca()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">add</i>
+            NUEVA MARCA
+        </button>
+        <button class="btn-al" (click)='editarMarca()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">edit</i>
+            EDITAR MARCA
+        </button>
+        <button class="btn-al" (click)='verMarca()'>
+            <i class="material-icons" style="vertical-align:middle">visibility</i>
+            VER MARCA
+        </button>
+    </span>
+    <div style="clear:both"></div>
+</div>
   
   <!-- MODAL PARA AGREGAR MARCA -->
-  <p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <h5 class="modal-title">Ingrese una nueva marca</h5>
-             <form [formGroup]="registrarMarcaForm">
-            <p-panel [showHeader]="false">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <div class="input-field">
-                        <input type="text" id="name" formControlName="nombre" class="validate" required/>
-                        <label for="name">Nombre</label>
-                    </div>
-                    <div class="input-field">
-                        <label for="estadoUsuario">Estado</label><br/><br/>
-                        <p-dropdown [options]="estadosMarca" formControlName="estadoMarca" [(ngModel)]="_estadoMarca" class="validate" required></p-dropdown>
-                        <p>Estado seleccionado: {{_estadoMarca ? _estadoMarca : 'none'}}</p>
-                    </div>
-                    <div class="input-field">
-                            <button [disabled]="!registrarMarcaForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="guardarMarca()">Guardar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                </div>   
-            </p-panel> 
-        </form> 
-    </div>
-  </p-dialog>
+<p-dialog header="Ingrese una nueva marca" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="registrarMarcaForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" formControlName="nombre" class="validate form-control" required/>                
+            </div>
+            <div class="form-group">
+                <label for="estadoUsuario">Estado</label><br/><br/>
+                <p-dropdown [options]="estadosMarca" formControlName="estadoMarca" [(ngModel)]="_estadoMarca" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!registrarMarcaForm.valid" class="btn btn-primary" type="submit" name="action" (click)="guardarMarca()">
+                    Guardar nueva marca
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </p-panel> 
+    </form> 
+</p-dialog>
   
   <!-- MODAL PARA EDITAR TALLER -->
-  <p-dialog [(visible)]="dialogEditMrc" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-        <div class="ui-grid ui-grid-responsive ui-fluid">
-            <!-- <h5 class="modal-title">Actualizacion de usuario</h5> -->
-                 <form [formGroup]="updateMarcaForm">
-                <p-panel [showHeader]="false">
-                  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                        <div class="input-field">
-                            <input pInputText id="idTlr" formControlName="idMrc" style="visibility:hidden"/>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="nombre" formControlName="nombre" class="validate" disabled/>
-                            <!-- <label for="name">Nombre</label> -->
-                        </div>
-                        <div class="input-field">
-                            <label for="estadoTaller">Estado</label><br/><br/>
-                            <p-dropdown [options]="estadosMarca" formControlName="estadoMarca" [(ngModel)]="_estadoMarca" class="validate" required></p-dropdown>
-                            <p>Estado seleccionado: {{_estadoMarca ? _estadoMarca : 'none'}}</p>
-                        </div>
-                        <div class="input-field">
-                            <button [disabled]="!updateMarcaForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="actualizarMarca()">Actualizar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>   
-                </p-panel> 
-            </form> 
-        </div>
-      </p-dialog>
+<p-dialog [(visible)]="dialogEditMrc" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="updateMarcaForm">
+        <p-panel [showHeader]="false">
+            <div>
+            <input pInputText id="idTlr" formControlName="idMrc" style="visibility:hidden"/>
+            </div>
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="estadoTaller">Estado</label><br/><br/>
+                <p-dropdown [options]="estadosMarca" formControlName="estadoMarca" [(ngModel)]="_estadoMarca" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!updateMarcaForm.valid" class="btn btn-primary" type="submit" name="action" (click)="actualizarMarca()">
+                    Actualizar marca
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </p-panel> 
+    </form>
+</p-dialog>
 
-  <!-- MODAL PARA ELIMINAR MARCA -->
 
   <!-- MODAL PARA VISUALIZAR MARCA -->
-  <p-dialog [(visible)]="dialogVerMarca" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-      <div class="ui-grid ui-grid-responsive ui-fluid">
-          <!-- <h5 class="modal-title">Informacion de taller</h5> -->
-               <form [formGroup]="verMarcaForm">
-              <p-panel [showHeader]="false">
-                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <h5 class="valign-wrapper">
-                        <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text" id="idMarca" formControlName="nombre" class="validate" disabled/>
-                    </h5>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="estadoM" formControlName="estadoMarca" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate" disabled/>
-                    </div>
-                  </div>   
-              </p-panel> 
-          </form> 
-      </div>
+<p-dialog [(visible)]="dialogVerMarca" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verMarcaForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="idMarca" formControlName="nombre" class="validate form-control" disabled/>
+            </div>
+            <div class="form-group">
+                <label for="tipoUsuario">Estado</label>
+                <input type="text" id="estadoM" formControlName="estadoMarca" class="validate form-control" disabled/>
+            </div>
+        </p-panel> 
+    </form> 
 </p-dialog>
  
