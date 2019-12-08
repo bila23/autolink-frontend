@@ -9,11 +9,13 @@
 
 <div>
     <p-growl [value]="msgs" sticky="sticky"></p-growl>
-    <p-table #dt [columns]="cols" [value]="modelosView" [paginator]="true" [rows]="10" [responsive]="true" totalRecords="100" [(selection)]="_modeloSelected" dataKey="nombre" class="table">
+    <p-table #dt [columns]="cols" [value]="modelosView" [paginator]="true" [rows]="10" [responsive]="true"
+        totalRecords="100" [(selection)]="_modeloSelected" dataKey="nombre" class="table">
         <ng-template pTemplate="caption">
-            <div style="text-align: right">        
+            <div style="text-align: right">
                 <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                <input type="text" pInputText size="30" placeholder="Buscar"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
             </div>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
@@ -55,82 +57,88 @@
     </span>
     <div style="clear:both"></div>
 </div>
-  
+
 <!-- MODAL PARA AGREGAR MODELO -->
-<p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+<p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="registrarModeloForm">
         <p-panel [showHeader]="false">
             <div class="form-group">
                 <label for="user">Nombre</label>
-                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" required/>
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" required />
             </div>
             <div class="form-group">
                 <label for="marcaModelo">Marca del modelo</label>
-                <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
             </div>
             <div class="form-group">
                 <label for="estadoModelo">Estado</label>
-                <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
             </div>
             <div class="form-group">
-                <button [disabled]="!registrarModeloForm.valid" class="btn btn-primary" type="submit" name="action" (click)="guardarModelo()">
+                <button [disabled]="!registrarModeloForm.valid" class="btn btn-primary" type="submit" name="action"
+                    (click)="guardarModelo()">
                     Guardar nuevo modelo
                     <i class="material-icons right">send</i>
                 </button>
             </div>
-        </p-panel> 
-    </form> 
+        </p-panel>
+    </form>
 </p-dialog>
-  
-  <!-- MODAL PARA EDITAR MODELO -->
-<p-dialog [(visible)]="dialogEditMdl" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-<form [formGroup]="updateModeloForm">
-    <p-panel [showHeader]="false">
-        <div class="form-group">
-            <input pInputText id="idMdl" formControlName="idMdl" style="visibility:hidden"/>
-        </div>
-        <div class="form-group">
-            <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled/>
-        </div>
-        <div class="form-group">
-            <label for="marcaModelo">Marca del modelo</label>
-            <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
-        </div>
-        <div class="form-group">
-            <label for="estadoModelo">Estado</label>
-            <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
-        </div>
-        <div class="form-group">
-            <button [disabled]="!updateModeloForm.valid" class="btn btn-primary" type="submit" name="action" (click)="actualizarModelo()">
-                Guardar nuevo modelo
-                <i class="material-icons right">send</i>
-            </button>
-        </div>
-    </p-panel> 
-</form> 
+
+<!-- MODAL PARA EDITAR MODELO -->
+<p-dialog header="Actualizaci&oacute;n de modelo" [(visible)]="dialogEditMdl" [contentStyle]="{'overflow':'visible'}"
+    [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="updateModeloForm">
+        <p-panel [showHeader]="false">
+            <div>
+                <input pInputText id="idMdl" formControlName="idMdl" style="visibility:hidden" />
+            </div>
+            <div class="form-group">
+                <label for="user">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="marcaModelo">Marca del modelo</label>
+                <p-dropdown [options]="marcasModelo" formControlName="marcaModelo" [(ngModel)]="_marcaSeleccionada"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <label for="estadoModelo">Estado</label>
+                <p-dropdown [options]="estadosModelo" formControlName="estadoModelo" [(ngModel)]="_estadoModelo"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!updateModeloForm.valid" class="btn btn-primary" type="submit" name="action"
+                    (click)="actualizarModelo()">
+                    Actualizar modelo
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </p-panel>
+    </form>
 </p-dialog>
-    
-  <!-- MODAL PARA VISUALIZAR MODELO -->
-  <p-dialog [(visible)]="dialogVerMdl" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-      <div class="ui-grid ui-grid-responsive ui-fluid">
-          <!-- <h5 class="modal-title">Datos de usuario</h5> -->
-          <form [formGroup]="verModeloForm">
-            <p-panel [showHeader]="false">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                  <h5 class="valign-wrapper">
-                    <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text" id="nombre" formControlName="nombre" class="validate" disabled/>
-                  </h5>
-                    <div class="input-field">
-                        <input type="text" id="marcaModelo" formControlName="marcaModelo" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="estadoModelo" formControlName="estadoModelo" class="validate" disabled/>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate" disabled/>
-                    </div>
-                </div>   
-            </p-panel> 
-        </form> 
-      </div>
-    </p-dialog>
+
+<!-- MODAL PARA VISUALIZAR MODELO -->
+<p-dialog header="Ver modelo" [(visible)]="dialogVerMdl" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verModeloForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="marcaModelo">Marca del modelo</label>
+                <input type="text" id="marcaModelo" formControlName="marcaModelo" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="estadoModelo">Estado</label>
+                <input type="text" id="estadoModelo" formControlName="estadoModelo" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate form-control" disabled />
+            </div>
+        </p-panel>
+    </form>
+</p-dialog>
