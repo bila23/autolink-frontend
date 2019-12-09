@@ -1,140 +1,144 @@
-<div class="row">
-    <div class="col s12">
-        <h5 class="left">Administraci&oacute;n de Repuestos</h5>
-        <a style="margin-top:15.853px" class="btn-floating purple darken-4 modal-trigger" ><i class="material-icons" (click)='agregarRepuesto()'>add</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating yellow darken-1" ><i class="material-icons" (click)='editarRepuesto()'>edit</i></a>
-        <span style="clear:both"></span>
-        <a style="margin-top:15.853px" class="btn-floating blue modal-trigger" ><i class="material-icons" (click)='verRepuesto()'>visibility</i></a>
-        <span style="clear:both"></span>
+<section style="margin-bottom:60px">
+    <div style="float:right;padding-top:15px">
+        <span style="font-weight:bold; font-size:39px">
+            Administraci&oacute;n de Repuestos
+        </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col s12">
-        <p-growl [value]="msgs" sticky="sticky"></p-growl>
-        <p-table #dt [columns]="cols" [value]="repuestos" [paginator]="true" [rows]="3"   [responsive]="true" [(selection)]="_repuestoSelected" dataKey="nombre">
-            <ng-template pTemplate="caption">
-                <div style="text-align: right">        
-                    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                    <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th style="width: 3em">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
-                    <th *ngFor="let col of columns">
-                        {{col.header}}
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
-                    <td>
-                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                    </td>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>    
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-                <ul>
-                    <li *ngFor="let rep of _repuestoSelected" style="text-align: left">
-                        {{rep.id + ' - ' + rep.nombrerepuesto}}
-                    </li>
-                </ul>
-            </ng-template>
-        </p-table>
-    </div>
-  </div>
-  
-  <!-- MODAL PARA AGREGAR REPUESTO -->
-  <p-dialog [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <h5 class="modal-title">Ingrese un nuevo repuesto</h5>
-             <form [formGroup]="registrarRepForm">
+    <div style="clear:both"></div>
+</section>
+
+<div>
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <p-table #dt [columns]="cols" [value]="repuestos" [paginator]="true" [rows]="3" [responsive]="true"
+        [(selection)]="_repuestoSelected" dataKey="nombre" class="table">
+        <ng-template pTemplate="caption">
+            <div style="text-align: right">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="30" placeholder="Buscar"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div style="color:#94a1aa; text-align: center;" id="pag">
+    <span id="nw" style="float:right">
+        <button class="btn-al" (click)='agregarRepuesto()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">add</i>
+            NUEVO REPUESTO
+        </button>
+        <button class="btn-al" (click)='editarRepuesto()' style="margin-right:8px">
+            <i class="material-icons" style="vertical-align:middle">edit</i>
+            EDITAR REPUESTO
+        </button>
+        <button class="btn-al" (click)='verRepuesto()'>
+            <i class="material-icons" style="vertical-align:middle">visibility</i>
+            VER REPUESTO
+        </button>
+    </span>
+    <div style="clear:both"></div>
+</div>
+
+<!-- MODAL PARA AGREGAR REPUESTO -->
+<p-dialog header="Agregar nuevo repuesto" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+        <form [formGroup]="registrarRepForm">
             <p-panel [showHeader]="false">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <div class="input-field">
-                        <input type="text" id="name" formControlName="nombre" class="validate" required/>
+                    <div class="form-group">
+                        <input type="text" id="name" formControlName="nombre" class="validate" required />
                         <label for="name">Nombre</label>
                     </div>
-                    <div class="input-field">
-                        <input type="text" id="valor" formControlName="valor" class="validate" required/>
+                    <div class="form-group">
+                        <input type="text" id="valor" formControlName="valor" class="validate" required />
                         <label for="direccion">Valor</label>
                     </div>
+                    <div class="form-group">
+                        <label for="estadoUsuario">Estado</label>
+                        <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto"
+                            [(ngModel)]="_estadoRepuesto" class="validate" required></p-dropdown>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="!registrarRepForm.valid" class="btn waves-effect waves-light" type="submit"
+                            name="action" (click)="guardarRepuesto()">Guardar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+            </p-panel>
+        </form>
+</p-dialog>
+
+<!-- MODAL PARA EDITAR REPUESTO -->
+<p-dialog [(visible)]="dialogEditRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+        <form [formGroup]="updateRepForm">
+            <p-panel [showHeader]="false">
                     <div class="input-field">
-                        <label for="estadoUsuario">Estado</label><br/><br/>
-                        <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto" [(ngModel)]="_estadoRepuesto" class="validate" required></p-dropdown>
-                        <p>Estado seleccionado: {{_estadoRepuesto ? _estadoRepuesto : 'none'}}</p>
+                        <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden" />
                     </div>
                     <div class="input-field">
-                            <button [disabled]="!registrarRepForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="guardarRepuesto()">Guardar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                </div>   
-            </p-panel> 
-        </form> 
-    </div>
-  </p-dialog>
-  
-  <!-- MODAL PARA EDITAR REPUESTO -->
-  <p-dialog [(visible)]="dialogEditRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-        <div class="ui-grid ui-grid-responsive ui-fluid">
-            <!-- <h5 class="modal-title">Actualizacion de usuario</h5> -->
-                 <form [formGroup]="updateRepForm">
-                <p-panel [showHeader]="false">
-                  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                        <div class="input-field">
-                            <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden"/>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="nombre" formControlName="nombre" class="validate" disabled/>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" id="valor" formControlName="valor" class="validate" required/>
-                        </div>
-                        <div class="input-field">
-                            <label for="estadoTaller">Estado</label><br/><br/>
-                            <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto" [(ngModel)]="_estadoRepuesto" class="validate" required></p-dropdown>
-                            <p>Estado seleccionado: {{_estadoRepuesto ? _estadoRepuesto : 'none'}}</p>
-                        </div>
-                        <div class="input-field">
-                            <button [disabled]="!updateRepForm.valid" class="btn waves-effect waves-light" type="submit" name="action" (click)="actualizarRepuesto()">Actualizar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </div>   
-                </p-panel> 
-            </form> 
-        </div>
-      </p-dialog> 
+                        <input type="text" id="nombre" formControlName="nombre" class="validate" disabled />
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="valor" formControlName="valor" class="validate" required />
+                    </div>
+                    <div class="input-field">
+                        <label for="estadoTaller">Estado</label>
+                        <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto"
+                            [(ngModel)]="_estadoRepuesto" class="validate" required></p-dropdown>
+                    </div>
+                    <div class="input-field">
+                        <button [disabled]="!updateRepForm.valid" class="btn waves-effect waves-light" type="submit"
+                            name="action" (click)="actualizarRepuesto()">Actualizar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+            </p-panel>
+        </form>
+</p-dialog>
 
-  <!-- MODAL PARA VISUALIZAR REPUESTOS -->
-  <p-dialog [(visible)]="dialogVerRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-      <div class="ui-grid ui-grid-responsive ui-fluid">
-          <!-- <h5 class="modal-title">Informacion de taller</h5> -->
-               <form [formGroup]="verRepForm">
-              <p-panel [showHeader]="false">
+<!-- MODAL PARA VISUALIZAR REPUESTOS -->
+<p-dialog [(visible)]="dialogVerRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <div class="ui-grid ui-grid-responsive ui-fluid">
+        <!-- <h5 class="modal-title">Informacion de taller</h5> -->
+        <form [formGroup]="verRepForm">
+            <p-panel [showHeader]="false">
                 <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
                     <h5 class="valign-wrapper">
-                        <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text" id="nombre" formControlName="nombre" class="validate" disabled/>
+                        <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text"
+                            id="nombre" formControlName="nombre" class="validate" disabled />
                     </h5>
                     <div class="input-field">
-                        <input type="text" id="valor" formControlName="valor" class="validate" disabled/>
+                        <input type="text" id="valor" formControlName="valor" class="validate" disabled />
                     </div>
                     <div class="input-field">
-                        <input type="text" id="estadoR" formControlName="estadoRepuesto" class="validate" disabled/>
+                        <input type="text" id="estadoR" formControlName="estadoRepuesto" class="validate" disabled />
                     </div>
                     <div class="input-field">
-                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate" disabled/>
+                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate" disabled />
                     </div>
-                  </div>   
-              </p-panel> 
-          </form> 
-      </div>
+                </div>
+            </p-panel>
+        </form>
+    </div>
 </p-dialog>
- 
