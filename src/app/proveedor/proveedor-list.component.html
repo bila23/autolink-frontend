@@ -23,19 +23,23 @@
                 <th style="width: 3em">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th *ngFor="let col of columns">
-                    {{col.header}}
-                </th>
+                <th>Nombre</th>
+                <th>Direcci&oacute;n</th>
+                <th>Usuario</th>
+                <th>Raz&oacute;n social</th>
+                <th>Estado</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <ng-template pTemplate="body" let-rowData>
             <tr [pSelectableRow]="rowData">
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
-                <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
-                </td>
+                <td>{{rowData.nombre}}</td>
+                <td>{{rowData.direccion}}</td>
+                <td>{{rowData.usuario.usuario}}</td>
+                <td>{{rowData.razonsocial}}</td>
+                <td>{{rowData.estado}}</td>
             </tr>
         </ng-template>
     </p-table>

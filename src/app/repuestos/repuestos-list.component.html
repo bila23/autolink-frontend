@@ -23,19 +23,19 @@
                 <th style="width: 3em">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th *ngFor="let col of columns">
-                    {{col.header}}
-                </th>
+                <th>Nombre</th>
+                <th>Valor</th>
+                <th>Estado</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <ng-template pTemplate="body" let-rowData>
             <tr [pSelectableRow]="rowData">
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
-                <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
-                </td>
+                <td>{{rowData.nombre}}</td>
+                <td>{{rowData.valor}}</td>
+                <td>{{rowData.estado}}</td>
             </tr>
         </ng-template>
     </p-table>
@@ -60,85 +60,79 @@
 </div>
 
 <!-- MODAL PARA AGREGAR REPUESTO -->
-<p-dialog header="Agregar nuevo repuesto" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
-    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-        <form [formGroup]="registrarRepForm">
-            <p-panel [showHeader]="false">
-                    <div class="form-group">
-                        <input type="text" id="name" formControlName="nombre" class="validate" required />
-                        <label for="name">Nombre</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="valor" formControlName="valor" class="validate" required />
-                        <label for="direccion">Valor</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="estadoUsuario">Estado</label>
-                        <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto"
-                            [(ngModel)]="_estadoRepuesto" class="validate" required></p-dropdown>
-                    </div>
-                    <div class="form-group">
-                        <button [disabled]="!registrarRepForm.valid" class="btn waves-effect waves-light" type="submit"
-                            name="action" (click)="guardarRepuesto()">Guardar
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-            </p-panel>
-        </form>
+<p-dialog header="Agregar nuevo repuesto" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}"
+    [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="registrarRepForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" formControlName="nombre" class="validate form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="direccion">Valor</label>
+                <input type="text" id="valor" formControlName="valor" class="validate form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="estadoUsuario">Estado</label>
+                <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto" [(ngModel)]="_estadoRepuesto"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!registrarRepForm.valid" class="btn btn-primary" type="submit" name="action"
+                    (click)="guardarRepuesto()">Guardar nuevo repuesto
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </p-panel>
+    </form>
 </p-dialog>
 
 <!-- MODAL PARA EDITAR REPUESTO -->
-<p-dialog [(visible)]="dialogEditRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
-    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-        <form [formGroup]="updateRepForm">
-            <p-panel [showHeader]="false">
-                    <div class="input-field">
-                        <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden" />
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="nombre" formControlName="nombre" class="validate" disabled />
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="valor" formControlName="valor" class="validate" required />
-                    </div>
-                    <div class="input-field">
-                        <label for="estadoTaller">Estado</label>
-                        <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto"
-                            [(ngModel)]="_estadoRepuesto" class="validate" required></p-dropdown>
-                    </div>
-                    <div class="input-field">
-                        <button [disabled]="!updateRepForm.valid" class="btn waves-effect waves-light" type="submit"
-                            name="action" (click)="actualizarRepuesto()">Actualizar
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-            </p-panel>
-        </form>
+<p-dialog header="Actualización de repuesto" [(visible)]="dialogEditRep" [contentStyle]="{'overflow':'visible'}"
+    [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="updateRepForm">
+        <p-panel [showHeader]="false">
+            <div>
+                <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden" />
+            </div>
+            <div class="form-group">
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <input type="text" id="valor" formControlName="valor" class="validate form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="estadoTaller">Estado</label>
+                <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto" [(ngModel)]="_estadoRepuesto"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!updateRepForm.valid" class="btn btn-primary" type="submit" name="action"
+                    (click)="actualizarRepuesto()">Actualizar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </p-panel>
+    </form>
 </p-dialog>
 
 <!-- MODAL PARA VISUALIZAR REPUESTOS -->
-<p-dialog [(visible)]="dialogVerRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
-    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <!-- <h5 class="modal-title">Informacion de taller</h5> -->
-        <form [formGroup]="verRepForm">
-            <p-panel [showHeader]="false">
-                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <h5 class="valign-wrapper">
-                        <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text"
-                            id="nombre" formControlName="nombre" class="validate" disabled />
-                    </h5>
-                    <div class="input-field">
-                        <input type="text" id="valor" formControlName="valor" class="validate" disabled />
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="estadoR" formControlName="estadoRepuesto" class="validate" disabled />
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="validate" disabled />
-                    </div>
-                </div>
-            </p-panel>
-        </form>
-    </div>
+<p-dialog header="Ver repuesto" [(visible)]="dialogVerRep" [contentStyle]="{'overflow':'visible'}" [responsive]="true"
+    [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verRepForm">
+        <p-panel [showHeader]="false">
+            <div class="form-group">
+                <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <input type="text" id="valor" formControlName="valor" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <input type="text" id="estadoR" formControlName="estadoRepuesto" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <input type="text" id="fechaC" formControlName="fechaCreacion" class="form-control validate" disabled />
+            </div>
+        </p-panel>
+    </form>
 </p-dialog>
