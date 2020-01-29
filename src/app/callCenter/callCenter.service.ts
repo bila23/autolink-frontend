@@ -11,7 +11,7 @@ import { ICallCenter } from '../_model/callCenter.model';
 })
 
 export class CallCenterService{
-  private provUrlBase = 'http://localhost:8014/autolink';
+  private provUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevoCce: ICallCenter[];
   actualizaCce:ICallCenter;

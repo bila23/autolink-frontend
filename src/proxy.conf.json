@@ -1,6 +1,6 @@
 {
     "/rest": {
-      "target": "http://localhost:8014/autolink/rest",
+      "target": "http://34.67.215.71:8014/autolink/rest",
       "secure": false,
       "changeOrigin": false,
       "logLevel": "debug"

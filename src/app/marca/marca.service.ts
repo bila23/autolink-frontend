@@ -11,7 +11,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class MarcaService{
-  private marcaUrlBase = 'http://localhost:8014/autolink';
+  private marcaUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevoMrc: IMarca[];
   actualizarMrc:IMarca;

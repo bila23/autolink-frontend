@@ -14,7 +14,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class UserService{
-  private usuariosUrlBAse = 'http://localhost:8014/autolink';
+  private usuariosUrlBAse = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevoUsr:IUser;
   actualizarUsr:IUser;

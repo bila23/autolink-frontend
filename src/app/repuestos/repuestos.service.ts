@@ -11,7 +11,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class RepuestoService{
-  private repUrlBase = 'http://localhost:8014/autolink';
+  private repUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevoRep: IRepuesto[];
   actualizaRep:IRepuesto;
