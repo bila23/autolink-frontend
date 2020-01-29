@@ -11,8 +11,8 @@ import { IUser } from '../_model/user.model';
 import { IPregXuser } from '../_model/pregXuser.model';
 
 @Component({
-    templateUrl: './login.component.html'
-    //styleUrls: ['./login.component.css']
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit{
     msgs: Message[] = [];

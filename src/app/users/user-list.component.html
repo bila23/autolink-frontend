@@ -1,194 +1,175 @@
 <section style="margin-bottom:60px">
-    <div style="float:right;padding-top:15px">
-        <span style="font-weight:bold; font-size:39px">
-            Registro de Usuarios
-        </span>
-    </div>
-    <div style="clear:both"></div>
+  <div style="float:right;padding-top:15px">
+    <span style="font-weight:bold; font-size:39px">
+      Administraci&oacute;n de Usuarios
+    </span>
+  </div>
+  <div style="clear:both"></div>
 </section>
 <div>
-  <p-table #dt [columns]="cols" [value]="usuariosView" [paginator]="true" [rows]="10" [responsive]="true" totalRecords="100"  [(selection)]="_usuarioSelected" dataKey="nombre" class="table">
+  <p-growl [value]="msgs" sticky="sticky"></p-growl>
+  <p-table class="table" #dt [columns]="cols" [value]="usuariosView" [paginator]="true" [rows]="10" [responsive]="true"
+    totalRecords="100" [(selection)]="_usuarioSelected" dataKey="nombre">
     <ng-template pTemplate="caption">
-        <div style="text-align: right">        
-            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-            <input type="text" pInputText size="30" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-        </div>
+      <div style="text-align: right">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input type="text" pInputText size="30" placeholder="Buscar"
+          (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
-        <tr>
-           <th style="width: 3em">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
-            <th *ngFor="let col of columns">
-                {{col.header}}
-            </th>
-            <th></th>
-        </tr>
+      <tr>
+        <th style="width: 3em">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Contrase&ntilde;a</th>
+        <th>Tipo</th>
+      </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-            <td>
-                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-            </td>
-            <td *ngFor="let col of columns">
-                {{rowData[col.field]}}
-            </td>
-            <td>
-                <i class="material-icons" (click)='editarUsuario()'>edit</i>
-            </td>
-        </tr>
+      <tr [pSelectableRow]="rowData">
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
+        <td *ngFor="let col of columns">
+          {{rowData[col.field]}}
+        </td>
+      </tr>
     </ng-template>
-    </p-table>
-    <ng-template pTemplate="summary">
-        <ul>
-            <li *ngFor="let usr of _usuarioSelected" style="text-align: left">
-                {{usr.id + ' - ' + usr.usuario + ' - ' + usr.nombre + ' - ' + usr.pass + ' - ' + usr.nombreTipo }}
-            </li>
-        </ul>
-    </ng-template> 
-
-  <div style="color:#94a1aa; text-align: center;" id="pag">
-    <span id="nw" style="float:right">
-        <button class="btn-al" data-toggle="modal" data-target="#saveModal">
-            <i class="material-icons" style="vertical-align:middle">add</i>
-            NUEVO USUARIO
-        </button>
-    </span>
-    <div style="clear:both"></div>
-  </div>
+  </p-table>
+</div>
+<div style="color:#94a1aa; text-align: center;" id="pag">
+  <span id="nw" style="float:right">
+    <button class="btn-al" (click)='agregarUsuario()' style="margin-right:8px">
+      <i class="material-icons" style="vertical-align:middle">add</i>
+      NUEVO USUARIO
+    </button>
+    <button class="btn-al" (click)='editarUsuario()' style="margin-right:8px">
+      <i class="material-icons" style="vertical-align:middle">edit</i>
+      EDITAR USUARIO
+    </button>
+    <button class="btn-al" (click)='verUsuario()'>
+      <i class="material-icons" style="vertical-align:middle">visibility</i>
+      VER USUARIO
+    </button>
+  </span>
+  <div style="clear:both"></div>
 </div>
 
-<p-growl [value]="msgs" sticky="sticky"></p-growl>
-
-<!--AGREGAR USUARIO -->
-<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Nuevo Usuario</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<p-dialog header="Ingrese un nuevo usuario" [(visible)]="displayDialog" [contentStyle]="{'overflow':'visible'}"
+  [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+  <form [formGroup]="registrarUserForm">
+    <p-panel [showHeader]="false">
+      <div class="form-group">
+        <label for="user">Usuario</label>
+        <input type="text" id="user" formControlName="usuario" class="validate form-control" required />
       </div>
-      <div class="modal-body">
-        <form [formGroup]="registrarUserForm">
-            <div class="form-group">
-                <label for="user">Usuario</label>
-                <input type="text" id="user" formControlName="usuario" class="validate form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" id="name" formControlName="nombre" class="validate form-control"/>
-            </div>
-            <div class="form-group">
-              <p>Tipo seleccionado:</p>
-              <p-dropdown [options]="tiposUsuarios" formControlName="tipoUsuario" [(ngModel)]="_tipoSeleccionado" [style]="{'width':'100%'}"></p-dropdown>
-            </div>
-            <div class="form-group">
-              <p>Estado seleccionado:</p>
-              <p-dropdown [options]="estadosUsuario" formControlName="estadoUsuario" [(ngModel)]="_estadoUsuario" [style]="{'width':'100%'}"></p-dropdown>              
-            </div>
-        </form>
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input type="text" id="name" formControlName="nombre" class="validate form-control" required />
       </div>
-      <div class="modal-footer">
-        <button type="submit" name="action" (click)="guardarUser()" class="btn btn-primary">
+      <div class="form-group">
+        <label for="tipoUsuario">Tipo de usuario</label>
+        <p-dropdown [style]="{'width':'100%'}" [options]="tiposUsuarios" formControlName="tipoUsuario"
+          [(ngModel)]="_tipoSeleccionado" class="validate" required></p-dropdown>
+      </div>
+      <div class="form-group">
+        <label for="estadoUsuario">Estado</label>
+        <p-dropdown [style]="{'width':'100%'}" [options]="estadosUsuario" formControlName="estadoUsuario"
+          [(ngModel)]="_estadoUsuario" class="validate" required></p-dropdown>
+      </div>
+      <div class="form-group">
+        <button [disabled]="!registrarUserForm.valid" class="btn btn-primary" type="submit" name="action"
+          (click)="guardarUser()">
           Guardar nuevo usuario
-          <i class="material-icons right" style="vertical-align: middle;">send</i>
+          <i class="material-icons right">send</i>
         </button>
       </div>
-    </div>
-  </div>
-</div>
-
+    </p-panel>
+  </form>
+</p-dialog>
 
 <!-- MODAL PARA EDITAR USUARIO -->
-<div class="modal fade" id="dialogEditUsr" tabindex="-1" role="dialog" aria-labelledby="dialogEditUsrLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="registrarUserForm">
-              <div class="form-group">
-                  <label for="user">Usuario</label>
-                  <input pInputText id="idUsr" formControlName="idUsr" style="visibility:hidden"/>
-                  <input type="text" id="usuario" formControlName="usuario" class="validate" disabled/>
-              </div>
-              <div class="form-group">
-                  <label for="name">Nombre</label>
-                  <input type="text" id="nombre" formControlName="nombre" class="validate" required/>
-              </div>
-              <div class="form-group">
-                <p>Tipo seleccionado:</p>
-                <p-dropdown [options]="tiposUsuarios" formControlName="tipoUsuario" [(ngModel)]="_tipoSeleccionado" class="validate" required [style]="{'width':'100%'}"></p-dropdown>
-              </div>
-              <div class="form-group">
-                <p>Estado seleccionado:</p>
-                <p-dropdown [options]="estadosUsuario" formControlName="estadoUsuario" [(ngModel)]="_estadoUsuario" class="validate" required></p-dropdown>
-              </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" name="action" (click)="guardarUser()" class="btn btn-primary">
-            Actualizar usuario
-            <i class="material-icons right" style="vertical-align: middle;">send</i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+<p-dialog header="Actualizaci&oacute;n de Usuario" [(visible)]="dialogEditUsr" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+  showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="updateUserForm">
+      <p-panel [showHeader]="false">
+        <div class="form-group">
+            <input pInputText id="idUsr" formControlName="idUsr" style="visibility:hidden" />
+          </div>
+          <div class="form-group">
+            <label for="user">Usuario</label>
+            <input type="text" id="usuario" formControlName="usuario" class="validate form-control" disabled />
+          </div>
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" class="validate form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="tipoUsuario">Tipo de usuario</label>
+            <p-dropdown [style]="{'width':'100%'}" [options]="tiposUsuarios" formControlName="tipoUsuario" [(ngModel)]="_tipoSeleccionado"
+              class="validate" required></p-dropdown>
+          </div>
+          <div class="form-group">
+            <label for="estadoUsuario">Estado</label>
+            <p-dropdown [style]="{'width':'100%'}" [options]="estadosUsuario" formControlName="estadoUsuario" [(ngModel)]="_estadoUsuario"
+              class="validate" required></p-dropdown>
+          </div>
+          <div class="form-group">
+            <button [disabled]="!updateUserForm.valid" class="btn btn-primary" type="submit" name="action"
+              (click)="actualizarUser()">Actualizar Usuario
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+      </p-panel>
+    </form>
+</p-dialog>
 
 <!-- MODAL PARA ELIMINAR USUARIO -->
-<p-dialog [(visible)]="dialogDelUsr" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+<p-dialog [(visible)]="dialogDelUsr" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+  showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
   <div class="ui-grid ui-grid-responsive ui-fluid">
-        
-          <p-panel [showHeader]="false">
-            <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                  <span><h6>Esta seguro que desea eliminar al usuario?</h6></span>
-                  <div class="input-field">
-                    <button type="button" pButton icon="fa-check" label="SI" (click)="eliminarUser()"></button>
-                  </div>
-              </div>   
-          </p-panel> 
+
+    <p-panel [showHeader]="false">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <span>
+          <h6>Esta seguro que desea eliminar al usuario?</h6>
+        </span>
+        <div class="input-field">
+          <button type="button" pButton icon="fa-check" label="SI" (click)="eliminarUser()"></button>
+        </div>
+      </div>
+    </p-panel>
   </div>
 </p-dialog>
 
 <!-- MODAL PARA VISUALIZAR USUARIO -->
-<p-dialog [(visible)]="dialogVerUser" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-    <div class="ui-grid ui-grid-responsive ui-fluid">
-        <!-- <h5 class="modal-title">Datos de usuario</h5> -->
-        <form [formGroup]="verUserForm">
-          <p-panel [showHeader]="false">
-            <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                <h5 class="valign-wrapper">
-                  <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text" id="user" formControlName="nombre" class="validate" disabled/>
-                </h5>
-                  <div class="input-field">
-                    <input type="text" id="user" formControlName="usuario" class="validate" disabled/>
-                      <!-- <label for="user">Usuario</label> -->
-                  </div>
-                  <!-- <div class="input-field">
-                      <input type="text" id="name" formControlName="nombre" class="validate" disabled/>
-                  </div> -->
-                  <div class="input-field">
-                      <!-- <label for="tipoUsuario">Tipo de usuario</label><br/><br/> -->
-                      <input type="text" id="name" formControlName="tipoUsuario" class="validate" disabled/>
-                  </div>
-                  <div class="input-field">
-                      <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                      <input type="text" id="name" formControlName="estadoUsuario" class="validate" disabled/>
-                  </div>
-                  <div class="input-field">
-                      <!-- <label for="tipoUsuario">Estado</label><br/><br/> -->
-                      <input type="text" id="name" formControlName="fechaCreacion" class="validate" disabled/>
-                  </div>
-              </div>   
-          </p-panel> 
-      </form> 
-    </div>
-  </p-dialog>
+<p-dialog header="Ver un Usuario" [(visible)]="dialogVerUser" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+  showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verUserForm">
+      <p-panel [showHeader]="false">
+          <h5 class="valign-wrapper">
+            <i class="material-icons" style="margin-right: 10px">account_circle</i><input type="text" id="user"
+              formControlName="nombre" class="validate" disabled />
+          </h5>
+          <div class="form-group">
+            <label for="user">Usuario</label>
+            <input type="text" id="user" formControlName="usuario" class="validate form-control" disabled />
+          </div>
+          <div class="form-group">
+            <label for="tipoUsuario">Tipo de usuario</label>
+            <input type="text" id="name" formControlName="tipoUsuario" class="validate form-control" disabled />
+          </div>
+          <div class="form-group">
+            <label for="tipoUsuario">Estado</label>
+            <input type="text" id="name" formControlName="estadoUsuario" class="validate form-control" disabled />
+          </div>
+          <div class="form-group">
+            <label for="tipoUsuario">Estado</label>
+            <input type="text" id="name" formControlName="fechaCreacion" class="validate form-control" disabled />
+          </div>
+      </p-panel>
+    </form>
+</p-dialog>
