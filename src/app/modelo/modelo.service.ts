@@ -13,7 +13,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class ModeloService{
-  private modeloUrlBAse = 'http://localhost:8014/autolink';
+  private modeloUrlBAse = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevoMdl:IModelo;
   actualizarMdl:IModelo;

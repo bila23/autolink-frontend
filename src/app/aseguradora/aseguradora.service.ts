@@ -11,7 +11,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class AseguradoraService{
-  private aseguradoraUrlBase = 'http://localhost:8014/autolink';
+  private aseguradoraUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevaAseg: IAseguradora[];
   actualizarAseg:IAseguradora;

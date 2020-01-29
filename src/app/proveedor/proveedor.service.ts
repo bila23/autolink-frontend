@@ -11,7 +11,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class ProveedorService{
-  private provUrlBase = 'http://localhost:8014/autolink';
+  private provUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse;
   nuevoProv: IProveedor[];
   actualizaProv:IProveedor;

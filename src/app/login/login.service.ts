@@ -16,7 +16,7 @@ import { IPreguntasRepuestas } from '../_model/preguntasRespuestas.model';
 })
 
 export class LoginService{
-    private loginUrlBase="http://localhost:8014/autolink";
+    private loginUrlBase = localStorage.getItem('API');//"http://localhost:8014/autolink";
     //private loginUrl = "http://localhost:8014/autolink/rest/login";
     usuarioReset:IUser;
     genResponse: IGenericResponse;

@@ -11,7 +11,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class TallerService{
-  private tallerUrlBase = 'http://localhost:8014/autolink';
+  private tallerUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
   userL: ILoginResponse
   nuevoTlr: ITaller[];
   actualizarTal:ITaller;
