@@ -1,4 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-/*@import "~bootstrap/dist/css/bootstrap.min.css";
-@import "~font-awesome/css/font-awesome.min.css"; 
-@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"; */
+html, body{height: 100%; min-height: 100%;}
+#bk{
+    background-image: url('assets/images/home.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top left; 
+}
