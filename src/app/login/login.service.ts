@@ -67,6 +67,10 @@ export class LoginService{
       return isLogged;
   }
 
+  GetTipoUser(){
+    return localStorage.getItem("idTipoUser");
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     localStorage.clear();

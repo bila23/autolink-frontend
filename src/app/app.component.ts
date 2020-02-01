@@ -44,4 +44,8 @@ export class AppComponent {
     return this.isLogged;
   }
 
+  GetTipoUser(){
+    return this.authService.GetTipoUser();
+  }
+
 }

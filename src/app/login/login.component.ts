@@ -72,6 +72,8 @@ export class LoginComponent implements OnInit{
                          let value = localStorage.getItem(key);
                          console.log(key, value);
                      }
+                     localStorage.setItem("idTipoUser", this.userResponse.idTipo.toString());
+                     
                      /*for(let key in this.userResponse){
                          if(this.userResponse.hasOwnProperty(key)){
                              //console.log("Valores de los usuarios --> id: " + this.userResponse[key].id);
@@ -82,6 +84,10 @@ export class LoginComponent implements OnInit{
                          }
                      }*/
                      this.router.navigate(['/users']);
+                     //prueba
+                    //  console.log("antes navigate prueba")
+                    //  this.router.navigate(['/prueba']);
+                    //  console.log("despues navigate prueba");
                 }else{
                     console.log("No se ha podido autenticar");
                     this.loginForm.controls['username'].setValue("");
