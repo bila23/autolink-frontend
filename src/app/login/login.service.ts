@@ -10,6 +10,7 @@ import { IGenericResponse } from '../_model/genericResponse.model';
 import { IPreguntas } from '../_model/preguntas.model';
 import { IPregXuser } from '../_model/pregXuser.model';
 import { IPreguntasRepuestas } from '../_model/preguntasRespuestas.model';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -21,9 +22,9 @@ export class LoginService{
     usuarioReset:IUser;
     genResponse: IGenericResponse;
     pregResp: IPreguntasRepuestas
-   
+    userType: String;
 
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient, private router: Router){}
 
     getUserLogOn(userL: string, passL: string):Observable<ILoginResponse>{
       console.log("Llamaremos al servicio de login");
@@ -170,4 +171,13 @@ export class LoginService{
     console.error(errorMessage);
     return throwError(errorMessage);
   }
+
+  public redirectByUserType(){
+    this.userType = localStorage.getItem("idTipoUser");
+    if (this.userType === "1"){
+     this.router.navigate(['/users']);
+    }else if (this.userType === "2"){
+        this.router.navigate(['/boardbystatus']);
+    }
+ }
 }

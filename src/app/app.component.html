@@ -78,7 +78,7 @@
                 display:initial
             }
         </style>
-        <div class="container-fluid" style="height: 100%;  min-height: 100%;  position: absolute;  top: 0;  right: 0;  bottom: 0;">
+        <div class="container-fluid row" style="height: 100%;  min-height: 100%;  position: absolute;  top: 0;  right: 0;  bottom: 0;">
             <div class="col-sm-3" style="padding-left:0; padding-right:0">
                 <app-header *ngIf="isLoggedIn()"></app-header>
             </div>
@@ -91,9 +91,6 @@
         
     </ng-template> -->
     <ng-template #UserTipo2>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Autolink</title>
         <style>
             #banner{
@@ -102,111 +99,13 @@
                 background-position: center;
                 margin-bottom:0px
             }
-            #tabs-sw li.tab a.active{color:#fff;background-color: #000700;}
-            #tabs-sw li.tab a{
-                font-weight:bold;
-                color:#000700;
-                border: 1px solid #edecf1;
-                border-top-left-radius: 15px;
-                border-top-right-radius: 15px;
-            }
-            #taf{
-                border:1px solid #000700;
-                height:18px;
-                content: ' ';
-                width:100%;
-                background-color: #000700;
-            }
-            .tabs .indicator {
-                position: absolute;
-                bottom: 0;
-                height: 1px;
-                background-color: #000700;
-                will-change: left, right;
-            }
-            .btn-table{background-color: #000700;}
-            .tab-white{background: #fff;padding: 0px !important;}
-            .tab-white table tbody tr:hover::after{
-                content: '';
-                background: #000700;
-                display: block;
-                width: 5px;
-                height: 66px;
-                position: absolute;
-                margin: 0px;
-                padding: 0px;
-                left: 0;
-            }
         </style>
         <div class="row" id="banner">
-            <div class="col s6">
-                <img src="assets/images/logo_2.png"/>
-            </div>
-            <div class="col s6 valign-wrapper" style="color: #fff; font-weight: bold; height: 100%;">
-                <div class="right-align" style="width: 100%;">
-                    Usuario: William Juárez - 
-                    <a href="#" style="color: #fff;">[Salir]</a>
-                </div>
-            </div>
+            <app-headerview2></app-headerview2>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col s12 m12 l12 xl12">
-                    <ul id="tabs-sw" class="tabs">
-                        <li class="tab col s2 hoverable"><a class="active" href="#1">INGRESADAS</a></li>
-                        <li class="tab col s2 hoverable"><a  href="#2">ANULADAS</a></li>
-                        <li class="tab col s2 hoverable"><a href="#3">ENTREGADAS</a></li>
-                        <li class="tab col s2 hoverable"><a href="#4">CERRADAS</a></li>
-                        <li class="tab col s4 hoverable"><a href="#5">CERRADAS POR ASEGURADORA</a></li>
-                    </ul>
-                    <div id=taf></div>
-                    <div id="1" class="col s12 tab-white">
-                        <table class="striped centered responsive-table" style="position: relative;">
-                            <thead>
-                                <tr>
-                                    <th>C&Oacute;DIGO</th>
-                                    <th>FECHA SOL.</th>
-                                    <th>PLACA</th>
-                                    <th>HORAS</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>SOLC-01-20</td> 
-                                    <td>01/01/2020</td>
-                                    <td>P235-9</td>
-                                    <td>3 HRS</td>
-                                    <td>
-                                        <button class="btn-table btn waves-effect waves-light">INFO. COMPLETA</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>SOLC-01-20</td> 
-                                    <td>01/01/2020</td>
-                                    <td>P235-9</td>
-                                    <td>3 HRS</td>
-                                    <td>
-                                        <button class="btn-table btn waves-effect waves-light">INFO. COMPLETA</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="2" class="col s12 tab-white">ANULADAS</div>
-                    <div id="3" class="col s12 tab-white">ENTREGADAS</div>
-                    <div id="4" class="col s12 tab-white">CERRADAS</div>
-                    <div id="5" class="col s12 tab-white">CERRADAS POR ASEGURADORA</div>
-                </div>
-            </div>
+        <div class="container" style="width: 80%;">
+            <app-container2></app-container2>
         </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $('.tabs').tabs();
-            });
-        </script>
     </ng-template>
         
 </ng-template>
