@@ -4,12 +4,14 @@
 
 <ng-template #logged>
     <ng-container *ngIf="GetTipoUser()==1; else UserTipo2">
-            <div class="col s3" style="padding-left:0; padding-right:0">
+        <div class="row">
+            <div class="col s3 m3 l3 xl3" style="padding-left:0; padding-right:0">
                 <app-header *ngIf="isLoggedIn()"></app-header>
             </div>
-            <div class="col s9">
+            <div class="col s9 m9 l9 xl9">
                 <router-outlet></router-outlet>
             </div>
+        </div>
     </ng-container>
     <!-- <ng-template #UserTipo1 *ngIf="GetTipoUser() = 1; else UserTipo2">
         

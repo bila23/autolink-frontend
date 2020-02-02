@@ -1,5 +1,4 @@
 html, body{height: 100%; min-height: 100%;}
-body{overflow-y: hidden;}
 #bk{
     background-image: url('assets/images/home.png');
     background-repeat: no-repeat;
