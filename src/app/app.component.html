@@ -3,12 +3,32 @@
 </ng-container>
 
 <ng-template #logged>
-    <div class="row">
-        <div class="col s3" style="padding-left:0; padding-right:0">
-            <app-header *ngIf="isLoggedIn()"></app-header>
+    <ng-container *ngIf="GetTipoUser()==1; else UserTipo2">
+            <div class="col s3" style="padding-left:0; padding-right:0">
+                <app-header *ngIf="isLoggedIn()"></app-header>
+            </div>
+            <div class="col s9">
+                <router-outlet></router-outlet>
+            </div>
+    </ng-container>
+    <!-- <ng-template #UserTipo1 *ngIf="GetTipoUser() = 1; else UserTipo2">
+        
+    </ng-template> -->
+    <ng-template #UserTipo2>
+        <style>
+            #banner{
+                background: url('assets/images/HEADER.png');
+                height:115px;
+                background-position: center;
+                margin-bottom:0px
+            }
+        </style>
+        <div class="row" id="banner">
+            <app-headerview2></app-headerview2>
         </div>
-        <div class="col s9">
-            <router-outlet></router-outlet>
+        <div class="container" style="width: 80%;">
+            <app-container2></app-container2>
         </div>
-    </div>
+    </ng-template>
+        
 </ng-template>

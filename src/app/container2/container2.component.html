@@ -1,0 +1,130 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<div class="row">
+    <div class="col s12 m12 l12 xl12">
+        <ul id="tabs-sw" class="tabs" style="width: 100%; display: flex; overflow-x: hidden;">
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ing')">INGRESADAS</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa"  (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_pea" (click)="BuildStatus('PEA')">PENDIENTE POR APROBAR</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_cea" (click)="BuildStatus('CEA')">CERRADA POR ASEGURADORA</a></li>
+            <li class="tab col s4 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc" (click)="BuildStatus('GOC')">GENERAR ORDEN DE COMPRA</a></li>
+        </ul>
+        <div id=taf></div>
+        <div id="1" class="col s12 tab-white">
+            <p-table class="table" #tableResultByState [columns]="cols" [value]="registro" [paginator]="true" 
+                [rows]="10" [responsive]="true" [(selection)]="_registroSelected" datakey="id">
+                <ng-template pTemplate="caption">
+                    <div style="text-align: right">
+                      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                      <input type="text" pInputText size="30" placeholder="Buscar"
+                        (input)="tableResultByState.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                    </div>
+                  </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3em">
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Fecha</th>
+                        <th>Código</th>
+                        <th>No. Reclamo</th>
+                        <th>Placa</th>  
+                        <th>Chasis</th>
+                        <th>Motor</th>
+                        <th>Comentarios Taller</th>
+                        <th>Comentarios Aseguradora</th>
+                        <th>Ver Piezas</th>
+                      </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td>
+                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                        </td>
+                        <td *ngFor="let col of columns">
+                            {{rowData[col.field]}}
+                        </td>
+                        <td style="justify-content: center;">
+                            <i class="material-icons" style="vertical-align:middle; cursor: pointer;">visibility</i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div style="color:#94a1aa; text-align: center;" id="pag">
+            <span id="nw" style="float:right">
+              <button class="btn-al" (click)='EditarSolicitud()' style="margin-right:8px">
+                <i class="material-icons" style="vertical-align:middle">edit</i>
+                EDITAR SOLICITUD
+              </button>
+              <button class="btn-al" (click)='VerSolicitud()'>
+                <i class="material-icons" style="vertical-align:middle">visibility</i>
+                VER SOLICITUD
+              </button>
+            </span>
+            <div style="clear:both"></div>
+        </div>
+
+        <!-- MODAL PARA EDITAR USUARIO -->
+        <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
+        showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px; top: 5%'}">
+        <form [formGroup]="updateSoliForm">
+            <div style="height: 100%; overflow-y: auto;">
+                <p-panel [showHeader]="false">
+                    <div class="form-group">
+                        <input pInputText id="id" formControlName="id" style="visibility: hidden;" />
+                    </div>
+                    <div class="form-group">
+                        <label for="NoReclamo">No Reclamo</label>
+                        <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="placa">Placa</label>
+                        <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="chasis">Chasis</label>
+                        <input type="text" id="chasis" formControlName="chasis" class="validate form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="motor">Motor</label>
+                        <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <div style="width: 100%;">
+                            <label for="comentariosAseguradora">Comentarios</label>
+                        </div>
+                        <div style="width: 50%;">
+                            <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
+                        </div>
+                        <div style="width: 30%;">
+                            <button class="btn-al">Guardar</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <div style="width: 100%; display: flex;">
+                            <div style="width: 50%; display: flex; flex-direction: column;">
+                                <button class="btn-al">Cancelar</button>
+                            </div>
+                            <div style="width: 50%; display: flex; flex-direction: column;">
+                                <button class="btn-al">Procesar</button>
+                            </div>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </form>
+        </p-dialog>
+        <!-- <div id="2" class="col s12 tab-white">ANULADAS</div>
+        <div id="3" class="col s12 tab-white">ENTREGADAS</div>
+        <div id="4" class="col s12 tab-white">CERRADAS</div>
+        <div id="5" class="col s12 tab-white">CERRADAS POR ASEGURADORA</div> -->
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.tabs').tabs();
+    });
+</script>

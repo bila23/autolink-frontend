@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit{
     returnUrl: string;
     userTemp: string;
     passTemp: string;
+    userType: string;
     errorMessage:string;
     userResponse: ILoginResponse;
     isPreguntasPass:boolean;
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit{
         console.log("Cargando ventana de login ...");
 
         if(localStorage.getItem("currentUser") != null){
-             this.router.navigate(['/users']);
+            this.loginService.redirectByUserType();
+             //this.router.navigate(['/users']);
         }else{
             this.router.navigate(['/login']);
         }
@@ -72,6 +74,8 @@ export class LoginComponent implements OnInit{
                          let value = localStorage.getItem(key);
                          console.log(key, value);
                      }
+                     localStorage.setItem("idTipoUser", this.userResponse.idTipo.toString());
+                     localStorage.setItem("NombreUser", this.userResponse.nombre.toString());
                      /*for(let key in this.userResponse){
                          if(this.userResponse.hasOwnProperty(key)){
                              //console.log("Valores de los usuarios --> id: " + this.userResponse[key].id);
@@ -81,7 +85,14 @@ export class LoginComponent implements OnInit{
                              console.log("Valores de los usuarios --> idTipo: " + this.userResponse[key].tipo);
                          }
                      }*/
-                     this.router.navigate(['/users']);
+                     //this.router.navigate(['/users']);
+
+                     this.loginService.redirectByUserType();
+
+                     //prueba
+                    //  console.log("antes navigate prueba")
+                    //  this.router.navigate(['/prueba']);
+                    //  console.log("despues navigate prueba");
                 }else{
                     console.log("No se ha podido autenticar");
                     this.loginForm.controls['username'].setValue("");
@@ -107,6 +118,4 @@ export class LoginComponent implements OnInit{
         this.router.navigate(['/crearPreguntas']);
 
     }
-
-    
 }

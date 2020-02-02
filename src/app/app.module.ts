@@ -39,12 +39,16 @@ import { AlertComponent } from './alert/alert.component';
 import { RepuestoListComponent } from './repuestos/repuestos-list.component';
 import { CallCenterComponent } from './callCenter/callCenter.component';
 import { PreguntasUserComponent } from './login/preguntasUser.component';
+import { PruebaComponent } from './prueba/prueba.component';
+import { Headerview2Component } from './headerview2/headerview2.component';
+import { Container2Component } from './container2/container2.component';
+import { BoardByStatusComponent } from './board-by-status/board-by-status.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,HeaderComponent,UserListComponent,ConvertToSpacesPipe,StarComponent,LoginComponent,PreguntasUserComponent,ProductDetailComponent,
-    WelcomeComponent,SolicitudCorreoComponent, SideMenuComponent,ResetPassComponent,TallerListComponent,AseguradoraListComponent,MarcaListComponent,ProveedorListComponent,ModeloListComponent,AlertComponent,RepuestoListComponent,CallCenterComponent
+    WelcomeComponent,SolicitudCorreoComponent, SideMenuComponent,ResetPassComponent,TallerListComponent,AseguradoraListComponent,MarcaListComponent,ProveedorListComponent,ModeloListComponent,AlertComponent,RepuestoListComponent,CallCenterComponent, PruebaComponent, Headerview2Component, Container2Component, BoardByStatusComponent
   ],
   imports: [
     BrowserModule,BrowserAnimationsModule,FormsModule,PanelModule,DropdownModule,TableModule,HttpClientModule, ReactiveFormsModule,DialogModule,InputTextModule,PaginatorModule,GrowlModule,NgbModule,AutoCompleteModule,FileUploadModule,
@@ -64,7 +68,11 @@ import { PreguntasUserComponent } from './login/preguntasUser.component';
       {path: 'repuestos',component: RepuestoListComponent},
       {path: 'callCenter',component: CallCenterComponent},
       {path: 'star',component: StarComponent},
-      {path: 'welcome',component: WelcomeComponent}
+      {path: 'welcome',component: WelcomeComponent},
+      {path: 'prueba', component: PruebaComponent},
+      {path: 'headerview2', component: Headerview2Component},
+      {path: 'container2', component: Container2Component},
+      {path: 'boardbystatus', component: BoardByStatusComponent}
       //{path: '',component: WelcomeComponent,pathMatch: 'full'},
       //{path: '**',component: WelcomeComponent,pathMatch: 'full'} /* pagina 404*/
     ]) //,{useHash: true})

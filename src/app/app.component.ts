@@ -12,7 +12,8 @@ export class AppComponent {
   isLogged : boolean;
   isReset: boolean;
   isPreguntasPass: boolean;
-  
+  userType: string;
+
   constructor(private  route:ActivatedRoute, private router:Router, private authService: LoginService){}
 
   ngOnInit():void{
@@ -24,7 +25,8 @@ export class AppComponent {
     if(this.isReset){
       this.router.navigate(['/resetContrasena']);
     }else if(this.isLogged){
-      this.router.navigate(['/users']);
+      this.authService.redirectByUserType();
+      //this.router.navigate(['/users']);
     }else{
       this.router.navigate(['/login']);
     }
@@ -42,6 +44,10 @@ export class AppComponent {
     console.log("VALIDANDO SI EL USER ESTA LOEGADO" + this.isLogged);
     //return this.isLogged;
     return this.isLogged;
+  }
+
+  GetTipoUser(){
+    return this.authService.GetTipoUser();
   }
 
 }
