@@ -4,10 +4,10 @@
 
 <ng-template #logged>
     <div class="row">
-        <div class="col s3 m3 l3 xl3" style="padding-left:0; padding-right:0">
+        <div class="col s3" style="padding-left:0; padding-right:0">
             <app-header *ngIf="isLoggedIn()"></app-header>
         </div>
-        <div class="col s9 m9 l9 xl9" style="background-color: #f8f8f8;">
+        <div class="col s9">
             <router-outlet></router-outlet>
         </div>
     </div>
