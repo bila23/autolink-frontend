@@ -3,7 +3,7 @@
 </ng-container>
 
 <ng-template #logged>
-    <ng-container *ngIf="GetTipoUser()==1; else UserTipo2">
+    <ng-container *ngIf="GetTipoUser()==1;">
         <div class="row">
             <div class="col s3 m3 l3 xl3" style="padding-left:0; padding-right:0">
                 <app-header *ngIf="isLoggedIn()"></app-header>
@@ -13,10 +13,8 @@
             </div>
         </div>
     </ng-container>
-    <!-- <ng-template #UserTipo1 *ngIf="GetTipoUser() = 1; else UserTipo2">
-        
-    </ng-template> -->
-    <ng-template #UserTipo2>
+
+    <ng-container *ngIf="GetTipoUser()==2;">
         <style>
             #banner{
                 background: url('assets/images/HEADER.png');
@@ -31,9 +29,9 @@
         <div class="container" style="width: 90%;">
             <app-container2></app-container2>
         </div>
-    </ng-template>
+    </ng-container>
 
-    <ng-template #UserTipo3>
+    <ng-container *ngIf="GetTipoUser()==3;">
         <style>
             #banner{
                 background: url('assets/images/HEADER.png');
@@ -48,7 +46,7 @@
         <div class="container">
             <app-taller-solicitud></app-taller-solicitud>
         </div>
-    </ng-template>
+    </ng-container>
         
 </ng-template>
 

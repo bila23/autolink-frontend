@@ -1,12 +1,15 @@
 <div class="row">
     <div class="col s12 m12 l12 xl12">
         <ul id="tabs-sw" class="tabs">
-            <li class="tab col s2 hoverable" ><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ing')">INGRESADAS</a></li>
-            <li class="tab col s2 hoverable"><a id="a_coa"  (click)="BuildStatus('ANU')">ANULADAS</a></li>
-            <li class="tab col s2 hoverable"><a id="a_pea" (click)="BuildStatus('DEP')">DESPACHADAS POR PROVEEDOR</a></li>
-            <li class="tab col s2 hoverable"><a id="a_cea" (click)="BuildStatus('ESC')">ENTREGADAS A SAT. CLIENTE</a></li>
-            <li class="tab col s4 hoverable"><a id="a_goc" (click)="BuildStatus('CPD')">CERRADAS POR DESIERTA</a></li>
+            <li class="tab col s2 hoverable" ><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ING')">INGRESADAS</a></li>
+            <li class="tab col s2 hoverable"><a id="a_anu"  (click)="BuildStatus('ANU')">ANULADAS</a></li>
+            <li class="tab col s2 hoverable"><a id="a_dep" (click)="BuildStatus('DEP')">DESPACHADAS POR PROVEEDOR</a></li>
+            <li class="tab col s2 hoverable"><a id="a_esc" (click)="BuildStatus('ESC')">ENTREGADAS A SAT. CLIENTE</a></li>
+            <li class="tab col s4 hoverable"><a id="a_cpd" (click)="BuildStatus('CPD')">CERRADAS POR DESIERTA</a></li>
         </ul>
+        <script>
+            function onclick(){}
+        </script>
         <div id=taf></div>
         <div id="1" class="col s12 tab-white">
             <p-table class="table" #tableResultByState [columns]="cols" [value]="registro" [paginator]="true" 
@@ -29,15 +32,13 @@
                         <th>Placa</th>  
                         <th>Chasis</th>
                         <th>Motor</th>
-                        <th>Comentarios Taller</th>
-                        <th>Comentarios Aseguradora</th>
                         <th>Ver Piezas</th>
                       </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr [pSelectableRow]="rowData">
                         <td>
-                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="rowData" (click)="onclick()"></p-tableCheckbox>
                         </td>
                         <td *ngFor="let col of columns">
                             {{rowData[col.field]}}

@@ -32,7 +32,7 @@ export class TallerSolicitudComponent implements OnInit {
 
   ngOnInit() {
     console.log("entramos en container para perfil de no adm");
-    this.BuildStatus("ing");
+    this.BuildStatus("ING");
   }
 
   BuildStatus(estado:string){
@@ -53,9 +53,7 @@ export class TallerSolicitudComponent implements OnInit {
       { field: 'id', header: 'id' },
       { field: 'placa', header: 'placa'},
       { field: 'chasis', header: 'chasis' },
-      { field: 'motor', header: 'motor' },
-      { field: 'comentariosTaller', header: 'comentariosTaller' },
-      { field: 'comentariosAseguradora', header: 'comentariosAseguradora' }
+      { field: 'motor', header: 'motor' }
     ];
 
     this.ChangeUlSelected(estado);
@@ -63,29 +61,29 @@ export class TallerSolicitudComponent implements OnInit {
 
   ChangeUlSelected(estado:string){
     let a_ing = document.getElementById("a_ing");
-    let a_coa =document.getElementById("a_coa");
-    let a_pea =document.getElementById("a_pea");
-    let a_cea =document.getElementById("a_cea");
-    let a_goc =document.getElementById("a_goc");
+    let a_anu =document.getElementById("a_anu");
+    let a_dep =document.getElementById("a_dep");
+    let a_esc =document.getElementById("a_esc");
+    let a_cpd =document.getElementById("a_cpd");
 
     /*removemos la clase active */
     a_ing.classList.remove("active");
-    a_coa.classList.remove("active");
-    a_pea.classList.remove("active");
-    a_cea.classList.remove("active");
-    a_goc.classList.remove("active");
+    a_anu.classList.remove("active");
+    a_dep.classList.remove("active");
+    a_esc.classList.remove("active");
+    a_cpd.classList.remove("active");
     /*fin removemos la clase active */
 
-    if (estado.toLowerCase() === "ing"){
+    if (estado.toLowerCase() === "ING"){
       a_ing.classList.add("active");
-    }else if (estado.toLowerCase() === "coa"){
-      a_coa.classList.add("active");
-    }else if (estado.toLowerCase() === "pea"){
-      a_pea.classList.add("active");
-    }else if (estado.toLowerCase() === "cea"){
-      a_cea.classList.add("active");
-    }else if (estado.toLowerCase() === "goc"){
-      a_goc.classList.add("active");
+    }else if (estado.toLowerCase() === "ANU"){
+      a_anu.classList.add("active");
+    }else if (estado.toLowerCase() === "DEP"){
+      a_dep.classList.add("active");
+    }else if (estado.toLowerCase() === "ESC"){
+      a_esc.classList.add("active");
+    }else if (estado.toLowerCase() === "CPD"){
+      a_cpd.classList.add("active");
     }
   }
 
