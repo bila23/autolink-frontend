@@ -43,12 +43,13 @@ import { PruebaComponent } from './prueba/prueba.component';
 import { Headerview2Component } from './headerview2/headerview2.component';
 import { Container2Component } from './container2/container2.component';
 import { BoardByStatusComponent } from './board-by-status/board-by-status.component';
+import { TallerSolicitudComponent } from './taller-solicitud/taller-solicitud.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,HeaderComponent,UserListComponent,ConvertToSpacesPipe,StarComponent,LoginComponent,PreguntasUserComponent,ProductDetailComponent,
-    WelcomeComponent,SolicitudCorreoComponent, SideMenuComponent,ResetPassComponent,TallerListComponent,AseguradoraListComponent,MarcaListComponent,ProveedorListComponent,ModeloListComponent,AlertComponent,RepuestoListComponent,CallCenterComponent, PruebaComponent, Headerview2Component, Container2Component, BoardByStatusComponent
+    WelcomeComponent,SolicitudCorreoComponent, SideMenuComponent,ResetPassComponent,TallerListComponent,AseguradoraListComponent,MarcaListComponent,ProveedorListComponent,ModeloListComponent,AlertComponent,RepuestoListComponent,CallCenterComponent, PruebaComponent, Headerview2Component, Container2Component, BoardByStatusComponent, TallerSolicitudComponent
   ],
   imports: [
     BrowserModule,BrowserAnimationsModule,FormsModule,PanelModule,DropdownModule,TableModule,HttpClientModule, ReactiveFormsModule,DialogModule,InputTextModule,PaginatorModule,GrowlModule,NgbModule,AutoCompleteModule,FileUploadModule,

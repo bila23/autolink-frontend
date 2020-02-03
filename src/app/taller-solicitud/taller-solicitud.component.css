@@ -1,0 +1,40 @@
+#tabs-sw li.tab a.active{color:#fff;background-color: #000700;}
+#tabs-sw li.tab a{
+    font-weight:bold;
+    color:#000700;
+    border: 1px solid #edecf1;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+#taf{
+    border:1px solid #000700;
+    height:18px;
+    content: ' ';
+    width:100%;
+    background-color: #000700;
+}
+.tabs .indicator {
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    background-color: #000700;
+    will-change: left, right;
+}
+.btn-table{background-color: #000700;}
+.tab-white{background: #fff;padding: 0px !important;}
+.tab-white table tbody tr:hover::after{
+    content: '';
+    background: #000700;
+    display: block;
+    width: 5px;
+    height: 66px;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    left: 0;
+}
+
+.ulContainer{
+    width: 100%;
+    display: flex;
+}

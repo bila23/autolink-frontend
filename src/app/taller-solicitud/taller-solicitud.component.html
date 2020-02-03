@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col s12 m12 l12 xl12">
-        <ul id="tabs-sw" class="tabs" style="width: 100%; display: flex; overflow-x: hidden;">
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ing')">INGRESADAS</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa"  (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_pea" (click)="BuildStatus('PEA')">PENDIENTE POR APROBAR</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_cea" (click)="BuildStatus('CEA')">CERRADA POR ASEGURADORA</a></li>
-            <li class="tab col s4 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc" (click)="BuildStatus('GOC')">GENERAR ORDEN DE COMPRA</a></li>
+        <ul id="tabs-sw" class="tabs">
+            <li class="tab col s2 hoverable" ><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ing')">INGRESADAS</a></li>
+            <li class="tab col s2 hoverable"><a id="a_coa"  (click)="BuildStatus('ANU')">ANULADAS</a></li>
+            <li class="tab col s2 hoverable"><a id="a_pea" (click)="BuildStatus('DEP')">DESPACHADAS POR PROVEEDOR</a></li>
+            <li class="tab col s2 hoverable"><a id="a_cea" (click)="BuildStatus('ESC')">ENTREGADAS A SAT. CLIENTE</a></li>
+            <li class="tab col s4 hoverable"><a id="a_goc" (click)="BuildStatus('CPD')">CERRADAS POR DESIERTA</a></li>
         </ul>
         <div id=taf></div>
         <div id="1" class="col s12 tab-white">
