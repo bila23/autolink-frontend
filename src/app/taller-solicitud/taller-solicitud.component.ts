@@ -74,15 +74,15 @@ export class TallerSolicitudComponent implements OnInit {
     a_cpd.classList.remove("active");
     /*fin removemos la clase active */
 
-    if (estado.toLowerCase() === "ING"){
+    if (estado.toLowerCase() === "ing"){
       a_ing.classList.add("active");
-    }else if (estado.toLowerCase() === "ANU"){
+    }else if (estado.toLowerCase() === "anu"){
       a_anu.classList.add("active");
-    }else if (estado.toLowerCase() === "DEP"){
+    }else if (estado.toLowerCase() === "dep"){
       a_dep.classList.add("active");
-    }else if (estado.toLowerCase() === "ESC"){
+    }else if (estado.toLowerCase() === "esc"){
       a_esc.classList.add("active");
-    }else if (estado.toLowerCase() === "CPD"){
+    }else if (estado.toLowerCase() === "cpd"){
       a_cpd.classList.add("active");
     }
   }
