@@ -7,9 +7,6 @@
             <li class="tab col s2 hoverable"><a id="a_esc" (click)="BuildStatus('ESC')">ENTREGADAS A SAT. CLIENTE</a></li>
             <li class="tab col s4 hoverable"><a id="a_cpd" (click)="BuildStatus('CPD')">CERRADAS POR DESIERTA</a></li>
         </ul>
-        <script>
-            function onclick(){}
-        </script>
         <div id=taf></div>
         <div id="1" class="col s12 tab-white">
             <p-table class="table" #tableResultByState [columns]="cols" [value]="registro" [paginator]="true" 
@@ -50,7 +47,7 @@
                 </ng-template>
             </p-table>
         </div>
-        <div style="color:#94a1aa; text-align: center;" id="pag">
+        <div style="color:#94a1aa; text-align: center;">
             <span id="nw" style="float:right">
               <button class="btn-al" (click)='EditarSolicitud()' style="margin-right:8px">
                 <i class="material-icons" style="vertical-align:middle">edit</i>
@@ -70,9 +67,7 @@
         <form [formGroup]="updateSoliForm">
             <div style="height: 100%; overflow-y: auto;">
                 <p-panel [showHeader]="false">
-                    <div class="form-group">
-                        <input pInputText id="id" formControlName="id" style="visibility: hidden;" />
-                    </div>
+                    <input pInputText id="id" formControlName="id" style="visibility: hidden; display: none" />
                     <div class="form-group">
                         <label for="NoReclamo">No Reclamo</label>
                         <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
