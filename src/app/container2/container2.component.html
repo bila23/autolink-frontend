@@ -56,61 +56,46 @@
                 <i class="material-icons" style="vertical-align:middle">edit</i>
                 EDITAR SOLICITUD
               </button>
-              <button class="btn-al" (click)='VerSolicitud()'>
-                <i class="material-icons" style="vertical-align:middle">visibility</i>
-                VER SOLICITUD
-              </button>
             </span>
             <div style="clear:both"></div>
         </div>
 
         <!-- MODAL PARA EDITAR USUARIO -->
-        <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
-        showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px; top: 5%'}">
+        <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
         <form [formGroup]="updateSoliForm">
-            <div style="height: 100%; overflow-y: auto;">
-                <p-panel [showHeader]="false">
-                    <div class="form-group">
-                        <input pInputText id="id" formControlName="id" style="visibility: hidden;" />
+            <div class="form-group">
+                <input pInputText id="id" formControlName="id" style="visibility: hidden;" />
+            </div>
+            <div class="form-group">
+                <label for="NoReclamo">No Reclamo</label>
+                <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="placa">Placa</label>
+                <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="chasis">Chasis</label>
+                <input type="text" id="chasis" formControlName="chasis" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="motor">Motor</label>
+                <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label for="comentariosAseguradora">Comentarios</label>
+                <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+                <div style="width: 100%; display: flex;">
+                    <div style="width: 50%; display: flex; flex-direction: column;">
+                        <button class="btn-al" style="margin-right: 10px;">Cancelar</button>
                     </div>
-                    <div class="form-group">
-                        <label for="NoReclamo">No Reclamo</label>
-                        <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
+                    <div style="width: 50%; display: flex; flex-direction: column;">
+                        <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
+                        (click)="AceptarSoli()" style="margin-left: 10px;">Procesar</button>
                     </div>
-                    <div class="form-group">
-                        <label for="placa">Placa</label>
-                        <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="chasis">Chasis</label>
-                        <input type="text" id="chasis" formControlName="chasis" class="validate form-control" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="motor">Motor</label>
-                        <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
-                    </div>
-                    <div class="form-group">
-                        <div style="width: 100%;">
-                            <label for="comentariosAseguradora">Comentarios</label>
-                        </div>
-                        <div style="width: 50%;">
-                            <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
-                        </div>
-                        <div style="width: 30%;">
-                            <button class="btn-al">Guardar</button>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 10px;">
-                        <div style="width: 100%; display: flex;">
-                            <div style="width: 50%; display: flex; flex-direction: column;">
-                                <button class="btn-al">Cancelar</button>
-                            </div>
-                            <div style="width: 50%; display: flex; flex-direction: column;">
-                                <button class="btn-al">Procesar</button>
-                            </div>
-                        </div>
-                    </div>
-                </p-panel>
+                </div>
             </div>
         </form>
         </p-dialog>

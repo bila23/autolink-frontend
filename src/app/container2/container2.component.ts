@@ -3,6 +3,7 @@ import { SolicitudtableroService } from './solicitudtablero.service'
 import { IResultByStates } from '../_model/resultbystates.module'
 import {SelectItem, Message} from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { IResultUpdateModule } from '../_model/result-update.module'
 
 @Component({
   selector: 'app-container2',
@@ -18,6 +19,7 @@ export class Container2Component implements OnInit {
   estadosSoli: SelectItem[];
   _estadoSoli: string;
   updateSoliForm: FormGroup;
+  resultUpdateCometAsegu: IResultUpdateModule;
 
   constructor(private solicitudService:SolicitudtableroService, private el: ElementRef) { 
     this.updateSoliForm = new FormGroup({
@@ -88,6 +90,25 @@ export class Container2Component implements OnInit {
       a_goc.classList.add("active");
     }
   }
+  
+  AceptarSoli(){
+    console.log("click en boton para aceptar solicitud");
+
+    let comentariosAseguradora = this.updateSoliForm.get("comentariosAseguradora").value;
+    let id = this.updateSoliForm.get("id").value;
+    console.log(comentariosAseguradora);
+
+    this.solicitudService.SetComentariosAseguradora(id, comentariosAseguradora).subscribe({
+      next: result =>{
+        this.resultUpdateCometAsegu=result[0];
+        console.log("resultadoAceptarSoli...");
+        console.log(result);
+      }
+    })
+    
+    //refrescar toda la vista pendiente de preguntar
+    //this.BuildStatus("ING");
+  }
 
   EditarSolicitud(){
     console.log("Editar solicitud");
@@ -111,13 +132,4 @@ export class Container2Component implements OnInit {
       this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
     }
   }
-
-  VerSolicitud(){
-
-  }
-
-  GuardarComentrioAseguradora(){
-    
-  }
-
 }
