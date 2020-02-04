@@ -8,7 +8,7 @@
             <li class="tab col s4 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc" (click)="BuildStatus('GOC')">GENERAR ORDEN DE COMPRA</a></li>
         </ul>
         <div id=taf></div>
-        <div id="1" class="col s12 tab-white">
+        <div id="div_1" class="col s12 tab-white">
             <p-table class="table" #tableResultByState [columns]="cols" [value]="registro" [paginator]="true" 
                 [rows]="10" [responsive]="true" [(selection)]="_registroSelected" datakey="id">
                 <ng-template pTemplate="caption">
@@ -49,7 +49,8 @@
                 </ng-template>
             </p-table>
         </div>
-        <div style="color:#94a1aa; text-align: center;" id="pag">
+        <!-- <div style="color:#94a1aa; text-align: center;" id="pag"> -->
+        <div style="color:#94a1aa; text-align: center;">
             <span id="nw" style="float:right">
               <button class="btn-al" (click)='EditarSolicitud()' style="margin-right:8px">
                 <i class="material-icons" style="vertical-align:middle">edit</i>
