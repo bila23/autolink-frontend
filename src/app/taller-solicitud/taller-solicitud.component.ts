@@ -1,8 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SolicitudtableroService } from '../container2/solicitudtablero.service'
+import { tallerSolicitudService } from './taller-solicitud.service'
 import { IResultByStates } from '../_model/resultbystates.module'
 import {SelectItem, Message} from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { IResultUpdateModule } from '../_model/result-update.module'
 
 @Component({
   selector: 'app-taller-solicitud',
@@ -13,13 +15,16 @@ export class TallerSolicitudComponent implements OnInit {
   registro: IResultByStates[]=[];
   _registroSelected: IResultByStates[];
   cols: any[];
-  dialogVerSoli: boolean;
   dialogEditSoli: boolean;
+  dialogEstado: boolean;
   estadosSoli: SelectItem[];
   _estadoSoli: string;
   updateSoliForm: FormGroup;
+  estadoSolForm: FormGroup;
+  resultUpdateCometAsegu: IResultUpdateModule;
 
-  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef) {
+  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef, private tallerService : tallerSolicitudService) {
+    this.estadoSolForm = new FormGroup({});
     this.updateSoliForm = new FormGroup({
       id: new FormControl('',Validators.required),
       NoReclamo: new FormControl('',Validators.required),
@@ -31,29 +36,23 @@ export class TallerSolicitudComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("entramos en container para perfil de no adm");
     this.BuildStatus("ING");
   }
 
   BuildStatus(estado:string){
-    console.log("construir tabla para solicitudes ingresadas");
-    //INGRESADA (ING)
     this.solicitudService.getSolicitudesByStatus(estado).subscribe({
       next: registro =>{
         this.registro=registro;
-        console.log("console.. buildstatus_ingresadas");
-        console.log(registro);
       }
     })
 
     this.cols = [];
     this.cols=[
-      { field: 'fechaInicio', header: 'Fecha' },
-      { field: 'codigoSolicitud', header: 'codigoSolicitud' },
-      { field: 'id', header: 'id' },
-      { field: 'placa', header: 'placa'},
-      { field: 'chasis', header: 'chasis' },
-      { field: 'motor', header: 'motor' }
+      { field: 'nombreAsegurado', header: 'Propietario' },
+      { field: 'tipoVehiculo', header: 'Tipo' },
+      { field: 'siniestro', header: 'Siniestro' },
+      { field: 'motor', header: 'Motor' },
+      { field: 'placa', header: 'Placa' }
     ];
 
     this.ChangeUlSelected(estado);
@@ -65,6 +64,7 @@ export class TallerSolicitudComponent implements OnInit {
     let a_dep =document.getElementById("a_dep");
     let a_esc =document.getElementById("a_esc");
     let a_cpd =document.getElementById("a_cpd");
+    let a_cea =document.getElementById("a_cea");
 
     /*removemos la clase active */
     a_ing.classList.remove("active");
@@ -72,30 +72,71 @@ export class TallerSolicitudComponent implements OnInit {
     a_dep.classList.remove("active");
     a_esc.classList.remove("active");
     a_cpd.classList.remove("active");
+    a_cea.classList.remove("active");
     /*fin removemos la clase active */
 
     if (estado.toLowerCase() === "ing"){
       a_ing.classList.add("active");
+      this.hideCesta();
     }else if (estado.toLowerCase() === "anu"){
       a_anu.classList.add("active");
+      this.hideCesta();
     }else if (estado.toLowerCase() === "dep"){
       a_dep.classList.add("active");
+      this.hideCesta();
+      this.showCesta();    
     }else if (estado.toLowerCase() === "esc"){
       a_esc.classList.add("active");
+      this.hideCesta();
     }else if (estado.toLowerCase() === "cpd"){
       a_cpd.classList.add("active");
+      this.hideCesta();
+    }else if (estado.toLowerCase() === "cea"){
+      a_cea.classList.add("active");
+      this.hideCesta();
+    }
+  }
+
+  hideCesta(){
+    var cesta = document.getElementById('cesta');
+    cesta.classList.remove("show");
+    cesta.classList.add("hide");
+  }
+  showCesta(){
+    var cesta = document.getElementById('cesta');
+    cesta.classList.remove("hide");
+    cesta.classList.add("show");
+  }
+
+  MostrarAlerta(){
+    if (typeof this._registroSelected !== typeof undefined)
+      this.dialogEstado = true;
+  }
+
+  hideDialogEstado(){
+    this.dialogEstado = false;
+  }
+
+  CambiarEstado(){
+    if (typeof this._registroSelected !== typeof undefined){
+      let id = this._registroSelected[0].id;
+      this.tallerService.SetEstado(id, 'ESC').subscribe({
+        next: result =>{
+          this.resultUpdateCometAsegu=result[0];
+          this.hideDialogEstado();
+          this.ChangeUlSelected('ESC');
+        } 
+      })
     }
   }
 
   EditarSolicitud(){
-    console.log("Editar solicitud");
     this.estadosSoli=[
       {label:'', value:null},
       {label:'Activo', value:"Activo"},
       {label:'Inactivo', value:"Inactivo"}
     ];
 
-    console.log(this._registroSelected);
 
     if (typeof this._registroSelected !== typeof undefined){
       console.log("id selected: " + this._registroSelected[0].id);
