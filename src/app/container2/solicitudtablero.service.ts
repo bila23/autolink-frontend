@@ -52,6 +52,34 @@ export class SolicitudtableroService {
         );
   }
 
+  SetProcesarSoli(id:number, estado:string){
+    console.log("metodo para continuar el flujo de la solicitud");
+    this.actualizarSoli = JSON.parse(JSON.stringify({
+      "id": id,
+      "estado": estado
+    }));
+    let body = this.actualizarSoli;
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+
+    return this.http.put<IResultUpdateModule[]>(this.usuariosUrlBAse + "/rest/solicitud/updateEstado", body, httpOptions).pipe(
+      tap(data => console.log("Llamado a proceso en bd update estado" + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  Next_Step(estado_actual:string){
+    let estado_next = "";
+
+    if (estado_actual.toLowerCase() === "ing"){
+      estado_next = "coa";
+    }
+
+    return estado_next;
+  }
+
   private handleError(err: HttpErrorResponse){
     let errorMessage='';
     if(err.error instanceof ErrorEvent){

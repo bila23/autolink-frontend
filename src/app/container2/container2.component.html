@@ -88,10 +88,15 @@
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <div style="width: 100%; display: flex;">
-                    <div style="width: 50%; display: flex; flex-direction: column;">
-                        <button class="btn-al" style="margin-right: 10px;">Cancelar</button>
+                    <div style="width: 33%; display: flex; flex-direction: column;">
+                        <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
+                        (click)="CerrarAseguradora()" style="margin-left: 10px;">Cerrar</button>
                     </div>
-                    <div style="width: 50%; display: flex; flex-direction: column;">
+                    <div style="width: 33%; display: flex; flex-direction: column;">
+                        <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
+                        (click)="Anular()" style="margin-left: 10px;">Anular</button>
+                    </div>
+                    <div style="width: 33%; display: flex; flex-direction: column;">
                         <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
                         (click)="AceptarSoli()" style="margin-left: 10px;">Procesar</button>
                     </div>

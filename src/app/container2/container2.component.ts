@@ -4,6 +4,7 @@ import { IResultByStates } from '../_model/resultbystates.module'
 import {SelectItem, Message} from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module'
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-container2',
@@ -28,7 +29,8 @@ export class Container2Component implements OnInit {
       placa: new FormControl(''),
       chasis: new FormControl(''),
       motor: new FormControl(''),
-      comentariosAseguradora: new FormControl('')
+      comentariosAseguradora: new FormControl(''),
+      estado: new FormControl('')
     });
   }
 
@@ -38,6 +40,7 @@ export class Container2Component implements OnInit {
   }
 
   BuildStatus(estado:string){
+    console.log("BuildStatus: " + estado);
     console.log("construir tabla para solicitudes ingresadas");
     //INGRESADA (ING)
     this.solicitudService.getSolicitudesByStatus(estado).subscribe({
@@ -91,11 +94,14 @@ export class Container2Component implements OnInit {
     }
   }
   
+
   AceptarSoli(){
     console.log("click en boton para aceptar solicitud");
 
     let comentariosAseguradora = this.updateSoliForm.get("comentariosAseguradora").value;
     let id = this.updateSoliForm.get("id").value;
+    let estado = this.updateSoliForm.get("estado").value;
+    console.log("Estado actual: " + estado);
     console.log(comentariosAseguradora);
 
     this.solicitudService.SetComentariosAseguradora(id, comentariosAseguradora).subscribe({
@@ -103,11 +109,25 @@ export class Container2Component implements OnInit {
         this.resultUpdateCometAsegu=result[0];
         console.log("resultadoAceptarSoli...");
         console.log(result);
+
+        let estado_next = "";
+        estado_next = this.solicitudService.Next_Step(estado);
+        console.log("Estado next: " + estado_next);
+
+        if (estado_next!==""){
+          this.solicitudService.SetProcesarSoli(id, estado_next).subscribe({
+            next: result =>{
+              this.resultUpdateCometAsegu=result[0];
+              console.log("update estado...");
+              console.log(result);
+              //refrescar toda la vista pendiente de preguntar
+              console.log("volver a construir la vista....");
+              this.BuildStatus(estado_next.toUpperCase());
+            }
+          });
+        }
       }
     })
-    
-    //refrescar toda la vista pendiente de preguntar
-    //this.BuildStatus("ING");
   }
 
   EditarSolicitud(){
@@ -130,6 +150,34 @@ export class Container2Component implements OnInit {
       this.updateSoliForm.controls["chasis"].setValue(this._registroSelected[0].chasis);
       this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
       this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
+      this.updateSoliForm.controls["estado"].setValue(this._registroSelected[0].estado);
     }
+  }
+
+  Anular(){
+    let id = this.updateSoliForm.get("id").value;
+    let estado = "ANU";
+    this.solicitudService.SetProcesarSoli(id, estado).subscribe({
+      next: result =>{
+        this.resultUpdateCometAsegu=result[0];
+        console.log("actualizado a ANULADO");
+        this.BuildStatus(estado.toUpperCase());
+        this.dialogEditSoli = false;
+      }
+    });
+  }
+
+  CerrarAseguradora(){
+    console.log("CerrarAseguradora...");
+    let id = this.updateSoliForm.get("id").value;
+    let estado = "CEA";
+    this.solicitudService.SetProcesarSoli(id, estado).subscribe({
+      next: result =>{
+        this.resultUpdateCometAsegu=result[0];
+        console.log("actualizado a ANULADO");
+        this.BuildStatus(estado.toUpperCase());
+        this.dialogEditSoli = false;
+      }
+    });
   }
 }
