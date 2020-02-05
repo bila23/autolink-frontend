@@ -123,6 +123,7 @@ export class Container2Component implements OnInit {
               //refrescar toda la vista pendiente de preguntar
               console.log("volver a construir la vista....");
               this.BuildStatus(estado_next.toUpperCase());
+              this.dialogEditSoli = false;
             }
           });
         }
