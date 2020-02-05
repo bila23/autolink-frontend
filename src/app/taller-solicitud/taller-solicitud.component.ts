@@ -124,31 +124,12 @@ export class TallerSolicitudComponent implements OnInit {
         next: result =>{
           this.resultUpdateCometAsegu=result[0];
           this.hideDialogEstado();
-          this.ChangeUlSelected('ESC');
-        } 
+          this.BuildStatus('ESC');          
+          this._registroSelected = undefined;
+        }
       })
     }
   }
 
-  EditarSolicitud(){
-    this.estadosSoli=[
-      {label:'', value:null},
-      {label:'Activo', value:"Activo"},
-      {label:'Inactivo', value:"Inactivo"}
-    ];
-
-
-    if (typeof this._registroSelected !== typeof undefined){
-      console.log("id selected: " + this._registroSelected[0].id);
-
-      this.dialogEditSoli = true;
-      this.updateSoliForm.controls["id"].setValue(this._registroSelected[0].id);
-      this.updateSoliForm.controls["NoReclamo"].setValue(this._registroSelected[0].codigoSolicitud);
-      this.updateSoliForm.controls["placa"].setValue(this._registroSelected[0].placa);
-      this.updateSoliForm.controls["chasis"].setValue(this._registroSelected[0].chasis);
-      this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
-      this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
-    }
-  }
 
 }
