@@ -6,7 +6,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module';
 import { IListRepuestosModule } from '../_model/list-repuestos.module';
 import { stringify } from 'querystring';
-import { runInThisContext } from 'vm';
 import { format } from 'url';
 import { IRepuesto } from '../_model/repuesto.model';
 
