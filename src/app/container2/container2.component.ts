@@ -192,7 +192,7 @@ export class Container2Component implements OnInit {
       let id_selected = this._registroSelected[0].id;
 
       this.dialogVerPieza = true;
-      this.solicitudService.getPiezasSoli(id_selected).subscribe({
+      this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
         next: registro =>{
 
           for(let re in registro){
@@ -207,7 +207,8 @@ export class Container2Component implements OnInit {
       this.cols_verpiezas = [];
       this.cols_verpiezas=[
         { field: "nombre", header: "Nombre" },
-        { field: "valor", header: "Precio" }
+        { field: "valor", header: "Precio" },
+        { field: "estado", header: "estado" }
       ]
     }
   }

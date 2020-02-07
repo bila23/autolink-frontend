@@ -41,7 +41,7 @@ export class SolicitudtableroService {
       params: {}
     };
 
-    return this.http.get<IListRepuestosModule[]>(this.usuariosUrlBAse + "/rest/solicitud/repuesto?id=" + id).pipe(
+    return this.http.get<IListRepuestosModule[]>(this.usuariosUrlBAse + "/rest/solicitud/repuesto?id=" + id.toString()).pipe(
       tap(data => {
         console.log("piezas segun id " + JSON.stringify(data));
       })

@@ -125,6 +125,7 @@
                             </th> -->
                             <th>Nombre</th>
                             <th>Valor</th>
+                            <th>Estado</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -143,9 +144,13 @@
                                 <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                             </td> -->
                             <td *ngFor="let col of columns">
-                                <span>
+                                <span *ngIf="col.field == 'nombre'">
                                     {{rowData[col.field]}}
                                 </span>
+                                <span *ngIf="col.field == 'valor'">
+                                    {{rowData[col.field] | currency: 0: "$"}}
+                                </span>
+                                <input *ngIf="col.field == 'estado'" type="checkbox" [checked]="rowData[col.field]" style="position: inherit; pointer-events: auto; opacity: 1;">
                             </td>
                         </tr>
                     </ng-template>  
