@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpClient} from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { throwError } from 'rxjs';
 import { IResultUpdateModule } from '../_model/result-update.module'
+import { IRepuesto } from '../_model/repuesto.model'
 import { IUpdateSolicitudEstadoModule } from '../_model/estado.model'
 import { tap, catchError } from 'rxjs/operators';
 
@@ -12,6 +13,7 @@ import { tap, catchError } from 'rxjs/operators';
 export class tallerSolicitudService {
     private usuariosUrlBAse = localStorage.getItem('API');
     actualizarEstado : IUpdateSolicitudEstadoModule;
+    repuesto : IRepuesto;
     constructor(private http: HttpClient,private datePipe: DatePipe) { }
 
     SetEstado(id:number, estado:string){
@@ -30,6 +32,16 @@ export class tallerSolicitudService {
             tap(data => console.log("Llamado a proceso en bd update comentAsegu" + JSON.stringify(data))),
             catchError(this.handleError)
         );
+    }
+
+    mostrarRepuestos(id:number){
+      const httpOptions = {
+        headers: {'Content-Type': 'application/json'},
+        params: {}
+      };
+      return this.http.get<IRepuesto[]>(this.usuariosUrlBAse + "/rest/solicitud/repuesto?id=" + id).pipe(
+        tap(data => {})
+      );
     }
 
     private handleError(err: HttpErrorResponse){
