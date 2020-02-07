@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SolicitudtableroService } from '../container2/solicitudtablero.service'
 import { tallerSolicitudService } from './taller-solicitud.service'
 import { IResultByStates } from '../_model/resultbystates.module'
+import { IRepuesto } from '../_model/repuesto.model'
 import {SelectItem, Message} from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module'
@@ -12,6 +13,7 @@ import { IResultUpdateModule } from '../_model/result-update.module'
   styleUrls: ['./taller-solicitud.component.css']
 })
 export class TallerSolicitudComponent implements OnInit {
+  repuestos : IRepuesto[] = [];
   registro: IResultByStates[]=[];
   _registroSelected: IResultByStates[];
   cols: any[];
@@ -113,6 +115,16 @@ export class TallerSolicitudComponent implements OnInit {
       this.dialogEstado = true;
   }
 
+  mostrar_repuestos(id:number){
+    console.log('Entro al metodo: ' + id);
+    this.tallerService.mostrarRepuestos(id).subscribe({
+      next: repuesto =>{
+        this.repuestos = repuesto;
+        console.log(repuesto);
+      }
+    })
+  }
+
   hideDialogEstado(){
     this.dialogEstado = false;
   }
@@ -124,31 +136,12 @@ export class TallerSolicitudComponent implements OnInit {
         next: result =>{
           this.resultUpdateCometAsegu=result[0];
           this.hideDialogEstado();
-          this.ChangeUlSelected('ESC');
-        } 
+          this.BuildStatus('ESC');          
+          this._registroSelected = undefined;
+        }
       })
     }
   }
 
-  EditarSolicitud(){
-    this.estadosSoli=[
-      {label:'', value:null},
-      {label:'Activo', value:"Activo"},
-      {label:'Inactivo', value:"Inactivo"}
-    ];
-
-
-    if (typeof this._registroSelected !== typeof undefined){
-      console.log("id selected: " + this._registroSelected[0].id);
-
-      this.dialogEditSoli = true;
-      this.updateSoliForm.controls["id"].setValue(this._registroSelected[0].id);
-      this.updateSoliForm.controls["NoReclamo"].setValue(this._registroSelected[0].codigoSolicitud);
-      this.updateSoliForm.controls["placa"].setValue(this._registroSelected[0].placa);
-      this.updateSoliForm.controls["chasis"].setValue(this._registroSelected[0].chasis);
-      this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
-      this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
-    }
-  }
 
 }
