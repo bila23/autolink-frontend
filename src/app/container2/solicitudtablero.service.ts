@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { Observable, throwError } from 'rxjs';
 import { IResultByStates } from '../_model/resultbystates.module'
 import { IResultUpdateModule } from '../_model/result-update.module'
+import { IListRepuestosModule } from '../_model/list-repuestos.module'
 import { IUpdateSolicitudModule } from '../_model/update-solicitud.module'
 import { IUpdateComentarioaseguradoraModule } from '../_model/update-comentarioaseguradora.module'
 import { tap, catchError } from 'rxjs/operators';
@@ -29,6 +30,20 @@ export class SolicitudtableroService {
     return this.http.get<IResultByStates[]>(this.usuariosUrlBAse + "/rest/solicitud/byEstado?estado=" + estado).pipe(
       tap(data => {
         console.log("tablero segun estado" + JSON.stringify(data));
+      })
+    );
+  }
+
+  getPiezasSoli(id: string):Observable<IListRepuestosModule[]>{
+    console.log("consulta para traer la lista de piezas");
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+
+    return this.http.get<IListRepuestosModule[]>(this.usuariosUrlBAse + "/rest/solicitud/repuesto?id=" + id).pipe(
+      tap(data => {
+        console.log("piezas segun id " + JSON.stringify(data));
       })
     );
   }

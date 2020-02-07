@@ -3,8 +3,12 @@ import { SolicitudtableroService } from './solicitudtablero.service'
 import { IResultByStates } from '../_model/resultbystates.module'
 import {SelectItem, Message} from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IResultUpdateModule } from '../_model/result-update.module'
+import { IResultUpdateModule } from '../_model/result-update.module';
+import { IListRepuestosModule } from '../_model/list-repuestos.module';
 import { stringify } from 'querystring';
+import { runInThisContext } from 'vm';
+import { format } from 'url';
+import { IRepuesto } from '../_model/repuesto.model';
 
 @Component({
   selector: 'app-container2',
@@ -22,6 +26,15 @@ export class Container2Component implements OnInit {
   updateSoliForm: FormGroup;
   resultUpdateCometAsegu: IResultUpdateModule;
 
+  dialogVerPieza: boolean;
+  cols_verpiezas: any[];
+  verpiezaSoli: SelectItem[];
+  viewSoliForm: FormGroup;
+  _viewSoliSelected: IListRepuestosModule;
+  registroview: IRepuesto[]=[];
+  _registroviewSelected: IListRepuestosModule[];
+  
+
   constructor(private solicitudService:SolicitudtableroService, private el: ElementRef) { 
     this.updateSoliForm = new FormGroup({
       id: new FormControl('',Validators.required),
@@ -32,6 +45,15 @@ export class Container2Component implements OnInit {
       comentariosAseguradora: new FormControl(''),
       estado: new FormControl('')
     });
+
+    this.viewSoliForm = new FormGroup({
+      id: new FormControl(''),
+      nombre: new FormControl(''),
+      valor: new FormControl(0),
+      usuariocreacion: new FormControl(''),
+      estado: new FormControl(''),
+      fechacreacion: new FormControl('')
+    })
   }
 
   ngOnInit() {
@@ -54,7 +76,7 @@ export class Container2Component implements OnInit {
     this.cols = [];
     this.cols=[
       { field: 'fechaInicio', header: 'Fecha' },
-      { field: 'codigoSolicitud', header: 'codigoSolicitud' },
+      { field: 'codigoSolicitud', header: 'codigoSolicitudas' },
       { field: 'id', header: 'id' },
       { field: 'placa', header: 'placa'},
       { field: 'chasis', header: 'chasis' },
@@ -152,6 +174,42 @@ export class Container2Component implements OnInit {
       this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
       this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
       this.updateSoliForm.controls["estado"].setValue(this._registroSelected[0].estado);
+    }
+  }
+
+  VerPiezasSolicitud(){
+    this.registroview = [];
+    console.log("Ver piezas solicitud");
+    this.verpiezaSoli=[
+      {label:'', value:null},
+      {label:'Activo', value:"Activo"},
+      {label:'Inactivo', value:"Inactivo"}
+    ];
+
+    console.log(this._registroSelected);
+
+    if (typeof this._registroSelected !== typeof undefined){
+      console.log("id selected: " + this._registroSelected[0].id);
+      let id_selected = this._registroSelected[0].id;
+
+      this.dialogVerPieza = true;
+      this.solicitudService.getPiezasSoli(id_selected).subscribe({
+        next: registro =>{
+
+          for(let re in registro){
+            this.registroview.push(registro[re].repuesto);
+            console.log("Console... ver piezas");
+            
+            console.log(this.registroview);
+          }
+        }
+      })
+
+      this.cols_verpiezas = [];
+      this.cols_verpiezas=[
+        { field: "nombre", header: "Nombre" },
+        { field: "valor", header: "Precio" }
+      ]
     }
   }
 
