@@ -4,6 +4,7 @@ import { IResultByStates } from '../_model/resultbystates.module'
 import {SelectItem, Message} from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module';
+import { IVerPiezaSoliModule } from '../_model/ver-pieza-soli.module';
 import { IListRepuestosModule } from '../_model/list-repuestos.module';
 import { stringify } from 'querystring';
 import { format } from 'url';
@@ -25,14 +26,17 @@ export class Container2Component implements OnInit {
   updateSoliForm: FormGroup;
   resultUpdateCometAsegu: IResultUpdateModule;
 
+
   dialogVerPieza: boolean;
   cols_verpiezas: any[];
   verpiezaSoli: SelectItem[];
   viewSoliForm: FormGroup;
   _viewSoliSelected: IListRepuestosModule;
-  registroview: IRepuesto[]=[];
-  _registroviewSelected: IListRepuestosModule[];
+  // registroview: IRepuesto[]=[];
+  registroview: IListRepuestosModule[]=[];
+  _registroviewSelected: IRepuesto[];
   
+  registroViewPiezaSoli: IVerPiezaSoliModule[]=[];
 
   constructor(private solicitudService:SolicitudtableroService, private el: ElementRef) { 
     this.updateSoliForm = new FormGroup({
@@ -42,7 +46,9 @@ export class Container2Component implements OnInit {
       chasis: new FormControl(''),
       motor: new FormControl(''),
       comentariosAseguradora: new FormControl(''),
-      estado: new FormControl('')
+      estado: new FormControl(''),
+      fechaInicio: new FormControl(''),
+      fechaFin: new FormControl('')
     });
 
     this.viewSoliForm = new FormGroup({
@@ -51,7 +57,9 @@ export class Container2Component implements OnInit {
       valor: new FormControl(0),
       usuariocreacion: new FormControl(''),
       estado: new FormControl(''),
-      fechacreacion: new FormControl('')
+      fechacreacion: new FormControl(''),
+      idRepuesto: new FormControl(''),
+      idSolicitud: new FormControl('')
     })
   }
 
@@ -173,6 +181,8 @@ export class Container2Component implements OnInit {
       this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
       this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
       this.updateSoliForm.controls["estado"].setValue(this._registroSelected[0].estado);
+      this.updateSoliForm.controls["fechaInicio"].setValue(this._registroSelected[0].fechaInicio);
+      this.updateSoliForm.controls["fechaFin"].setValue(this._registroSelected[0].fechaFin);
     }
   }
 
@@ -196,19 +206,21 @@ export class Container2Component implements OnInit {
         next: registro =>{
 
           for(let re in registro){
-            this.registroview.push(registro[re].repuesto);
+            //this.registroview.push(registro[re].repuesto);
+            this.registroview.push(registro[re]);
             console.log("Console... ver piezas");
             
-            console.log(this.registroview);
+            console.log(registro[re].repuesto);
+            console.log(registro[re]);
           }
         }
       })
 
       this.cols_verpiezas = [];
       this.cols_verpiezas=[
-        { field: "nombre", header: "Nombre" },
-        { field: "valor", header: "Precio" },
-        { field: "estado", header: "estado" }
+        { field: "repuesto", subfield: "nombre"},
+        { field: "repuesto", subfield: "valor" },
+        { field: "aplica", header: "aplica" }
       ]
     }
   }
@@ -236,6 +248,26 @@ export class Container2Component implements OnInit {
         console.log("actualizado a ANULADO");
         this.BuildStatus(estado.toUpperCase());
         this.dialogEditSoli = false;
+      }
+    });
+  }
+
+  SetRepuestoSoli(col:any[], isChecked: boolean){
+    console.log("Funtion SetRepuestoSoli...");
+    console.log(col);
+    let id_solicitud = this._registroSelected[0].id;
+    let idRepuesto = col["repuesto"]["id"];
+    let estado = "";
+    let aplica = isChecked;
+
+    console.log("id_sol:" + id_solicitud);
+    console.log("id_repuesto:" + idRepuesto);
+    console.log("aplica: " + isChecked);
+    
+    this.solicitudService.SetAplicaRepuesto(id_solicitud, idRepuesto, estado, aplica).subscribe({
+      next: result =>{
+        console.log("solicitud de repuesto realizada");
+        //this.dialogVerPieza = false;
       }
     });
   }
