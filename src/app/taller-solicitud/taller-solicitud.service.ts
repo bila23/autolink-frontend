@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpClient} from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { SolicitudtableroService } from '../container2/solicitudtablero.service'
 import { throwError } from 'rxjs';
+import { IResultByStates } from '../_model/resultbystates.module'
+import {SelectItem, Message} from 'primeng/api';
 import { IResultUpdateModule } from '../_model/result-update.module'
 import { IRepuesto } from '../_model/repuesto.model'
 import { IUpdateSolicitudEstadoModule } from '../_model/estado.model'
@@ -14,7 +17,12 @@ export class tallerSolicitudService {
     private usuariosUrlBAse = localStorage.getItem('API');
     actualizarEstado : IUpdateSolicitudEstadoModule;
     repuesto : IRepuesto;
-    constructor(private http: HttpClient,private datePipe: DatePipe) { }
+    registroview: IRepuesto[]=[];
+    verpiezaSoli: SelectItem[];
+    _registroSelected: IResultByStates[];
+    dialogVerPieza: boolean;
+    cols_verpiezas: any[];
+    constructor(private http: HttpClient,private datePipe: DatePipe, private solicitudService:SolicitudtableroService) { }
 
     SetEstado(id:number, estado:string){
         const httpOptions = {
@@ -54,4 +62,6 @@ export class tallerSolicitudService {
         console.error(errorMessage);
         return throwError(errorMessage);
       }
+
+
 }

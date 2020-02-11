@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col s12 m12 l12 xl12">
         <ul id="tabs-sw" class="tabs">
-            <li class="tab col s2 hoverable" ><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ING')">INGRESADAS</a></li>
-            <li class="tab col s2 hoverable"><a id="a_anu"  (click)="BuildStatus('ANU')">ANULADAS</a></li>
-            <li class="tab col s2 hoverable"><a id="a_dep" (click)="BuildStatus('DEP')">DESPACHADAS POR PROVEEDOR</a></li>
-            <li class="tab col s2 hoverable"><a id="a_esc" (click)="BuildStatus('ESC')">ENTREGADAS A SAT. CLIENTE</a></li>
-            <li class="tab col s2 hoverable"><a id="a_cpd" (click)="BuildStatus('CPD')">CERRADAS POR DESIERTA</a></li>
-            <li class="tab col s2 hoverable"><a id="a_cea" (click)="BuildStatus('CEA')">CERRADAS POR ASEG.</a></li>
+            <li class="tab col s2 hoverable" title="Ingresadas"><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ING')">INGRESADAS</a></li>
+            <li class="tab col s2 hoverable" title="Anuladas"><a id="a_anu"  (click)="BuildStatus('ANU')">ANULADAS</a></li>
+            <li class="tab col s2 hoverable" title="Despachadas por proveedor"><a id="a_dep" (click)="BuildStatus('DEP')">DESP. POR PROVEEDOR</a></li>
+            <li class="tab col s2 hoverable" title="Entregadas a satisfacci&oacute;n del cliente"><a id="a_esc" (click)="BuildStatus('ESC')">ENT. A SAT. CLIENTE</a></li>
+            <li class="tab col s2 hoverable" title="Cerradas por desierta"><a id="a_cpd" (click)="BuildStatus('CPD')">CERR. POR DESIERTA</a></li>
+            <li class="tab col s2 hoverable" title="Cerradas por aseguradora"><a id="a_cea" (click)="BuildStatus('CEA')">CERR. POR ASEG.</a></li>
         </ul>
         <div id=taf></div>
         <div id="1" class="col s12 tab-white">
@@ -29,7 +29,6 @@
                         <th>Siniestro</th>
                         <th>Motor</th>
                         <th>Placa</th>
-                        <th>Ver Piezas</th>
                       </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -40,16 +39,17 @@
                         <td *ngFor="let col of columns">
                             {{rowData[col.field]}}
                         </td>
-                        <td style="justify-content: center;">
-                            <a>
-                                <i class="material-icons" style="vertical-align:middle; cursor: pointer;">visibility</i>
-                            </a>
-                        </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-        <div style="color:#94a1aa; text-align: center;" class="hide" id="cesta">
+        <div style="float:left">
+              <button class="btn" (click)="VerPiezasSolicitud()" style="margin-right:8px">
+                <i class="material-icons" style="vertical-align:middle">visibility</i>
+                VER PIEZAS
+              </button>
+        </div>
+        <div style="color:#94a1aa;float:right; text-align: center;" class="hide" id="cesta">
             <span id="nw">
               <button class="btn" style="float:right" (click)="MostrarAlerta()">
                 <i class="material-icons" style="vertical-align:middle">edit</i>
@@ -58,6 +58,7 @@
             </span>
             <div style="clear:both"></div>
         </div>
+        <div style="clear:both"></div>
 
         <p-dialog header="¿Esta seguro que desea cambiar el estado?" [(visible)]="dialogEstado" [contentStyle]="{'overflow':'visible'}" [responsive]="true" showEffect="fade" [modal]="true">
             <form [formGroup]="estadoSolForm">
@@ -70,6 +71,57 @@
 
     </div>
 </div>
+         <!-- MODAL PARA VER PIEZA -->
+         <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+            <form [formGroup]="viewSoliForm">
+                <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
+                [rows]="10" [responsive]="true" [(selection)]="_viewSoliSelected" datakey="id">
+                    <ng-template pTemplate="caption">
+                        <div style="text-align: right">
+                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                        <input type="text" pInputText size="30" placeholder="Buscar"
+                            (input)="tableResultVerPieza.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <!-- <th style="width: 3em">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th> -->
+                            <th>Nombre</th>
+                            <th>Valor</th>
+                            <th>Estado</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <!-- <tr>
+                            <ng-container *ngFor="let col of columns; let i = index">
+                                <td *ngIf="col.field == 'estado'">
+                                    aplica
+                                </td>
+                                <td *ngIf="col.field != 'estado'">
+                                    {{rowData[col.field]}}
+                                </td>
+                            </ng-container>
+                        </tr> -->
+                        <tr [pSelectableRow]="rowData">
+                            <!-- <td>
+                                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                            </td> -->
+                            <td *ngFor="let col of columns">
+                                <span *ngIf="col.field == 'nombre'">
+                                    {{rowData[col.field]}}
+                                </span>
+                                <span *ngIf="col.field == 'valor'">
+                                    {{rowData[col.field] | currency: 0: "$"}}
+                                </span>
+                                <input *ngIf="col.field == 'estado'" type="checkbox" [checked]="rowData[col.field]" style="position: inherit; pointer-events: auto; opacity: 1;">
+                            </td>
+                        </tr>
+                    </ng-template>  
+                </p-table>
+            </form>
+            </p-dialog>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>

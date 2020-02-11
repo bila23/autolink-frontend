@@ -24,6 +24,11 @@ export class TallerSolicitudComponent implements OnInit {
   updateSoliForm: FormGroup;
   estadoSolForm: FormGroup;
   resultUpdateCometAsegu: IResultUpdateModule;
+  registroview: IRepuesto[]=[];
+  verpiezaSoli: SelectItem[];
+  dialogVerPieza: boolean;
+  cols_verpiezas: any[];
+
 
   constructor(private solicitudService:SolicitudtableroService, private el: ElementRef, private tallerService : tallerSolicitudService) {
     this.estadoSolForm = new FormGroup({});
@@ -96,6 +101,43 @@ export class TallerSolicitudComponent implements OnInit {
     }else if (estado.toLowerCase() === "cea"){
       a_cea.classList.add("active");
       this.hideCesta();
+    }
+  }
+
+  VerPiezasSolicitud(){
+    this.registroview = [];
+    console.log("Ver piezas solicitud");
+    this.verpiezaSoli=[
+      {label:'', value:null},
+      {label:'Activo', value:"Activo"},
+      {label:'Inactivo', value:"Inactivo"}
+    ];
+
+    console.log(this._registroSelected);
+
+    if (typeof this._registroSelected !== typeof undefined){
+      console.log("id selected: " + this._registroSelected[0].id);
+      let id_selected = this._registroSelected[0].id;
+
+      this.dialogVerPieza = true;
+      this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
+        next: registro =>{
+
+          for(let re in registro){
+            this.registroview.push(registro[re].repuesto);
+            console.log("Console... ver piezas");
+            
+            console.log(this.registroview);
+          }
+        }
+      })
+
+      this.cols_verpiezas = [];
+      this.cols_verpiezas=[
+        { field: "nombre", header: "Nombre" },
+        { field: "valor", header: "Precio" },
+        { field: "estado", header: "estado" }
+      ]
     }
   }
 
