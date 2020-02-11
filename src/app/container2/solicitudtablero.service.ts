@@ -6,6 +6,7 @@ import { IResultByStates } from '../_model/resultbystates.module'
 import { IResultUpdateModule } from '../_model/result-update.module'
 import { IListRepuestosModule } from '../_model/list-repuestos.module'
 import { IUpdateSolicitudModule } from '../_model/update-solicitud.module'
+import { IUpdateRepuestoSoliModule } from '../_model/update-repuesto-soli.module'
 import { IUpdateComentarioaseguradoraModule } from '../_model/update-comentarioaseguradora.module'
 import { tap, catchError } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
@@ -16,6 +17,7 @@ import { FormGroup } from '@angular/forms';
 export class SolicitudtableroService {
   private usuariosUrlBAse = localStorage.getItem('API');
   actualizarSoli: IUpdateSolicitudModule;
+  actualizarRepuestoSoli: IUpdateRepuestoSoliModule;
   actualizarComentAsegu: IUpdateComentarioaseguradoraModule;
 
   constructor(private http: HttpClient,private datePipe: DatePipe) { }
@@ -81,6 +83,25 @@ export class SolicitudtableroService {
 
     return this.http.put<IResultUpdateModule[]>(this.usuariosUrlBAse + "/rest/solicitud/updateEstado", body, httpOptions).pipe(
       tap(data => console.log("Llamado a proceso en bd update estado" + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  SetAplicaRepuesto(id:number, idRepuesto:number, estado: string, aplica: boolean){
+    console.log("metodo para colocar si aplica o no un repuesto");
+    this.actualizarRepuestoSoli = JSON.parse(JSON.stringify({
+      "id": id,
+      "idRepuesto": idRepuesto,
+      "estado": estado,
+      "aplica":aplica
+    }));
+    let body = this.actualizarRepuestoSoli;
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+    return this.http.put<IUpdateRepuestoSoliModule[]>(this.usuariosUrlBAse + "/rest/solicitud/repuesto/aplica", body, httpOptions).pipe(
+      tap(data => console.log("Llamado a proceso en bd update aplica repuesto" + JSON.stringify(data))),
       catchError(this.handleError)
     );
   }

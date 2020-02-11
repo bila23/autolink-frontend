@@ -60,7 +60,7 @@
             <div style="clear:both"></div>
         </div>
 
-        <!-- MODAL PARA EDITAR USUARIO -->
+        <!-- MODAL PARA EDITAR SOLICITUD -->
         <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
         <form [formGroup]="updateSoliForm">
             <div class="form-group">
@@ -70,7 +70,7 @@
                 <label for="NoReclamo">No Reclamo</label>
                 <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="placa">Placa</label>
                 <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
             </div>
@@ -81,10 +81,18 @@
             <div class="form-group">
                 <label for="motor">Motor</label>
                 <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="comentariosAseguradora">Comentarios</label>
                 <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
+            </div>
+            <div class="form-group">
+                <label for="fechad">Fecha Inicial</label>
+                <input type="text" id="fechad" formControlName="fechaInicio" class="validate form-control" />
+            </div>
+            <div class="form-group">
+                <label for="fechaa">Fecha Inicial</label>
+                <input type="text" id="fechaa" formControlName="fechaFin" class="validate form-control" />
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <div style="width: 100%; display: flex;">
@@ -110,7 +118,7 @@
          <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
             <form [formGroup]="viewSoliForm">
                 <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
-                [rows]="10" [responsive]="true" [(selection)]="_viewSoliSelected" datakey="id">
+                [rows]="10" [responsive]="true" [(selection)]="_registroviewSelected    " datakey="id">
                     <ng-template pTemplate="caption">
                         <div style="text-align: right">
                         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -144,13 +152,13 @@
                                 <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                             </td> -->
                             <td *ngFor="let col of columns">
-                                <span *ngIf="col.field == 'nombre'">
-                                    {{rowData[col.field]}}
+                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'nombre'">
+                                    {{rowData[col.field][col.subfield]}}
                                 </span>
-                                <span *ngIf="col.field == 'valor'">
-                                    {{rowData[col.field] | currency: 0: "$"}}
+                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'valor'">
+                                    {{rowData[col.field][col.subfield] | currency: 0: "$"}}
                                 </span>
-                                <input *ngIf="col.field == 'estado'" type="checkbox" [checked]="rowData[col.field]" style="position: inherit; pointer-events: auto; opacity: 1;">
+                                <input *ngIf="col.field == 'aplica'" type="checkbox" [checked]="rowData[col.field]" style="position: inherit; pointer-events: auto; opacity: 1;" (change)="SetRepuestoSoli(rowData, $event.target.checked)" >
                             </td>
                         </tr>
                     </ng-template>  
