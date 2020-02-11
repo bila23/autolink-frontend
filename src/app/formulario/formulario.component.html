@@ -1,0 +1,134 @@
+<div class="row">
+    <form [formGroup]="crearSolicitudTaller" class="col s12">
+        <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="codigoSol" formControlName="codigoSol" class="validate" required disabled
+                    style="display: none;" />
+                <h4>Datos personales</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">account_circle</i>
+                <input type="text" id="name" formControlName="nombre" class="validate" required autofocus />
+                <label for="name">Nombre del propietario:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <h4>Datos del vehiculo</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m3 l3 xl3">
+                <p-dropdown id="marca" [options]="marcasModelo" formControlName="marca" [(ngModel)]="_marcaSeleccionada"
+                    class="validate" required>
+                </p-dropdown>
+                <label for="marca">Marca</label>
+            </div>
+            <div class="input-field col s12 m3 l3 xl3">
+                <input type="text" id="modelo" formControlName="modelo" class="validate" required />
+                <label for="modelo">Modelo</label>
+            </div>
+            <div class="input-field col s12 m3 l3 xl3">
+                <input type="text" id="anho" formControlName="anho" class="validate" required size="4" />
+                <label for="anho">A&ntilde;o</label>
+            </div>
+            <div class="input-field col s12 m3 l3 xl3">
+                <input type="text" id="tipoV" formControlName="tipoV" class="validate" required />
+                <label for="tipoV">Tipo de vehiculo</label>
+            </div>
+        </div>
+        <div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="placa">Placa</label><br /><br />
+                <input type="text" id="placa" formControlName="placa" class="validate" required />
+            </div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="chasis">N° de chasis</label><br /><br />
+                <input type="text" id="chasis" formControlName="chasis" class="validate" required />
+            </div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="motor">N° de motor</label><br /><br />
+                <input type="text" id="motor" formControlName="motor" class="validate" required />
+            </div>
+        </div>
+
+        <div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="siniestro">N° Siniestro</label><br /><br />
+                <input type="text" id="siniestro" formControlName="siniestro" class="validate" required />
+            </div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="poliza">Poliza</label><br /><br />
+                <input type="text" id="poliza" formControlName="poliza" class="validate" required />
+            </div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="aseguradora">Aseguradora</label><br /><br />
+                <p-dropdown [options]="aseguradoras" formControlName="aseguradora"
+                    [(ngModel)]="_aseguradoraSeleccionada" class="validate" required></p-dropdown>
+            </div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="tiempo">Tiempo</label><br /><br />
+                <input type="text" id="tiempo" formControlName="tiempo" class="validate" required />
+            </div>
+        </div>
+
+
+
+        <div>
+            <div class="input-field" style="display:inline-block;padding: 20px;">
+                <label for="comentarios">Comentarios</label><br /><br />
+                <input type="text" id="comentarios" formControlName="comentarios" class="validate" required />
+            </div>
+        </div>
+
+
+    </form>
+
+    <div>
+        <p-table [value]="repuestos2" [paginator]="true" [rows]="5" dataKey="nombre" editMode="row">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>nombre repuesto</th>
+                    <th>valor</th>
+                    <th style="width:8em"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="rowData">
+                    <td>
+                        {{rowData.nombre}}
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="rowData.cantidad" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{rowData.cantidad}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td style="text-align:center">
+                        <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil"
+                            class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+                        <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check"
+                            class="ui-button-success" style="margin-right: .5em"
+                            (click)="onRowEditSave(rowData)"></button>
+                        <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times"
+                            class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div>
+        <button class="button" style="display:inline-block;padding: 20px;margin:20px;" type="submit"
+            (click)="limpiarForm()">Cancelar</button>
+        <button class="button" style="display:inline-block;padding: 20px;margin:20px;" type="submit"
+            (click)="guardarSolicitud('ING',rowData)">Enviar</button>
+    </div>
+</div>

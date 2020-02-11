@@ -3,7 +3,8 @@ import { SolicitudtableroService } from '../container2/solicitudtablero.service'
 import { tallerSolicitudService } from './taller-solicitud.service'
 import { IResultByStates } from '../_model/resultbystates.module'
 import { IRepuesto } from '../_model/repuesto.model'
-import {SelectItem, Message} from 'primeng/api';
+import { SelectItem, Message } from 'primeng/api';
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module'
 
@@ -13,8 +14,8 @@ import { IResultUpdateModule } from '../_model/result-update.module'
   styleUrls: ['./taller-solicitud.component.css']
 })
 export class TallerSolicitudComponent implements OnInit {
-  repuestos : IRepuesto[] = [];
-  registro: IResultByStates[]=[];
+  repuestos: IRepuesto[] = [];
+  registro: IResultByStates[] = [];
   _registroSelected: IResultByStates[];
   cols: any[];
   dialogEditSoli: boolean;
@@ -24,17 +25,17 @@ export class TallerSolicitudComponent implements OnInit {
   updateSoliForm: FormGroup;
   estadoSolForm: FormGroup;
   resultUpdateCometAsegu: IResultUpdateModule;
-  registroview: IRepuesto[]=[];
+  registroview: IRepuesto[] = [];
   verpiezaSoli: SelectItem[];
   dialogVerPieza: boolean;
   cols_verpiezas: any[];
 
 
-  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef, private tallerService : tallerSolicitudService) {
+  constructor(private solicitudService: SolicitudtableroService, private el: ElementRef, private tallerService: tallerSolicitudService, private router: Router) {
     this.estadoSolForm = new FormGroup({});
     this.updateSoliForm = new FormGroup({
-      id: new FormControl('',Validators.required),
-      NoReclamo: new FormControl('',Validators.required),
+      id: new FormControl('', Validators.required),
+      NoReclamo: new FormControl('', Validators.required),
       placa: new FormControl(''),
       chasis: new FormControl(''),
       motor: new FormControl(''),
@@ -42,19 +43,24 @@ export class TallerSolicitudComponent implements OnInit {
     });
   }
 
+  goToForm() {
+    alert('ir a formulario');
+    this.router.navigate(['/formulario']);
+  }
+
   ngOnInit() {
     this.BuildStatus("ING");
   }
 
-  BuildStatus(estado:string){
+  BuildStatus(estado: string) {
     this.solicitudService.getSolicitudesByStatus(estado).subscribe({
-      next: registro =>{
-        this.registro=registro;
+      next: registro => {
+        this.registro = registro;
       }
     })
 
     this.cols = [];
-    this.cols=[
+    this.cols = [
       { field: 'nombreAsegurado', header: 'Propietario' },
       { field: 'tipoVehiculo', header: 'Tipo' },
       { field: 'siniestro', header: 'Siniestro' },
@@ -65,13 +71,13 @@ export class TallerSolicitudComponent implements OnInit {
     this.ChangeUlSelected(estado);
   }
 
-  ChangeUlSelected(estado:string){
+  ChangeUlSelected(estado: string) {
     let a_ing = document.getElementById("a_ing");
-    let a_anu =document.getElementById("a_anu");
-    let a_dep =document.getElementById("a_dep");
-    let a_esc =document.getElementById("a_esc");
-    let a_cpd =document.getElementById("a_cpd");
-    let a_cea =document.getElementById("a_cea");
+    let a_anu = document.getElementById("a_anu");
+    let a_dep = document.getElementById("a_dep");
+    let a_esc = document.getElementById("a_esc");
+    let a_cpd = document.getElementById("a_cpd");
+    let a_cea = document.getElementById("a_cea");
 
     /*removemos la clase active */
     a_ing.classList.remove("active");
@@ -82,103 +88,95 @@ export class TallerSolicitudComponent implements OnInit {
     a_cea.classList.remove("active");
     /*fin removemos la clase active */
 
-    if (estado.toLowerCase() === "ing"){
+    if (estado.toLowerCase() === "ing") {
       a_ing.classList.add("active");
       this.hideCesta();
-    }else if (estado.toLowerCase() === "anu"){
+    } else if (estado.toLowerCase() === "anu") {
       a_anu.classList.add("active");
       this.hideCesta();
-    }else if (estado.toLowerCase() === "dep"){
+    } else if (estado.toLowerCase() === "dep") {
       a_dep.classList.add("active");
       this.hideCesta();
-      this.showCesta();    
-    }else if (estado.toLowerCase() === "esc"){
+      this.showCesta();
+    } else if (estado.toLowerCase() === "esc") {
       a_esc.classList.add("active");
       this.hideCesta();
-    }else if (estado.toLowerCase() === "cpd"){
+    } else if (estado.toLowerCase() === "cpd") {
       a_cpd.classList.add("active");
       this.hideCesta();
-    }else if (estado.toLowerCase() === "cea"){
+    } else if (estado.toLowerCase() === "cea") {
       a_cea.classList.add("active");
       this.hideCesta();
     }
   }
 
-  VerPiezasSolicitud(){
+  VerPiezasSolicitud() {
     this.registroview = [];
-    console.log("Ver piezas solicitud");
-    this.verpiezaSoli=[
-      {label:'', value:null},
-      {label:'Activo', value:"Activo"},
-      {label:'Inactivo', value:"Inactivo"}
+    this.verpiezaSoli = [
+      { label: '', value: null },
+      { label: 'Activo', value: "Activo" },
+      { label: 'Inactivo', value: "Inactivo" }
     ];
 
-    console.log(this._registroSelected);
-
-    if (typeof this._registroSelected !== typeof undefined){
-      console.log("id selected: " + this._registroSelected[0].id);
+    if (typeof this._registroSelected !== typeof undefined) {
       let id_selected = this._registroSelected[0].id;
 
       this.dialogVerPieza = true;
       this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
-        next: registro =>{
+        next: registro => {
 
-          for(let re in registro){
+          for (let re in registro) {
             this.registroview.push(registro[re].repuesto);
-            console.log("Console... ver piezas");
-            
-            console.log(this.registroview);
           }
         }
       })
 
       this.cols_verpiezas = [];
-      this.cols_verpiezas=[
+      this.cols_verpiezas = [
         { field: "nombre", header: "Nombre" },
-        { field: "valor", header: "Precio" },
-        { field: "estado", header: "estado" }
+        { field: "valor", header: "Precio" }
       ]
     }
   }
 
-  hideCesta(){
+  hideCesta() {
     var cesta = document.getElementById('cesta');
     cesta.classList.remove("show");
     cesta.classList.add("hide");
   }
-  showCesta(){
+  showCesta() {
     var cesta = document.getElementById('cesta');
     cesta.classList.remove("hide");
     cesta.classList.add("show");
   }
 
-  MostrarAlerta(){
+  MostrarAlerta() {
     if (typeof this._registroSelected !== typeof undefined)
       this.dialogEstado = true;
   }
 
-  mostrar_repuestos(id:number){
+  mostrar_repuestos(id: number) {
     console.log('Entro al metodo: ' + id);
     this.tallerService.mostrarRepuestos(id).subscribe({
-      next: repuesto =>{
+      next: repuesto => {
         this.repuestos = repuesto;
         console.log(repuesto);
       }
     })
   }
 
-  hideDialogEstado(){
+  hideDialogEstado() {
     this.dialogEstado = false;
   }
 
-  CambiarEstado(){
-    if (typeof this._registroSelected !== typeof undefined){
+  CambiarEstado() {
+    if (typeof this._registroSelected !== typeof undefined) {
       let id = this._registroSelected[0].id;
       this.tallerService.SetEstado(id, 'ESC').subscribe({
-        next: result =>{
-          this.resultUpdateCometAsegu=result[0];
+        next: result => {
+          this.resultUpdateCometAsegu = result[0];
           this.hideDialogEstado();
-          this.BuildStatus('ESC');          
+          this.BuildStatus('ESC');
           this._registroSelected = undefined;
         }
       })
