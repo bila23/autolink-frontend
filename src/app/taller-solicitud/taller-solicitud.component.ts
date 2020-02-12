@@ -29,6 +29,7 @@ export class TallerSolicitudComponent implements OnInit {
   verpiezaSoli: SelectItem[];
   dialogVerPieza: boolean;
   cols_verpiezas: any[];
+  MostrarTabla: boolean;
 
 
   constructor(private solicitudService: SolicitudtableroService, private el: ElementRef, private tallerService: tallerSolicitudService, private router: Router) {
@@ -44,12 +45,14 @@ export class TallerSolicitudComponent implements OnInit {
   }
 
   goToForm() {
-    alert('ir a formulario');
+    // alert('ir a formulario');
+    this.MostrarTabla = false;
     this.router.navigate(['/formulario']);
   }
 
   ngOnInit() {
     this.BuildStatus("ING");
+    this.MostrarTabla = true;
   }
 
   BuildStatus(estado: string) {
