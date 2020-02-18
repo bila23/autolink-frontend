@@ -17,6 +17,7 @@ import { GrowlModule } from "primeng/components/growl/growl";
 import { Message } from "primeng/components/common/api";
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CalendarModule } from 'primeng/calendar';
 
 import { LoginComponent } from "./login/login.component";
 import { UserListComponent } from './users/user-list.component';
@@ -55,7 +56,7 @@ import { FormularioComponent } from './formulario/formulario.component';
     TallerSolicitudComponent, FormularioComponent
   ],
   imports: [
-    BrowserModule, BrowserAnimationsModule, FormsModule, PanelModule, DropdownModule, TableModule, HttpClientModule, ReactiveFormsModule, DialogModule, InputTextModule, PaginatorModule, GrowlModule, NgbModule, AutoCompleteModule, FileUploadModule, MatDatepickerModule, MatNativeDateModule,
+    BrowserModule, BrowserAnimationsModule, FormsModule, PanelModule, DropdownModule, TableModule, HttpClientModule, ReactiveFormsModule, DialogModule, InputTextModule, PaginatorModule, GrowlModule, NgbModule, AutoCompleteModule, FileUploadModule, MatDatepickerModule, MatNativeDateModule, CalendarModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'solicitudCorreo', component: SolicitudCorreoComponent },

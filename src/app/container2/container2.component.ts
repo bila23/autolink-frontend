@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SolicitudtableroService } from './solicitudtablero.service'
 import { IResultByStates } from '../_model/resultbystates.module'
-import {SelectItem, Message} from 'primeng/api';
+import { SelectItem, Message } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module';
 import { IVerPiezaSoliModule } from '../_model/ver-pieza-soli.module';
