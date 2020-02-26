@@ -49,4 +49,21 @@
         </div>
     </ng-container>
 
+    <ng-container *ngIf="GetTipoUser()==4;">
+        <style>
+            #banner {
+                background: url('assets/images/HEADER.png');
+                height: 115px;
+                background-position: center;
+                margin-bottom: 0px
+            }
+        </style>
+        <div class="row" id="banner">
+            <app-headerview2></app-headerview2>
+        </div>
+        <div class="container" style="width: 90%;">
+            <app-container4></app-container4>
+        </div>
+    </ng-container>
+
 </ng-template>

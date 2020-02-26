@@ -47,6 +47,7 @@ export class AppComponent {
   }
 
   GetTipoUser(){
+    console.log("user type:" + this.authService.GetTipoUser());
     return this.authService.GetTipoUser();
   }
 

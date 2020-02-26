@@ -48,12 +48,13 @@ import { TallerSolicitudComponent } from './taller-solicitud/taller-solicitud.co
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { FormularioComponent } from './formulario/formulario.component';
+import { Container4Component } from './container4/container4.component';
 
 @NgModule({
   declarations: [
     AppComponent, HeaderComponent, UserListComponent, ConvertToSpacesPipe, StarComponent, LoginComponent, PreguntasUserComponent, ProductDetailComponent,
     WelcomeComponent, SolicitudCorreoComponent, SideMenuComponent, ResetPassComponent, TallerListComponent, AseguradoraListComponent, MarcaListComponent, ProveedorListComponent, ModeloListComponent, AlertComponent, RepuestoListComponent, CallCenterComponent, PruebaComponent, Headerview2Component, Container2Component, BoardByStatusComponent,
-    TallerSolicitudComponent, FormularioComponent
+    TallerSolicitudComponent, FormularioComponent, Container4Component
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, FormsModule, PanelModule, DropdownModule, TableModule, HttpClientModule, ReactiveFormsModule, DialogModule, InputTextModule, PaginatorModule, GrowlModule, NgbModule, AutoCompleteModule, FileUploadModule, MatDatepickerModule, MatNativeDateModule, CalendarModule,
