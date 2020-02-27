@@ -122,9 +122,7 @@
     [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true"
     [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="updateProvForm">
-        <div>
-            <input pInputText id="idProv" formControlName="idProv" style="visibility:hidden" />
-        </div>
+        <input pInputText id="idProv" formControlName="idProv" style="visibility:hidden;display: none;" />
         <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
@@ -173,50 +171,49 @@
 </p-dialog>
 
 <!-- MODAL PARA VISUALIZAR PROVEEDOR -->
-<p-dialog header="Ver proveedor" [(visible)]="dialogVerProv" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [showHeader]="true"
-    showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
-        <form [formGroup]="verProvForm">
-            <p-panel [showHeader]="false">
-                    <div>
-                        <label for="nombre">Nombre</label>
-                        <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="direccion">Direcci&oacute;n</label>
-                        <input type="text" id="direccion" formControlName="direccion" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">Telefono</label>
-                        <input type="text" id="telefono" formControlName="telefono" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="razonSocial">Raz&oacute;n Social</label>
-                        <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="nit">NIT</label>
-                        <input type="text" id="nit" formControlName="nit" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="cuentaBanc">Cuenta Bancaria</label>
-                        <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="usuario">Usuario</label>
-                        <input type="text" id="usuario" formControlName="usuario" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="cargo">Cargo</label>
-                        <input type="text" id="cargo" formControlName="cargo" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="estadoTaller">Estado</label>
-                        <input type="text" id="estadoP" formControlName="estadoProveedor" class="form-control validate" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaC">Fecha de creaci&oacute;n</label>
-                        <input type="text" id="fechaC" formControlName="fechaCreacion" class="form-control validate" disabled />
-                    </div>
-            </p-panel>
-        </form>
+<p-dialog header="Ver proveedor" [(visible)]="dialogVerProv" [contentStyle]="{'overflow':'visible'}" [responsive]="true"
+    [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
+    <form [formGroup]="verProvForm">
+        <p-panel [showHeader]="false">
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <label for="direccion">Direcci&oacute;n</label>
+                <input type="text" id="direccion" formControlName="direccion" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" formControlName="telefono" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <label for="razonSocial">Raz&oacute;n Social</label>
+                <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate"
+                    disabled />
+            </div>
+            <div class="form-group">
+                <label for="nit">NIT</label>
+                <input type="text" id="nit" formControlName="nit" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <label for="cuentaBanc">Cuenta Bancaria</label>
+                <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="form-control validate"
+                    disabled />
+            </div>
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" formControlName="usuario" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" formControlName="cargo" class="form-control validate" disabled />
+            </div>
+            <div class="form-group">
+                <label for="estadoTaller">Estado</label>
+                <input type="text" id="estadoP" formControlName="estadoProveedor" class="form-control validate"
+                    disabled />
+            </div>
+        </p-panel>
+    </form>
 </p-dialog>

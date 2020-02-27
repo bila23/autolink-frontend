@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute,Router} from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from './login/login.service';
 
 @Component({
@@ -8,46 +8,46 @@ import { LoginService } from './login/login.service';
   //styleUrls: ['./app.component.css']
 })
 export class AppComponent {
- // title = 'Aseguradora';
-  isLogged : boolean;
+  // title = 'Aseguradora';
+  isLogged: boolean;
   isReset: boolean;
   isPreguntasPass: boolean;
   userType: string;
 
-  constructor(private  route:ActivatedRoute, private router:Router, private authService: LoginService){}
+  constructor(private route: ActivatedRoute, private router: Router, private authService: LoginService) { }
 
-  ngOnInit():void{
+  ngOnInit(): void {
     this.isReset = this.isResetContra();
     this.isLogged = this.isLoggedIn();
-    
 
 
-    if(this.isReset){
+
+    if (this.isReset) {
       this.router.navigate(['/resetContrasena']);
-    }else if(this.isLogged){
+    } else if (this.isLogged) {
       this.authService.redirectByUserType();
       //this.router.navigate(['/users']);
-    }else{
+    } else {
       this.router.navigate(['/login']);
     }
   }
 
-  isResetContra():boolean{
+  isResetContra(): boolean {
     let reset = localStorage.getItem('resetContra');
-    this.isReset = (reset != null ?true: false);
+    this.isReset = (reset != null ? true : false);
     return this.isReset;
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     this.isLogged = this.authService.isLoggedIn();
     //this.isLogged = true;
-    console.log("VALIDANDO SI EL USER ESTA LOEGADO" + this.isLogged);
+    //console.log("VALIDANDO SI EL USER ESTA LOEGADO" + this.isLogged);
     //return this.isLogged;
     return this.isLogged;
   }
 
-  GetTipoUser(){
-    console.log("user type:" + this.authService.GetTipoUser());
+  GetTipoUser() {
+    //console.log("user type:" + this.authService.GetTipoUser());
     return this.authService.GetTipoUser();
   }
 
