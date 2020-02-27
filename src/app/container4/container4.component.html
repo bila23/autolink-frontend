@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col s12 m12 l12 xl12">
         <ul id="tabs-sw" class="tabs" style="width: 100%; display: flex; overflow-x: hidden;">
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_ing" #a_ing class="active" (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa"  (click)="BuildStatus('')">GENERAR ORDEN DE COMPRA</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_pea" (click)="BuildStatus('')">DESPACHO POR PROVEEDOR</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa" #a_ing class="active" (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc"  (click)="BuildStatus('')">GENERAR ORDEN DE COMPRA</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_dpp" (click)="BuildStatus('')">DESPACHO POR PROVEEDOR</a></li>
         </ul>
         <div id=taf></div>
         <div id="div_1" class="col s12 tab-white">
@@ -22,7 +22,8 @@
                           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th>Fecha y hora</th>
-                        <th>Código</th>                                               
+                        <th>Código</th>  
+                        <th>Placa</th>                                             
                         <th>Chasis</th>
                         <th>Motor</th>
                         <th>Comentarios Aseguradora</th>
@@ -40,5 +41,127 @@
                 </ng-template>
             </p-table>
         </div>
+
+        <div style="color:#94a1aa; text-align: center;">
+            <span id="nw" style="float:right">
+              <button class="btn-al" (click)='EditarSolicitud()' style="margin-right:8px">
+                <i class="material-icons" style="vertical-align:middle">edit</i>
+                EDITAR SOLICITUD
+              </button>
+              <button class="btn-al" (click)='VerPiezasSolicitud()' style="margin-right:8px">
+                <i class="material-icons" style="vertical-align:middle">visibility</i>
+                VER PIEZAS
+              </button>
+            </span>
+            <div style="clear:both"></div>
+        </div>
+
+        <!-- MODAL PARA EDITAR SOLICITUD -->
+        <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+            <form [formGroup]="updateSoliForm">
+                <div class="form-group">
+                    <input pInputText id="id" formControlName="id" style="visibility: hidden;" />
+                </div>
+                <div class="form-group">
+                    <label for="NoReclamo">No Reclamo</label>
+                    <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
+                </div>
+                <!-- <div class="form-group">
+                    <label for="placa">Placa</label>
+                    <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
+                </div>
+                <div class="form-group">
+                    <label for="chasis">Chasis</label>
+                    <input type="text" id="chasis" formControlName="chasis" class="validate form-control" disabled />
+                </div>
+                <div class="form-group">
+                    <label for="motor">Motor</label>
+                    <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
+                </div> -->
+                <div class="form-group">
+                    <label for="comentariosAseguradora">Comentarios</label>
+                    <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="fechad">Fecha Inicial</label>
+                    <!-- <p-calendar [(ngModel)]="dateValue" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030"></p-calendar> -->
+                    <p-calendar id="fechad" [(ngModel)]="fechaInicio" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaInicio" hourFormat="24" class="validate form-control"></p-calendar>
+                    <!-- <input type="text" id="fechad" formControlName="fechaInicio" class="validate form-control" /> -->
+                </div>
+                <div class="form-group">
+                    <label for="fechaa">Fecha Inicial</label>
+                    <p-calendar id="fechaa" [(ngModel)]="fechaFin" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaFin" hourFormat="24" class="validate form-control"></p-calendar>
+                    <!-- <input type="text" id="fechaa" formControlName="fechaFin" class="validate form-control" /> -->
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <div style="width: 100%; display: flex;">
+                        <div style="width: 33%; display: flex; flex-direction: column;">
+                            <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
+                            (click)="CerrarAseguradora()" style="margin-left: 10px;">Cerrar</button>
+                        </div>
+                        <div style="width: 33%; display: flex; flex-direction: column;">
+                            <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
+                            (click)="Anular()" style="margin-left: 10px;">Anular</button>
+                        </div>
+                        <div style="width: 33%; display: flex; flex-direction: column;">
+                            <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
+                            (click)="AceptarSoli()" style="margin-left: 10px;">Procesar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </p-dialog>
+
+         <!-- MODAL PARA VER PIEZA -->
+         <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+            <form [formGroup]="viewSoliForm">
+                <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
+                [rows]="10" [responsive]="true" [(selection)]="_registroviewSelected    " datakey="id">
+                    <ng-template pTemplate="caption">
+                        <div style="text-align: right">
+                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                        <input type="text" pInputText size="30" placeholder="Buscar"
+                            (input)="tableResultVerPieza.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <!-- <th style="width: 3em">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th> -->
+                            <th>Nombre</th>
+                            <th>Valor</th>
+                            <!-- <th>Estado</th> -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <!-- <tr>
+                            <ng-container *ngFor="let col of columns; let i = index">
+                                <td *ngIf="col.field == 'estado'">
+                                    aplica
+                                </td>
+                                <td *ngIf="col.field != 'estado'">
+                                    {{rowData[col.field]}}
+                                </td>
+                            </ng-container>
+                        </tr> -->
+                        <tr [pSelectableRow]="rowData">
+                            <!-- <td>
+                                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                            </td> -->
+                            <td *ngFor="let col of columns">
+                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'nombre'">
+                                    {{rowData[col.field][col.subfield]}}
+                                </span>
+                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'valor'">
+                                    {{rowData[col.field][col.subfield] | currency: 0: "$"}}
+                                </span>
+                                <!-- <input *ngIf="col.field == 'aplica'" type="checkbox" [checked]="rowData[col.field]" style="position: inherit; pointer-events: auto; opacity: 1;" (change)="SetRepuestoSoli(rowData, $event.target.checked)" > -->
+                            </td>
+                        </tr>
+                    </ng-template>  
+                </p-table>
+            </form>
+        </p-dialog>
     </div>
 </div>

@@ -118,7 +118,7 @@
 
 
          <!-- MODAL PARA VER PIEZA -->
-         <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+        <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
             <form [formGroup]="viewSoliForm">
                 <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
                 [rows]="10" [responsive]="true" [(selection)]="_registroviewSelected    " datakey="id">
@@ -167,7 +167,7 @@
                     </ng-template>  
                 </p-table>
             </form>
-            </p-dialog>
+        </p-dialog>
         <!-- <div id="2" class="col s12 tab-white">ANULADAS</div>
         <div id="3" class="col s12 tab-white">ENTREGADAS</div>
         <div id="4" class="col s12 tab-white">CERRADAS</div>
