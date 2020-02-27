@@ -9,7 +9,7 @@
 
 <div>
     <p-growl [value]="msgs" sticky="sticky"></p-growl>
-    <p-table #dt [columns]="cols" [value]="repuestos" [paginator]="true" [rows]="3" [responsive]="true"
+    <p-table #dt [columns]="cols" [value]="repuestos" [paginator]="true" [rows]="5" [responsive]="true"
         [(selection)]="_repuestoSelected" dataKey="nombre" class="table">
         <ng-template pTemplate="caption">
             <div style="text-align: right">
@@ -92,9 +92,7 @@
     [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="updateRepForm">
         <p-panel [showHeader]="false">
-            <div>
-                <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden" />
-            </div>
+            <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden;display:none" />
             <div class="form-group">
                 <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled />
             </div>
@@ -128,7 +126,8 @@
                 <input type="text" id="valor" formControlName="valor" class="form-control validate" disabled />
             </div>
             <div class="form-group">
-                <input type="text" id="estadoR" formControlName="estadoRepuesto" class="form-control validate" disabled />
+                <input type="text" id="estadoR" formControlName="estadoRepuesto" class="form-control validate"
+                    disabled />
             </div>
             <div class="form-group">
                 <input type="text" id="fechaC" formControlName="fechaCreacion" class="form-control validate" disabled />
