@@ -80,21 +80,21 @@ export class Container4Component implements OnInit {
 
   ChangeUlSelected(estado:string){
     let a_coa =document.getElementById("a_coa");
-    let a_dpp =document.getElementById("a_dpp");
     let a_goc =document.getElementById("a_goc");
+    let a_dep =document.getElementById("a_dep");
 
     /*removemos la clase active */
     a_coa.classList.remove("active");
-    a_dpp.classList.remove("active");
     a_goc.classList.remove("active");
+    a_dep.classList.remove("active");
     /*fin removemos la clase active */
 
     if (estado.toLowerCase() === "coa"){
       a_coa.classList.add("active");
-    }else if (estado.toLowerCase() === "dpp"){
-      a_dpp.classList.add("active");
     }else if (estado.toLowerCase() === "goc"){
       a_goc.classList.add("active");
+    }else if (estado.toLowerCase() === "dep"){
+      a_dep.classList.add("active");
     }
   }
 
@@ -138,5 +138,28 @@ export class Container4Component implements OnInit {
   }
 
   EditarSolicitud(){
+    console.log("Editar solicitud");
+    console.log(this._registroSelected);
+
+
+    if (typeof this._registroSelected !== typeof undefined){
+      console.log("id selected: " + this._registroSelected[0].id);
+
+      this.dialogEditSoli = true;
+      this.updateSoliForm.controls["id"].setValue(this._registroSelected[0].id);
+      this.updateSoliForm.controls["NoReclamo"].setValue(this._registroSelected[0].codigoSolicitud);
+      this.updateSoliForm.controls["placa"].setValue(this._registroSelected[0].placa);
+      this.updateSoliForm.controls["chasis"].setValue(this._registroSelected[0].chasis);
+      this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
+      this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
+      // this.updateSoliForm.controls["estado"].setValue(this._registroSelected[0].estado);
+      // this.updateSoliForm.controls["fechaInicio"].setValue(this._registroSelected[0].fechaInicio);
+      // this.updateSoliForm.controls["fechaFin"].setValue(this._registroSelected[0].fechaFin);
+    }
+  
+  }
+
+  AceptarSoli(){
+
   }
 }
