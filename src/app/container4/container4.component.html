@@ -2,8 +2,8 @@
     <div class="col s12 m12 l12 xl12">
         <ul id="tabs-sw" class="tabs" style="width: 100%; display: flex; overflow-x: hidden;">
             <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa" #a_ing class="active" (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc"  (click)="BuildStatus('')">GENERAR ORDEN DE COMPRA</a></li>
-            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_dpp" (click)="BuildStatus('')">DESPACHO POR PROVEEDOR</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc" #a_goc (click)="BuildStatus('GOC')">GENERAR ORDEN DE COMPRA</a></li>
+            <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_dep" #a_dep (click)="BuildStatus('DEP')">DESPACHO POR PROVEEDOR</a></li>
         </ul>
         <div id=taf></div>
         <div id="div_1" class="col s12 tab-white">
@@ -66,43 +66,20 @@
                     <label for="NoReclamo">No Reclamo</label>
                     <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
                 </div>
-                <!-- <div class="form-group">
-                    <label for="placa">Placa</label>
-                    <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
-                </div>
-                <div class="form-group">
-                    <label for="chasis">Chasis</label>
-                    <input type="text" id="chasis" formControlName="chasis" class="validate form-control" disabled />
-                </div>
-                <div class="form-group">
-                    <label for="motor">Motor</label>
-                    <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
-                </div> -->
                 <div class="form-group">
                     <label for="comentariosAseguradora">Comentarios</label>
                     <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="fechad">Fecha Inicial</label>
-                    <!-- <p-calendar [(ngModel)]="dateValue" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030"></p-calendar> -->
-                    <p-calendar id="fechad" [(ngModel)]="fechaInicio" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaInicio" hourFormat="24" class="validate form-control"></p-calendar>
-                    <!-- <input type="text" id="fechad" formControlName="fechaInicio" class="validate form-control" /> -->
+                    <label for="precio">Precio</label>
+                    <input type="text" id="precio" class="validate form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="fechaa">Fecha Inicial</label>
-                    <p-calendar id="fechaa" [(ngModel)]="fechaFin" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaFin" hourFormat="24" class="validate form-control"></p-calendar>
-                    <!-- <input type="text" id="fechaa" formControlName="fechaFin" class="validate form-control" /> -->
+                    <label for="fecha_entrega">Fecha entrega (horas)</label>
+                    <input type="text" id="fecha_entrega" class="validate form-control" />
                 </div>
                 <div class="form-group" style="margin-top: 10px;">
-                    <div style="width: 100%; display: flex;">
-                        <div style="width: 33%; display: flex; flex-direction: column;">
-                            <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
-                            (click)="CerrarAseguradora()" style="margin-left: 10px;">Cerrar</button>
-                        </div>
-                        <div style="width: 33%; display: flex; flex-direction: column;">
-                            <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
-                            (click)="Anular()" style="margin-left: 10px;">Anular</button>
-                        </div>
+                    <div style="width: 100%; display: flex;">                        
                         <div style="width: 33%; display: flex; flex-direction: column;">
                             <button [disabled]="!updateSoliForm.valid" class="btn btn-primary" type="submit" name="action"
                             (click)="AceptarSoli()" style="margin-left: 10px;">Procesar</button>
