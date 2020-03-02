@@ -40,7 +40,12 @@
                 <td>{{rowData.cargo}}</td>
                 <td>{{rowData.direccion}}</td>
                 <td>{{rowData.razonsocial}}</td>
-                <td>{{rowData.estado}}</td>
+                <td *ngIf="rowData.estado == true">
+                    Activo
+                </td>
+                <td *ngIf="rowData.estado == false">
+                    Inactivo
+                </td>
             </tr>
         </ng-template>
     </p-table>

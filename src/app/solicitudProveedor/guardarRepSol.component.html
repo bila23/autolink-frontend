@@ -1,0 +1,115 @@
+<form [formGroup]="solicitudTaller">
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+  
+            <div class="input-field" style="text-align: left;" >
+              <!-- <label for="codigoSol">Codigo</label> -->
+                <input type="text" id="codigoSol" formControlName="codigoSol" class="validate" required disabled/>
+               
+            </div>
+  
+            <!-- DATOS PERSONALES-->
+            <h4>Datos personales</h4>
+            <div class="input-field">
+              <!-- <label for="nombre">Nombre</label> -->
+                <input type="text" id="name" formControlName="nombre" class="validate" required disabled/>
+                
+            </div>
+            
+            <!-- DATOS DEL VEHICULOS -->
+            <div>
+                <h4>Datos del vehiculo</h4>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                  <input type="text" id="marca" formControlName="marca" class="validate" required disabled/>
+                    <label for="marca">Marca</label><br/><br/>
+                </div>
+  
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="modelo">Modelo</label><br/><br/>
+                    <input type="text" id="modelo" formControlName="modelo" class="validate" required disabled/>
+                </div>
+  
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="anho">Anho</label><br/><br/>
+                    <input type="text" id="anho" formControlName="anho" class="validate" required disabled/>
+                </div>
+  
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="tipoV">Tipo de vehiculo</label><br/><br/>
+                    <input type="text" id="tipoV" formControlName="tipoV" class="validate" required disabled/>
+                </div>
+            </div>
+            <div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="placa">Placa</label><br/><br/>
+                    <input type="text" id="placa" formControlName="placa" class="validate" required disabled/>
+                </div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="chasis">N° de chasis</label><br/><br/>
+                    <input type="text" id="chasis" formControlName="chasis" class="validate" required disabled/>
+                </div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="motor">N° de motor</label><br/><br/>
+                    <input type="text" id="motor" formControlName="motor" class="validate" required disabled/>
+                </div>
+            </div>
+  
+            <div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="siniestro">N° Siniestro</label><br/><br/>
+                    <input type="text" id="siniestro" formControlName="siniestro" class="validate" required disabled/>
+                </div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="poliza">Poliza</label><br/><br/>
+                    <input type="text" id="poliza" formControlName="poliza" class="validate" required disabled/>
+                </div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="aseguradora">Aseguradora</label><br/><br/>
+                    <input type="text" id="aseguradora" formControlName="aseguradora" class="validate" required disabled/>
+                </div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="tiempo">Tiempo</label><br/><br/>
+                    <input type="text" id="tiempo" formControlName="tiempo" class="validate" required enabled/>
+                </div>
+            </div>
+            <div>
+                <!-- <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="repuestos">Repuestos</label><br/><br/>
+                    <input type="text" id="repuestos" formControlName="repuestos" class="validate" required enabled/>
+                </div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="cantidadRep">Cantidad</label><br/><br/>
+                    <input type="text" id="cantidadRep" formControlName="cantidadRep" class="validate" required enabled/>
+                </div> -->
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="repuestos">Repuestos</label><br/><br/>
+                    <p-dropdown [options]="piezas" formControlName="repuestos" [(ngModel)]="_repuestoSeleccionado" class="validate" required></p-dropdown>
+                </div>
+  
+            </div>
+            <div>
+                <div class="input-field" style="display:inline-block;padding: 20px;">
+                    <label for="comentarios">Comentarios</label><br/><br/>
+                    <input type="text" id="comentarios" formControlName="comentarios" class="validate" required enabled/>
+                </div>
+            </div>
+        </div>   
+  </form>
+
+    <div class="col s12">
+        <h5>Seleccionar foto</h5>
+        <!-- <p-fileUpload name="myfile[]" url="C:\Proyectos\original\aseguradora\aseguradora\src\app\upload" withCredentials="false" customUpload="true" (uploadHandler)="addHeaders($event)" method="POST" multiple="multiple" accept="image/*">
+            <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                </ul>
+            </ng-template></p-fileUpload> -->
+        <input id="file-upload" type="file" (change)="fileSelected($event)"/>
+        <button class="button" style="display:inline-block;padding: 20px;margin:20px;" type="submit" (click)="subirArchivo()">Guardar Foto</button>
+       <!-- <button type="button" class="btn btn-success" (click)="subirArchivo()"> Subir imagen </button> -->     
+    </div>
+
+   <!-- BOTONES -->
+    <div>
+        <button class="button" style="display:inline-block;padding: 20px;margin:20px;" type="submit" (click)="guardarRepuesto()">Guardar Repuesto</button>
+    </div>

@@ -18,6 +18,8 @@ import { Message } from "primeng/components/common/api";
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CalendarModule } from 'primeng/calendar';
+import {ListboxModule} from 'primeng/listbox';
+import {CarouselModule} from 'primeng/carousel';
 
 import { LoginComponent } from "./login/login.component";
 import { UserListComponent } from './users/user-list.component';
@@ -49,15 +51,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { FormularioComponent } from './formulario/formulario.component';
 import { Container4Component } from './container4/container4.component';
+import { CrearSolicitudComponent } from './crearSolicitud/crearSolicitud.component';
+import { SolicitudProveedorComponent } from './solicitudProveedor/solicitudProveedor.component';
+import { VerSolicitudComponent } from './verSolicitud/verSolicitud.component';
 
 @NgModule({
   declarations: [
     AppComponent, HeaderComponent, UserListComponent, ConvertToSpacesPipe, StarComponent, LoginComponent, PreguntasUserComponent, ProductDetailComponent,
     WelcomeComponent, SolicitudCorreoComponent, SideMenuComponent, ResetPassComponent, TallerListComponent, AseguradoraListComponent, MarcaListComponent, ProveedorListComponent, ModeloListComponent, AlertComponent, RepuestoListComponent, CallCenterComponent, PruebaComponent, Headerview2Component, Container2Component, BoardByStatusComponent,
-    TallerSolicitudComponent, FormularioComponent, Container4Component
+    TallerSolicitudComponent, FormularioComponent, Container4Component, CrearSolicitudComponent, SolicitudProveedorComponent, VerSolicitudComponent
   ],
   imports: [
-    BrowserModule, BrowserAnimationsModule, FormsModule, PanelModule, DropdownModule, TableModule, HttpClientModule, ReactiveFormsModule, DialogModule, InputTextModule, PaginatorModule, GrowlModule, NgbModule, AutoCompleteModule, FileUploadModule, MatDatepickerModule, MatNativeDateModule, CalendarModule,
+    BrowserModule, BrowserAnimationsModule, FormsModule, PanelModule, DropdownModule, TableModule, HttpClientModule, ReactiveFormsModule, DialogModule, InputTextModule, PaginatorModule, GrowlModule, NgbModule, AutoCompleteModule, FileUploadModule, MatDatepickerModule, MatNativeDateModule, CalendarModule,ListboxModule,CarouselModule,CalendarModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'solicitudCorreo', component: SolicitudCorreoComponent },
@@ -79,7 +84,8 @@ import { Container4Component } from './container4/container4.component';
       { path: 'headerview2', component: Headerview2Component },
       { path: 'container2', component: Container2Component },
       { path: 'boardbystatus', component: BoardByStatusComponent },
-      { path: 'formulario', component: FormularioComponent }
+      { path: 'formulario', component: FormularioComponent },
+      { path: 'crearsolicitud', component: CrearSolicitudComponent }
       //{path: '',component: WelcomeComponent,pathMatch: 'full'},
       //{path: '**',component: WelcomeComponent,pathMatch: 'full'} /* pagina 404*/
     ]) //,{useHash: true})
