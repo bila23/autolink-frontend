@@ -10,7 +10,7 @@
 <div>
     <p-growl [value]="msgs" sticky="sticky"></p-growl>
     <p-table #dt [columns]="cols" [value]="repuestos" [paginator]="true" [rows]="5" [responsive]="true"
-        [(selection)]="_repuestoSelected" dataKey="nombre" class="table">
+        [(selection)]="_repuestoSelected" dataKey="nombre" class="table" [globalFilterFields]="['nombre','valor']">
         <ng-template pTemplate="caption">
             <div style="text-align: right">
                 <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -134,7 +134,8 @@
             </div>
             <div class="form-group">
                 <label for="estadoR">Estado:</label>
-                <input type="text" id="estadoR" formControlName="estadoRepuesto" class="form-control validate" disabled />
+                <input type="text" id="estadoR" formControlName="estadoRepuesto" class="form-control validate"
+                    disabled />
             </div>
         </p-panel>
     </form>

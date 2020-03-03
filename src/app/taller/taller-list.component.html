@@ -9,7 +9,8 @@
 <div>
     <p-growl [value]="msgs" sticky="sticky"></p-growl>
     <p-table #dt [columns]="cols" [value]="talleres" [paginator]="true" [rows]="3" [responsive]="true"
-        [(selection)]="_tallerSelected" dataKey="nombre" class="table">
+        [(selection)]="_tallerSelected" dataKey="nombre" class="table"
+        [globalFilterFields]="['nombre','usuario.usuario','cargo','direccion','razonsocial']">
         <ng-template pTemplate="caption">
             <div style="text-align: right">
                 <i class="fa fa-search" style="margin:4px 4px 0 0"></i>

@@ -10,7 +10,8 @@
 <div>
     <p-growl [value]="msgs" sticky="sticky"></p-growl>
     <p-table #dt [columns]="cols" [value]="proveedores" [paginator]="true" [rows]="3" [responsive]="true"
-        [(selection)]="_proveedorSelected" dataKey="nombre" class="table">
+        [(selection)]="_proveedorSelected" dataKey="nombre" class="table"
+        [globalFilterFields]="['nombre','usuario.usuario','direccion','razonsocial']">
         <ng-template pTemplate="caption">
             <div style="text-align: right">
                 <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -39,7 +40,12 @@
                 <td>{{rowData.direccion}}</td>
                 <td>{{rowData.usuario.usuario}}</td>
                 <td>{{rowData.razonsocial}}</td>
-                <td>{{rowData.estado}}</td>
+                <td *ngIf="rowData.estado == true">
+                    Activo
+                </td>
+                <td *ngIf="rowData.estado == false">
+                    Inactivo
+                </td>
             </tr>
         </ng-template>
     </p-table>
