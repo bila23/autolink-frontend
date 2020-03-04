@@ -14,9 +14,9 @@
             <li class="tab col s2 hoverable" title="Cerradas por aseguradora"><a id="a_cea"
                     (click)="BuildStatus('CEA')">CERR. POR ASEG.</a></li>
         </ul>
-        <div id=taf></div>
-        <div id="1" class="col s12 tab-white">
             <ng-container *ngIf="MostrarTabla==true; else routerview">
+                <div id=taf></div>
+                <div id="1" class="col s12 tab-white">
                 <p-table class="table" #tableResultByState [columns]="cols" [value]="registro" [paginator]="true"
                     [rows]="10" [responsive]="true" [(selection)]="_registroSelected" datakey="id">
                     <ng-template pTemplate="caption">
@@ -49,13 +49,13 @@
                         </tr>
                     </ng-template>
                 </p-table>
+            </div>
             </ng-container>
             <ng-template #routerview>
                 <router-outlet></router-outlet>
             </ng-template>
-        </div>
         <div style="float:left">
-            <button class="btn" style="margin-right:8px" (click)="goToForm()">
+            <button class="btn" style="margin-right:8px" (click)="goToForm();">
                 <i class="material-icons" style="vertical-align:middle">add</i>
                 NUEVA SOLICITUD
             </button>

@@ -47,7 +47,7 @@ export class TallerSolicitudComponent implements OnInit {
   goToForm() {
     // alert('ir a formulario');
     this.MostrarTabla = false;
-    this.router.navigate(['/formulario']);
+    this.router.navigate(['/crearsolicitud']);
   }
 
   ngOnInit() {

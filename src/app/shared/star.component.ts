@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AseguradoraService } from '../aseguradora/aseguradora.service';
 import { IAseguradora } from '../_model/aseguradora.model';
 import { SelectItem } from 'primeng/api';
-import { HttpHeaders, XhrFactory } from '@angular/common/http';
+import { HttpHeaders, XhrFactory, HttpClient } from '@angular/common/http';
+import { FileUpload } from 'primeng/primeng';
 
 @Component({
   templateUrl:'./star.component.html'
@@ -15,7 +16,14 @@ export class StarComponent implements OnInit{
   uploadedFiles: any[] = [];
   encabezado: HttpHeaders;
 
-  constructor(private aseguradoraService: AseguradoraService){}
+  
+  fileData: File = null;
+  selectedFile: File = null;
+previewUrl:any = null;
+fileUploadProgress: string = null;
+uploadedFilePath: string = null;
+
+  constructor(private http: HttpClient,private aseguradoraService: AseguradoraService){}
   
   ngOnInit(){
     console.log("Consultando aseguradoras...  1 ");
@@ -26,7 +34,52 @@ export class StarComponent implements OnInit{
       },
       error: err=>{}
     });
-  } 
+  }
+
+fileProgress(fileInput: any) {
+      this.fileData = <File>fileInput.target.files[0];
+      this.preview();
+}
+ 
+preview() {
+    // Show preview 
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+ 
+    var reader = new FileReader();      
+    reader.readAsDataURL(this.fileData); 
+    reader.onload = (_event) => { 
+      this.previewUrl = reader.result; 
+    }
+}
+
+fileSelected(event)
+{
+  this.selectedFile = <File>event.target.files[0];
+  var reader = new FileReader();      
+    reader.readAsDataURL(event.target.files[0]);
+};
+ 
+subirArchivo() {
+    const dr = new FormData();
+      dr.append('dr', this.selectedFile);
+
+
+      this.http.put('http://4cdbf757.ngrok.io/autolink/rest/solicitud/foto/save/2',dr
+       
+      )
+        .subscribe(res => {
+          console.log(res);
+          //this.uploadedFilePath = res.toString();
+          alert('eexiitooo !!');
+        })
+}
+
+  onUploadFinish(event) {
+    console.log("Imagen .... " + event);
+   }
 
   filtrarAseguradora(event){
     this.filtrado = [];
@@ -98,10 +151,8 @@ export class StarComponent implements OnInit{
         error: err=>{}
       });
   }
-
   filterAseguradora(query,data:any[]):any[]{
     let filtered: any[] = [];
-
     for(let key in data){
       console.log("Llenamos el dropdownList de aseguradoras");
       if(data.hasOwnProperty(key)){
@@ -120,7 +171,6 @@ export class StarComponent implements OnInit{
 
 /******************************************************************************************************* */
 /*import {Component,OnChanges,Input,Output,EventEmitter} from '@angular/core';
-
 @Component({
   selector:'pm-star',
   templateUrl:'./star.component.html',
@@ -130,14 +180,11 @@ export class StarComponent implements OnChanges{
   @Input() rating:number;
   starWidth:number;
   @Output() ratingClicked: EventEmitter<string> = new EventEmitter<string>();
-
   onClick():void{
     this.ratingClicked.emit(`The rating ${this.rating} was clicked!`);
   }
-
   ngOnChanges():void{
     this.starWidth=this.rating*75/5;
   }
-
 }
 */
