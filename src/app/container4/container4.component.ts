@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultByStates } from '../_model/resultbystates.module'
 import { SolicitudtableroprovService } from './solicitudtableroprov.service'
 import { IListRepuestosModule } from '../_model/list-repuestos.module';
 import { SelectItem, Message } from 'primeng/api';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-container4',
@@ -14,13 +15,16 @@ export class Container4Component implements OnInit {
   registro: IResultByStates[]=[];
   cols: any[];
   dialogEditSoli: boolean;
-  dialogVerPieza: boolean;
+  dialogVerPieza: boolean;  
   registroview: IListRepuestosModule[]=[];
+  _registroviewSelected: IListRepuestosModule[];
   verpiezaSoli: SelectItem[];
   _registroSelected: IResultByStates[];
   cols_verpiezas: any[];
+  cols_verpiezas_prov: any[];
   updateSoliForm: FormGroup;
   viewSoliForm: FormGroup;
+  setOferta: FormGroup;
   constructor(private solicitudService:SolicitudtableroprovService) { 
     this.updateSoliForm = new FormGroup({
       id: new FormControl('',Validators.required),
@@ -34,6 +38,17 @@ export class Container4Component implements OnInit {
       fechaFin: new FormControl('')
     });
 
+    this.setOferta = new FormGroup({
+      id: new FormControl(''),
+      idsolicitud: new FormControl(''),
+      idrepuesto: new FormControl(''),
+      idproveedor: new FormControl(''),
+      cantidad: new FormControl(''),
+      estado: new FormControl(''),
+      tiempo: new FormControl(''),
+      ganador: new FormControl(''),
+    })
+
     this.viewSoliForm = new FormGroup({
       id: new FormControl(''),
       nombre: new FormControl(''),
@@ -42,7 +57,9 @@ export class Container4Component implements OnInit {
       estado: new FormControl(''),
       fechacreacion: new FormControl(''),
       idRepuesto: new FormControl(''),
-      idSolicitud: new FormControl('')
+      idSolicitud: new FormControl(''),
+      precio: new FormControl(0),
+      fecha: new FormControl(0)
     })
   }
 
@@ -131,7 +148,9 @@ export class Container4Component implements OnInit {
       this.cols_verpiezas = [];
       this.cols_verpiezas=[
         { field: "repuesto", subfield: "nombre"},
-        { field: "repuesto", subfield: "valor" }//,
+        { field: "repuesto", subfield: "valor" },
+        { field: "repuesto", subfield: "tiempo" },
+        { field: "guardar", header: "guardar" }
         // { field: "aplica", header: "aplica" }
       ]
     }
@@ -162,4 +181,40 @@ export class Container4Component implements OnInit {
   AceptarSoli(){
 
   }
+
+  saveRow(){   
+      console.log(this._registroSelected[0]);
+      let idsolicitud = this._registroSelected[0].id;
+      let idrepuesto = this.setOferta.get("idrepuesto").value;
+      let idproveedor = localStorage.getItem("idUser").toString();
+      let estado = "COA";
+      let ganador = "";
+      let precio = this.setOferta.get("cantidad").value;
+      let tiempo = this.setOferta.get("tiempo").value;
+
+      // console.log(idsolicitud);
+      // console.log(idrepuesto);
+      // console.log(idproveedor);
+      // console.log(estado);
+      // console.log(ganador);
+      // console.log(precio);
+      // console.log(tiempo);
+      this.solicitudService.setOfertaSave(idsolicitud.toString(), idrepuesto, idproveedor, precio, estado, tiempo, ganador).subscribe({
+        next: registro =>{
+          console.log(registro);
+        }
+      });
+  }
+
+  onSelectionChange(obj: any[]) {  
+
+      this.setOferta.controls["idrepuesto"].setValue(this._registroviewSelected[0].id.idsolicitud);
+      this.setOferta.controls["cantidad"].setValue(this._registroviewSelected[0].repuesto.valor);
+      this.setOferta.controls["tiempo"].setValue("0");
+
+ }
+
+  // isRowDisabled(data: any): boolean {
+  //   return data.color === 'orange'
+  // }
 }
