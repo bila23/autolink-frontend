@@ -76,6 +76,7 @@ export class LoginComponent implements OnInit{
                      }
                      localStorage.setItem("idTipoUser", this.userResponse.idTipo.toString());
                      localStorage.setItem("NombreUser", this.userResponse.nombre.toString());
+                     localStorage.setItem("idUser", this.userResponse.id.toString());
                      /*for(let key in this.userResponse){
                          if(this.userResponse.hasOwnProperty(key)){
                              //console.log("Valores de los usuarios --> id: " + this.userResponse[key].id);
