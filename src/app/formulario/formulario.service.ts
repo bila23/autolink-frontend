@@ -81,7 +81,7 @@ export class SolicitudService {
         };
         console.log("Datos enviados al servicio para almacenar el nuevo taller: " + JSON.stringify(body));
         return this.http.post<ISolicitud>(this.solicitudUrlBase + '/rest/solicitud/save', body, httpOptions).pipe(
-            tap(data => console.log('Solicitud almacenada: ' + JSON.stringify(data))),
+            //tap(data => console.log('Solicitud almacenada: ' + JSON.stringify(data))),
             catchError(this.handleError)
         );
     }
@@ -95,7 +95,7 @@ export class SolicitudService {
         };
         return this.http.get<IUser>(this.solicitudUrlBase + '/rest/usuario/one', httpOptions).pipe(
             tap(data => {
-                console.log('Usuario generador de la solicitud: ' + JSON.stringify(data));
+                //console.log('Usuario generador de la solicitud: ' + JSON.stringify(data));
             }),
             catchError(this.handleError)
         );
@@ -111,7 +111,7 @@ export class SolicitudService {
         };
         return this.http.get<ITaller>(this.solicitudUrlBase + '/rest/taller/byUser', httpOptions).pipe(
             tap(data => {
-                console.log('Taller generador de la solicitud: ' + JSON.stringify(data));
+                //console.log('Taller generador de la solicitud: ' + JSON.stringify(data));
             }),
             catchError(this.handleError)
         );

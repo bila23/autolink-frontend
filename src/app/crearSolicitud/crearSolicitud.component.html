@@ -1,79 +1,114 @@
-<form [formGroup]="crearSolicitudTaller">
-    <p-growl [value]="msgs" sticky="sticky"></p-growl>
-    <input type="text" id="codigoSol" formControlName="codigoSol" class="validate" required disabled style="display: none;"/>
-    <div class="row">
-        <div class="input-field col s12 valign-wrapper" style="font-weight: bold; font-size: 23px;">
-            <i class="small material-icons">add_box</i>
-            <span>Formulario de ingreso de solicitud</span>
+<style>
+    select {
+        display: inline !important;
+        border: 1px solid #c5c3c3 !important;
+    }
+</style>
+<div class="z-depth-3" style="padding:45px;">
+    <form [formGroup]="crearSolicitudTaller">
+        <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        <input type="text" id="codigoSol" formControlName="codigoSol" class="validate" required disabled
+            style="display: none;" />
+        <div class="row">
+            <div class="input-field col s12 valign-wrapper" style="font-weight: bold; font-size: 23px;">
+                <i class="small material-icons">add_box</i>
+                <span>Formulario de ingreso de solicitud</span>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s12">
-            <input type="text" id="name" formControlName="nombre" class="validate" required/>
-            <label for="name">Nombre del propietario</label>
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="name" formControlName="nombre" class="validate" required autofocus />
+                <label for="name">Nombre del propietario</label>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s12 m3">
-            <p-dropdown [options]="marcasModelo" formControlName="marca" [(ngModel)]="_marcaSeleccionada" class="validate" required id="marca"></p-dropdown>
+        <div class="row">
+            <div class="input-field col s12 m3">
+                <p-dropdown [options]="marcasModelo" formControlName="marca" [(ngModel)]="_marcaSeleccionada"
+                    class="validate" required id="marca"></p-dropdown>
+            </div>
+            <div class="input-field col s12 m3">
+                <input type="text" id="modelo" formControlName="modelo" class="validate" required />
+                <label for="modelo">Modelo</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input type="text" id="anho" formControlName="anho" class="validate" required />
+                <label for="anho">A&ntilde;o</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input type="text" id="tipoV" formControlName="tipoV" class="validate" required />
+                <label for="tipoV">Tipo de vehiculo</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input type="text" id="placa" formControlName="placa" class="validate" required />
+                <label for="placa">Placa</label>
+            </div>
         </div>
-        <div class="input-field col s12 m3">
-            <input type="text" id="modelo" formControlName="modelo" class="validate" required/>
-            <label for="modelo">Modelo</label>
+        <div class="row">
+            <div class="input-field col s12 m3">
+                <input type="text" id="chasis" formControlName="chasis" class="validate" required />
+                <label for="chasis">N° de chasis</label>
+            </div>
+            <div class="input-field col s12 m3">
+                <input type="text" id="motor" formControlName="motor" class="validate" required />
+                <label for="motor">N° de motor</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input type="text" id="siniestro" formControlName="siniestro" class="validate" required />
+                <label for="siniestro">N° Siniestro</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input type="text" id="poliza" formControlName="poliza" class="validate" required />
+                <label for="poliza">Poliza</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <p-dropdown [options]="aseguradoras" formControlName="aseguradora"
+                    [(ngModel)]="_aseguradoraSeleccionada" class="validate" required></p-dropdown>
+                <label for="aseguradora">Aseguradora</label>
+            </div>
         </div>
-        <div class="input-field col s12 m3">
-            <input type="text" id="anho" formControlName="anho" class="validate" required/>
-            <label for="anho">A&ntilde;o</label>
-        </div>
-        <div class="input-field col s12 m3">
-            <input type="text" id="tipoV" formControlName="tipoV" class="validate" required/>
-            <label for="tipoV">Tipo de vehiculo</label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s12 m4">
-            <input type="text" id="placa" formControlName="placa" class="validate" required/>
-            <label for="placa">Placa</label>
-        </div>
-        <div class="input-field col s12 m4">
-            <input type="text" id="chasis" formControlName="chasis" class="validate" required/>
-            <label for="chasis">N° de chasis</label>            
-        </div>
-        <div class="input-field col s12 m4">
-            <input type="text" id="motor" formControlName="motor" class="validate" required/>
-            <label for="motor">N° de motor</label>            
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s12 m4">
-            <input type="text" id="siniestro" formControlName="siniestro" class="validate" required/>
-            <label for="siniestro">N° Siniestro</label>
-        </div>
-        <div class="input-field col s12 m4">
-            <input type="text" id="poliza" formControlName="poliza" class="validate" required/>
-            <label for="poliza">Poliza</label>
-        </div>
-        <div class="input-field col s12 m4">
-            <p-dropdown [options]="aseguradoras" formControlName="aseguradora" [(ngModel)]="_aseguradoraSeleccionada" class="validate" required></p-dropdown>
-            <label for="aseguradora">Aseguradora</label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s12">
-            <textarea id="comentarios" formControlName="comentarios" class="materialize-textarea validate" required></textarea>
-            <label for="comentarios">Comentarios</label>
-        </div>
-    </div>
 
-    <!--<div>
-        <div class="input-field" style="display:inline-block;padding: 20px;">
-            <label for="tiempo">Tiempo</label><br/><br/>
-            <input type="text" id="tiempo" formControlName="tiempo" class="validate" required/>
+        <div class="row">
+            <div class="col s12">
+                <textarea id="comentarios" formControlName="comentarios" class="materialize-textarea validate"
+                    required></textarea>
+                <label for="comentarios">Comentarios</label>
+            </div>
         </div>
-    </div>-->
-  </form>
-  <!-- BOTONES -->
-  <div>
-    <button style="margin-right: 15px;" class="btn" type="submit" (click)="limpiarForm()">Limpiar formulario</button>
-    <button class="btn" type="submit" (click)="guardarSolicitud('ING',rowData)">Guardar solicitud</button>
+
+        <div>
+            <button *ngIf="mostrarRepuestos==false" style="margin-right: 15px;" class="btn" type="submit"
+                (click)="limpiarForm()">Limpiar
+                formulario</button>
+            <button *ngIf="mostrarRepuestos==false" class="btn" type="submit"
+                (click)="guardarSolicitud('ING',rowData)">Guardar solicitud</button>
+        </div>
+    </form>
+    <!-- INGRESO DE REPUESTOS-->
+    <div *ngIf="mostrarRepuestos==true">
+        <form [formGroup]="repuestoForm">
+            <div class="row">
+                <div class="col s12">
+                    <h5>Ingrese los repuestos que necesita, seleccionelos de la lista y haga clic en el bot&oacute;n
+                        guardar:</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6 input-field">
+                    <div>Repuestos:</div>
+                    <select id="id_rep" formControlName="id_repuesto" style="margin-bottom:15px">
+                        <option value="0">Debe seleccionar un valor</option>
+                        <option *ngFor="let rep of repuestos" [value]="rep.id">
+                            {{rep.nombre}}
+                        </option>
+                    </select>
+                    <button class="btn waves-effect waves-light" type="submit" (click)="save_repuestos()">
+                        Guardar<i class="material-icons right">send</i>
+                    </button>
+                </div>
+                <div class="col s6">
+
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
