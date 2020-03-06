@@ -15,6 +15,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 import { IUser } from '../_model/user.model';
 import { ITaller } from '../_model/taller.model';
 import { IRepsSolic } from '../_model/repsSol.model';
+import { IRepuestoXSol } from '../_model/repuestpoXSoli.model';
 
 @Component({
   templateUrl: './crearSolicitud.component.html'
@@ -28,6 +29,7 @@ export class CrearSolicitudComponent implements OnInit {
   mostrarRepuestos: boolean;
   repuestos: IRepuesto[] = [];
   cod_save: number;
+  rep_sol: IRepuestoXSol[] = [];
 
   cols: any[];
   clonedRepuestos: { [s: string]: IRepsSolic; } = {};
@@ -149,7 +151,23 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   save_repuestos() {
+    const id_rep = this.repuestoForm.controls['id_repuesto'].value;
+    if (id_rep > 0) {
+      this.solicitudService.guardarRepXSol(this.cod_save, id_rep).subscribe({
+        next: respxSol => {
+          this.msgs = [];
+          this.msgs.push({ severity: 'success', summary: 'Repuesto guardado', detail: '' });
+          this.alertService.success("Se ha guardado el repuesto correctamente");
 
+          //RECUPERO LOS REPUESTOS QUE HE GUARDADO
+          this.solicitudService.consultarRepXSol(this.cod_save).subscribe({
+            next: rep_sol => {
+              this.rep_sol = rep_sol;
+            }
+          });
+        }
+      });
+    }
   }
 
   guardarSolicitud(estado: string, respS: IRepsSolic) {

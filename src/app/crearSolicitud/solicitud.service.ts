@@ -172,7 +172,7 @@ export class SolicitudService {
     };
     return this.http.get<IRepuestoXSol[]>(this.solicitudUrlBase + '/rest/solicitud/repuesto', httpOptions).pipe(
       tap(data => {
-        console.log('Repuesto de las solicitud consultada:  ' + idSol + " --> " + JSON.stringify(data));
+        //console.log('Repuesto de las solicitud consultada:  ' + idSol + " --> " + JSON.stringify(data));
       }),
       catchError(this.handleError)
     );

@@ -10,9 +10,8 @@
         <input type="text" id="codigoSol" formControlName="codigoSol" class="validate" required disabled
             style="display: none;" />
         <div class="row">
-            <div class="input-field col s12 valign-wrapper" style="font-weight: bold; font-size: 23px;">
-                <i class="small material-icons">add_box</i>
-                <span>Formulario de ingreso de solicitud</span>
+            <div class="input-field col s12 valign-wrapper">
+                <h5>Paso 1 - Ingreso de datos generales de la solicitud</h5>
             </div>
         </div>
         <div class="row">
@@ -26,9 +25,13 @@
                 <p-dropdown [options]="marcasModelo" formControlName="marca" [(ngModel)]="_marcaSeleccionada"
                     class="validate" required id="marca"></p-dropdown>
             </div>
-            <div class="input-field col s12 m3">
+            <!--<div class="input-field col s12 m3">
                 <input type="text" id="modelo" formControlName="modelo" class="validate" required />
                 <label for="modelo">Modelo</label>
+            </div>-->
+            <div class="input-field col s12 m3">
+                <input type="text" id="chasis" formControlName="chasis" class="validate" required />
+                <label for="chasis">N° de chasis</label>
             </div>
             <div class="input-field col s12 m2">
                 <input type="text" id="anho" formControlName="anho" class="validate" required />
@@ -45,22 +48,18 @@
         </div>
         <div class="row">
             <div class="input-field col s12 m3">
-                <input type="text" id="chasis" formControlName="chasis" class="validate" required />
-                <label for="chasis">N° de chasis</label>
-            </div>
-            <div class="input-field col s12 m3">
                 <input type="text" id="motor" formControlName="motor" class="validate" required />
                 <label for="motor">N° de motor</label>
             </div>
-            <div class="input-field col s12 m2">
+            <div class="input-field col s12 m3">
                 <input type="text" id="siniestro" formControlName="siniestro" class="validate" required />
                 <label for="siniestro">N° Siniestro</label>
             </div>
-            <div class="input-field col s12 m2">
+            <div class="input-field col s12 m3">
                 <input type="text" id="poliza" formControlName="poliza" class="validate" required />
                 <label for="poliza">Poliza</label>
             </div>
-            <div class="input-field col s12 m2">
+            <div class="input-field col s12 m3">
                 <p-dropdown [options]="aseguradoras" formControlName="aseguradora"
                     [(ngModel)]="_aseguradoraSeleccionada" class="validate" required></p-dropdown>
                 <label for="aseguradora">Aseguradora</label>
@@ -88,12 +87,13 @@
         <form [formGroup]="repuestoForm">
             <div class="row">
                 <div class="col s12">
-                    <h5>Ingrese los repuestos que necesita, seleccionelos de la lista y haga clic en el bot&oacute;n
+                    <h5>Paso 2 - Ingrese los repuestos que necesita, seleccionelos de la lista y haga clic en el
+                        bot&oacute;n
                         guardar:</h5>
                 </div>
             </div>
             <div class="row">
-                <div class="col s6 input-field">
+                <div class="col s12 m6 input-field">
                     <div>Repuestos:</div>
                     <select id="id_rep" formControlName="id_repuesto" style="margin-bottom:15px">
                         <option value="0">Debe seleccionar un valor</option>
@@ -105,8 +105,16 @@
                         Guardar<i class="material-icons right">send</i>
                     </button>
                 </div>
-                <div class="col s6">
-
+                <div class="col s12 m6">
+                    <span style="font-weight: bold;">Lista de repuestos</span>
+                    <ul class="collection">
+                        <li class="collection-item avatar" *ngFor="let repsol of rep_sol"
+                            style="min-height: 0px !important;padding-left: 10px !important;">
+                            <span class="title">{{repsol.repuesto.nombre}}</span>
+                            <a style="position: initial !important;" href="#!" class="secondary-content"><i
+                                    class="material-icons">delete</i></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </form>
