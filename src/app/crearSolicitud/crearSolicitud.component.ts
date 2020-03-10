@@ -31,6 +31,7 @@ export class CrearSolicitudComponent implements OnInit {
   repuestos: IRepuesto[] = [];
   cod_save: number;
   rep_sol: IRepuestoXSol[] = [];
+  selectedFile: File = null;
 
   cols: any[];
   clonedRepuestos: { [s: string]: IRepsSolic; } = {};
@@ -174,6 +175,26 @@ export class CrearSolicitudComponent implements OnInit {
 
   show_images_form() {
     this.mostrarImagenes = true;
+  }
+
+  fileSelected(event){
+    this.selectedFile = <File>event.target.files[0];
+    var reader = new FileReader();      
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
+  subirArchivo() {
+    const dr = new FormData();
+    dr.append('dr', this.selectedFile);
+
+    this.solicitudService.guardarFoto(this.cod_save,dr).subscribe({
+      next: respxSol => {
+          this.msgs = [];
+          this.msgs.push({severity:'success', summary:'Foto guardada', detail:''});
+          this.alertService.success("Se ha guardado la foto");
+          setTimeout(() => {}, 3000);
+      }
+  });
   }
 
   guardarSolicitud(estado: string, respS: IRepsSolic) {
