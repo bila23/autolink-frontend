@@ -27,6 +27,7 @@ export class CrearSolicitudComponent implements OnInit {
   usuario: IUser;
   usrTaller: ITaller;
   mostrarRepuestos: boolean;
+  mostrarImagenes: boolean;
   repuestos: IRepuesto[] = [];
   cod_save: number;
   rep_sol: IRepuestoXSol[] = [];
@@ -92,6 +93,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.marcasSource = [];
     this._marcaSeleccionada = "";
     this.mostrarRepuestos = false;
+    this.mostrarImagenes = false;
 
     this.aseguradoraSource = [];
 
@@ -168,6 +170,10 @@ export class CrearSolicitudComponent implements OnInit {
         }
       });
     }
+  }
+
+  show_images_form() {
+    this.mostrarImagenes = true;
   }
 
   guardarSolicitud(estado: string, respS: IRepsSolic) {
