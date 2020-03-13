@@ -81,7 +81,7 @@
             <button *ngIf="mostrarRepuestos==false" class="btn" type="submit"
                 (click)="guardarSolicitud('ING',rowData)">Guardar solicitud</button>
         </div>
-    </form>
+    </form><br/>
     <!-- INGRESO DE REPUESTOS-->
     <div *ngIf="mostrarRepuestos==true">
         <form [formGroup]="repuestoForm">
@@ -102,7 +102,7 @@
                         </option>
                     </select>
                     <button class="btn waves-effect waves-light" type="submit" (click)="save_repuestos()">
-                        Guardar<i class="material-icons right">send</i>
+                        Guardar
                     </button>
                 </div>
                 <div class="col s12 m6">
@@ -111,36 +111,32 @@
                         <li class="collection-item avatar" *ngFor="let repsol of rep_sol"
                             style="min-height: 0px !important;padding-left: 10px !important;">
                             <span class="title">{{repsol.repuesto.nombre}}</span>
-                            <a style="position: initial !important;" href="#!" class="secondary-content"><i
-                                    class="material-icons">delete</i></a>
+                            <button (click)="delete_repuestos(repsol.id.idrepuesto)" class="btn waves-effect waves-light secondary-content" type="submit" style="top:3px">
+                                <i class="material-icons">delete</i>
+                            </button>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col s12">
-                    <button class="btn waves-effect waves-light" type="submit" (click)="show_images_form()">
-                        Anexar imagenes<i class="material-icons right">send</i>
-                    </button>
-                </div>
-            </div>
         </form>
-    </div>
-
-    <!--INICIO DE CODIGO PARA INGRESAR IMAGENES-->
-    <div *ngIf="mostrarImagenes==true">
+        <br/><br/>
+        <!--INICIO DE CODIGO PARA INGRESAR IMAGENES-->
         <div class="row">
             <div class="col s12">
                 <h5>Paso 3 - Puede anexar imagenes de los repuestos que necesita:</h5>
             </div>
         </div>
         <div class="row">
-            <div class="col s12">
+            <div class="col s12 m6">
                 <input id="file-upload" type="file" (change)="fileSelected($event)"/>
                 <button class="btn waves-effect waves-light" type="submit" (click)="subirArchivo()">Guardar Foto</button>
             </div>
+            <div class="col s12 m6">
+                <span style="font-weight: bold;">Lista de imágenes</span>
+            </div>
         </div>
+        <!--FIN DE CODIGO PARA INGRESAR IMAGENES-->
+
     </div>
-    <!--FIN DE CODIGO PARA INGRESAR IMAGENES-->
 
 </div>

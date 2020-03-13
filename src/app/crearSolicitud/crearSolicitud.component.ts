@@ -173,6 +173,18 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
 
+  delete_repuestos(id_repuesto: number){
+    this.solicitudService.deleteRepXSol(this.cod_save, id_repuesto).subscribe( data =>{
+      //RECUPERO LOS REPUESTOS QUE HE GUARDADO
+      this.solicitudService.consultarRepXSol(this.cod_save).subscribe({
+        next: rep_sol => {
+          this.rep_sol = rep_sol;
+        }
+      });
+    });
+
+  }
+
   show_images_form() {
     this.mostrarImagenes = true;
   }
@@ -194,7 +206,7 @@ export class CrearSolicitudComponent implements OnInit {
           this.alertService.success("Se ha guardado la foto");
           setTimeout(() => {}, 3000);
       }
-  });
+    });
   }
 
   guardarSolicitud(estado: string, respS: IRepsSolic) {

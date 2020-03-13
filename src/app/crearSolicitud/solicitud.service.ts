@@ -132,6 +132,23 @@ export class SolicitudService {
     );
   }
 
+  deleteRepXSol(id_sol: number, id_rep: number): Observable<IRepuestoXSol>{
+    this.repXSolRqst = JSON.parse(JSON.stringify({
+      id: id_sol,
+      idRepuesto: id_rep
+    }));
+    let body = this.repXSolRqst;
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json' },
+      body: body
+    };
+
+    return this.http.delete<IRepuestoXSol>(this.solicitudUrlBase + '/rest/solicitud/repuesto/delete', httpOptions).pipe(
+      tap(data => console.log('Repuesto eliminado en la solicitud: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
   guardarFoto(idSolicitud: number, dr: FormData) {
     return this.http.put(this.solicitudUrlBase + '/rest/solicitud/foto/save/' + idSolicitud, dr).pipe(
       tap(data => console.log('Repuesto almacenado en la solicitud: ' + JSON.stringify(data))),
