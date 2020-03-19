@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { IResultByStates } from '../_model/resultbystates.module'
 import { tap, catchError } from 'rxjs/operators';
 import { IListRepuestosModule } from '../_model/list-repuestos.module'
+import { IListPiezasModule } from '../_model/list-piezas.module'
 import { SetOfertaModule } from '../_model/set-oferta.module'
 
 @Injectable({
@@ -21,7 +22,6 @@ export class SolicitudtableroprovService {
       headers: {'Content-Type': 'application/json'},
       params: {}
     };
-
     return this.http.get<IResultByStates[]>(this.usuariosUrlBAse + "/rest/solicitud/byEstado?estado=" + estado).pipe(
       tap(data => {
         console.log("tablero segun estado" + JSON.stringify(data));
@@ -43,12 +43,26 @@ export class SolicitudtableroprovService {
     );
   }
 
+  getPiezaSoliProv(idsoli: string, idprov: string):Observable<IListPiezasModule[]>{
+    console.log("consulta para traer la lista de piezas por idsoli y id prov");
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+
+    return this.http.get<IListPiezasModule[]>(this.usuariosUrlBAse + "/rest/oferta/bySolicitudAndByProveedor/" + idsoli.toString() + "/" + idprov.toString()).pipe(
+      tap(data => {
+        console.log("piezas segun idsoli y idprov " + JSON.stringify(data));
+      })
+    );
+  }
+
   setOfertaSave(idsolicitud: string, idrepuesto: string, idproveedor: string, cantidad: string, estado: string, tiempo: string, ganador: string){
     console.log("metodo setOfertaSave");
     this.setOferta = JSON.parse(JSON.stringify({
-      "idsolicitud": idsolicitud,
-      "idrepuesto": idrepuesto,
-      "idproveedor": idproveedor,
+      "idSolicitud": idsolicitud,
+      "idRepuesto": idrepuesto,
+      "idProveedor": idproveedor,
       "cantidad": cantidad,
       "estado": estado,
       "tiempo": tiempo,

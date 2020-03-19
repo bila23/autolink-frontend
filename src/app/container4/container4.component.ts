@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultByStates } from '../_model/resultbystates.module'
 import { SolicitudtableroprovService } from './solicitudtableroprov.service'
 import { IListRepuestosModule } from '../_model/list-repuestos.module';
+import { IListPiezasModule } from '../_model/list-piezas.module'
 import { SelectItem, Message } from 'primeng/api';
 import { $ } from 'protractor';
 
@@ -13,11 +14,12 @@ import { $ } from 'protractor';
 })
 export class Container4Component implements OnInit {
   registro: IResultByStates[]=[];
+  registro_viewpieza: IListPiezasModule[]=[];
   cols: any[];
   dialogEditSoli: boolean;
   dialogVerPieza: boolean;  
-  registroview: IListRepuestosModule[]=[];
-  _registroviewSelected: IListRepuestosModule[];
+  registroview: IListPiezasModule[]=[];
+  _registroviewSelected: IListPiezasModule[];
   verpiezaSoli: SelectItem[];
   _registroSelected: IResultByStates[];
   cols_verpiezas: any[];
@@ -43,10 +45,11 @@ export class Container4Component implements OnInit {
       idsolicitud: new FormControl(''),
       idrepuesto: new FormControl(''),
       idproveedor: new FormControl(''),
-      cantidad: new FormControl(''),
+      cantidad: new FormControl(''),      
       estado: new FormControl(''),
       tiempo: new FormControl(''),
       ganador: new FormControl(''),
+      precio: new FormControl('')
     })
 
     this.viewSoliForm = new FormGroup({
@@ -117,7 +120,8 @@ export class Container4Component implements OnInit {
 
   VerPiezasSolicitud(){
     this.registroview = [];
-    console.log("Ver piezas solicitud");
+    console.log("Ver piezas solicitud container 4");
+    let idprov = localStorage.getItem("idUser").toString();;
     this.verpiezaSoli=[
       {label:'', value:null},
       {label:'Activo', value:"Activo"},
@@ -131,15 +135,24 @@ export class Container4Component implements OnInit {
       let id_selected = this._registroSelected[0].id;
 
       this.dialogVerPieza = true;
-      this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
-        next: registro =>{
+      // this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
+      //   next: registro =>{
 
-          for(let re in registro){
-            //this.registroview.push(registro[re].repuesto);
-            this.registroview.push(registro[re]);
-            console.log("Console... ver piezas");
+      //     for(let re in registro){
+      //       //this.registroview.push(registro[re].repuesto);
+      //       this.registroview.push(registro[re]);
+      //       console.log("Console... ver piezas");
             
-            console.log(registro[re].repuesto);
+      //       console.log(registro[re].repuesto);
+      //       console.log(registro[re]);
+      //     }
+      //   }
+      // })
+
+      this.solicitudService.getPiezaSoliProv(id_selected.toString(), idprov.toString()).subscribe({
+        next: registro =>{
+          for(let re in registro){
+            this.registroview.push(registro[re]);
             console.log(registro[re]);
           }
         }
@@ -147,9 +160,9 @@ export class Container4Component implements OnInit {
 
       this.cols_verpiezas = [];
       this.cols_verpiezas=[
-        { field: "repuesto", subfield: "nombre"},
-        { field: "repuesto", subfield: "valor" },
-        { field: "repuesto", subfield: "tiempo" },
+        { field: "repuesto", header: "repuesto"},
+        { field: "precio", header: "precio" },
+        { field: "tiempo", header: "tiempo" },
         { field: "guardar", header: "guardar" }
         // { field: "aplica", header: "aplica" }
       ]
@@ -188,29 +201,41 @@ export class Container4Component implements OnInit {
       let idrepuesto = this.setOferta.get("idrepuesto").value;
       let idproveedor = localStorage.getItem("idUser").toString();
       let estado = "COA";
-      let ganador = "";
-      let precio = this.setOferta.get("cantidad").value;
+      let ganador = "false";
+      let precio = this.setOferta.get("precio").value;
       let tiempo = this.setOferta.get("tiempo").value;
 
-      // console.log(idsolicitud);
-      // console.log(idrepuesto);
-      // console.log(idproveedor);
-      // console.log(estado);
-      // console.log(ganador);
-      // console.log(precio);
-      // console.log(tiempo);
+      console.log("idsolicitud:" + idsolicitud);
+      console.log("idrepuesto:" + idrepuesto);
+      console.log("idproveedor" + idproveedor);
+      console.log("estado:" + estado);
+      console.log("ganador:" + ganador);
+      console.log("precio:" + precio);
+      console.log("tiempo:" + tiempo);
       this.solicitudService.setOfertaSave(idsolicitud.toString(), idrepuesto, idproveedor, precio, estado, tiempo, ganador).subscribe({
         next: registro =>{
           console.log(registro);
         }
       });
+
+      //this.dialogVerPieza = true;
+      this.VerPiezasSolicitud();
   }
 
   onSelectionChange(obj: any[]) {  
-
-      this.setOferta.controls["idrepuesto"].setValue(this._registroviewSelected[0].id.idsolicitud);
-      this.setOferta.controls["cantidad"].setValue(this._registroviewSelected[0].repuesto.valor);
-      this.setOferta.controls["tiempo"].setValue("0");
+    console.log("on selection change");
+    console.log(this._registroviewSelected);
+    
+    if (this._registroviewSelected[0] != undefined && this._registroviewSelected[0] != null){
+      this.setOferta.controls["idrepuesto"].setValue(this._registroviewSelected[0].idRepuesto);
+      this.setOferta.controls["precio"].setValue(this._registroviewSelected[0].precio);
+      this.setOferta.controls["tiempo"].setValue(this._registroviewSelected[0].tiempo);
+    }else{
+      this.setOferta.controls["idrepuesto"].setValue(-1);
+      this.setOferta.controls["precio"].setValue("");
+      this.setOferta.controls["tiempo"].setValue("");
+    }
+     
 
  }
 

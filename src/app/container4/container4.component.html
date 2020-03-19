@@ -85,7 +85,7 @@
          <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
             <form [formGroup]="setOferta">
                 <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
-                [rows]="10" [responsive]="true" [(selection)]="_registroviewSelected" datakey="id">
+                [rows]="3" [responsive]="true" [(selection)]="_registroviewSelected" datakey="id">
                     <ng-template pTemplate="caption">
                         <div style="text-align: right">
                         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -109,13 +109,15 @@
                                 <p-tableCheckbox [value]="rowData" (click)="onSelectionChange(rowData)"></p-tableCheckbox>
                             </td>
                             <td *ngFor="let col of columns;index as i;">                                
-                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'nombre'">
-                                    {{rowData[col.field][col.subfield]}}
+                                <span *ngIf="col.field == 'repuesto'">
+                                    {{rowData[col.field]}}
                                 </span>
-                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'valor'">
-                                    {{rowData[col.field][col.subfield] | currency: 0: '$'}}
+                                <span *ngIf="col.field == 'precio'">
+                                    {{rowData[col.field] | currency: 0: '$'}}
+                                    <!-- {{rowData[col.field][col.subfield] | currency: 0: '$'}} -->
                                 </span>
-                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'tiempo'">                                    
+                                <span *ngIf="col.field == 'tiempo'">       
+                                    {{rowData[col.field]}}            
                                 </span>
                             </td>
                         </tr>
@@ -123,8 +125,8 @@
                 </p-table>
                 
                 <div class="form-group">
-                    <label for="Valor_Selected">Precio</label>
-                    <input type="text" id="Valor_Selected" formControlName="cantidad" class="validate form-control" />
+                    <label for="Precio_Selected">Precio</label>
+                    <input type="text" id="Precio_Selected" formControlName="precio" class="validate form-control" />
                 </div>
                 <div class="form-group">
                     <label for="Hora_Selected">Hora</label>

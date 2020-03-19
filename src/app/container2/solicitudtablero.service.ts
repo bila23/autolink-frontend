@@ -28,7 +28,7 @@ export class SolicitudtableroService {
       headers: {'Content-Type': 'application/json'},
       params: {}
     };
-
+    console.log(this.usuariosUrlBAse);
     return this.http.get<IResultByStates[]>(this.usuariosUrlBAse + "/rest/solicitud/byEstado?estado=" + estado).pipe(
       tap(data => {
         console.log("tablero segun estado" + JSON.stringify(data));
