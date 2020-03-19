@@ -50,6 +50,10 @@ export class TallerSolicitudComponent implements OnInit {
     this.router.navigate(['/crearsolicitud']);
   }
 
+  backToForm() {
+    this.MostrarTabla = true;
+  }
+
   ngOnInit() {
     this.BuildStatus("ING");
     this.MostrarTabla = true;
