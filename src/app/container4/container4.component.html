@@ -98,9 +98,9 @@
                             <th style="width: 3em">
                                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Hora</th>
+                            <th>Repuesto</th>
+                            <th>Tipo Vehiculo</th>
+                            <th>Año</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -108,30 +108,32 @@
                             <td>
                                 <p-tableCheckbox [value]="rowData" (click)="onSelectionChange(rowData)"></p-tableCheckbox>
                             </td>
-                            <td *ngFor="let col of columns;index as i;">                                
-                                <span *ngIf="col.field == 'repuesto'">
-                                    {{rowData[col.field]}}
+                            <td *ngFor="let col of columns;">                                
+                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'nombre'">
+                                    {{rowData[col.field][col.subfield]}}
                                 </span>
-                                <span *ngIf="col.field == 'precio'">
-                                    {{rowData[col.field] | currency: 0: '$'}}
-                                    <!-- {{rowData[col.field][col.subfield] | currency: 0: '$'}} -->
+                                <span *ngIf="col.field == 'solicitud' && col.subfield == 'tipoVehiculo'">
+                                    {{rowData[col.field][col.subfield]}}
                                 </span>
-                                <span *ngIf="col.field == 'tiempo'">       
-                                    {{rowData[col.field]}}            
+                                <span *ngIf="col.field == 'solicitud' && col.subfield == 'anioCarro'">
+                                    {{rowData[col.field][col.subfield]}}
                                 </span>
                             </td>
                         </tr>
                     </ng-template>  
                 </p-table>
-                
                 <div class="form-group">
-                    <label for="Precio_Selected">Precio</label>
-                    <input type="text" id="Precio_Selected" formControlName="precio" class="validate form-control" />
+                    <!-- <label for="Cantidad_Selected">Cantidad</label> -->
+                    <input type="text" id="Hora_Selected" formControlName="cantidad" class="validate form-control" placeholder="Cantidad..." />
                 </div>
                 <div class="form-group">
-                    <label for="Hora_Selected">Hora</label>
-                    <input type="text" id="Hora_Selected" formControlName="tiempo" class="validate form-control" />
+                    <!-- <label for="Precio_Selected">Precio</label> -->
+                    <input type="text" id="Precio_Selected" formControlName="precio" class="validate form-control" placeholder="Precio..."/>
                 </div>
+                <div class="form-group">
+                    <!-- <label for="Hora_Selected">Hora</label> -->
+                    <input type="text" id="Hora_Selected" formControlName="tiempo" class="validate form-control" placeholder="Hora..."/>
+                </div>                
                 <div class="form-group" style="margin-top: 10px;">
                     <div style="width: 100%; display: flex;">                        
                         <div style="width: 33%; display: flex; flex-direction: column;">

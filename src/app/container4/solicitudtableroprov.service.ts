@@ -57,7 +57,7 @@ export class SolicitudtableroprovService {
     );
   }
 
-  setOfertaSave(idsolicitud: string, idrepuesto: string, idproveedor: string, cantidad: string, estado: string, tiempo: string, ganador: string){
+  setOfertaSave(idsolicitud: number, idrepuesto: number, idproveedor: number, cantidad: number, estado: string, tiempo: number, ganador: boolean, precio: number){
     console.log("metodo setOfertaSave");
     this.setOferta = JSON.parse(JSON.stringify({
       "idSolicitud": idsolicitud,
@@ -66,7 +66,8 @@ export class SolicitudtableroprovService {
       "cantidad": cantidad,
       "estado": estado,
       "tiempo": tiempo,
-      "ganador": ganador
+      "ganador": ganador,
+      "precio": precio
     }));
     let body = this.setOferta;
     const httpOptions = {

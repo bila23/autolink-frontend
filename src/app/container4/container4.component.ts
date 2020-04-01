@@ -18,8 +18,8 @@ export class Container4Component implements OnInit {
   cols: any[];
   dialogEditSoli: boolean;
   dialogVerPieza: boolean;  
-  registroview: IListPiezasModule[]=[];
-  _registroviewSelected: IListPiezasModule[];
+  registroview: IListRepuestosModule[]=[];
+  _registroviewSelected: IListRepuestosModule[];
   verpiezaSoli: SelectItem[];
   _registroSelected: IResultByStates[];
   cols_verpiezas: any[];
@@ -133,38 +133,37 @@ export class Container4Component implements OnInit {
     if (typeof this._registroSelected !== typeof undefined){
       console.log("id selected: " + this._registroSelected[0].id);
       let id_selected = this._registroSelected[0].id;
-
+      console.log(id_selected);
       this.dialogVerPieza = true;
-      // this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
-      //   next: registro =>{
-
-      //     for(let re in registro){
-      //       //this.registroview.push(registro[re].repuesto);
-      //       this.registroview.push(registro[re]);
-      //       console.log("Console... ver piezas");
-            
-      //       console.log(registro[re].repuesto);
-      //       console.log(registro[re]);
-      //     }
-      //   }
-      // })
-
-      this.solicitudService.getPiezaSoliProv(id_selected.toString(), idprov.toString()).subscribe({
+      
+      this.solicitudService.getPiezasSoli(id_selected.toString()).subscribe({
         next: registro =>{
+
           for(let re in registro){
+            //this.registroview.push(registro[re].repuesto);
             this.registroview.push(registro[re]);
+            console.log("Console... ver piezas");
+            
+            console.log(registro[re].repuesto);
             console.log(registro[re]);
           }
         }
       })
 
+      // this.solicitudService.getPiezaSoliProv(id_selected.toString(), idprov.toString()).subscribe({
+      //   next: registro =>{
+      //     for(let re in registro){
+      //       this.registroview.push(registro[re]);
+      //       console.log(registro[re]);
+      //     }
+      //   }
+      // })
+
       this.cols_verpiezas = [];
       this.cols_verpiezas=[
-        { field: "repuesto", header: "repuesto"},
-        { field: "precio", header: "precio" },
-        { field: "tiempo", header: "tiempo" },
-        { field: "guardar", header: "guardar" }
-        // { field: "aplica", header: "aplica" }
+        { field: "repuesto", subfield: "nombre"},
+        { field: "solicitud", subfield: "tipoVehiculo" },
+        { field: "solicitud", subfield: "anioCarro" }        
       ]
     }
   }
@@ -201,9 +200,10 @@ export class Container4Component implements OnInit {
       let idrepuesto = this.setOferta.get("idrepuesto").value;
       let idproveedor = localStorage.getItem("idUser").toString();
       let estado = "COA";
-      let ganador = "false";
+      let ganador = false;
       let precio = this.setOferta.get("precio").value;
       let tiempo = this.setOferta.get("tiempo").value;
+      let cantidad = this.setOferta.get("cantidad").value;
 
       console.log("idsolicitud:" + idsolicitud);
       console.log("idrepuesto:" + idrepuesto);
@@ -212,7 +212,8 @@ export class Container4Component implements OnInit {
       console.log("ganador:" + ganador);
       console.log("precio:" + precio);
       console.log("tiempo:" + tiempo);
-      this.solicitudService.setOfertaSave(idsolicitud.toString(), idrepuesto, idproveedor, precio, estado, tiempo, ganador).subscribe({
+      console.log("cantidad:" + cantidad);
+      this.solicitudService.setOfertaSave(Number(idsolicitud), Number(idrepuesto), Number(idproveedor), Number(cantidad), estado, Number(tiempo), ganador, Number(precio)).subscribe({
         next: registro =>{
           console.log(registro);
         }
@@ -220,6 +221,9 @@ export class Container4Component implements OnInit {
 
       //this.dialogVerPieza = true;
       this.VerPiezasSolicitud();
+      this.setOferta.controls["cantidad"].setValue("");
+      this.setOferta.controls["precio"].setValue("");
+      this.setOferta.controls["tiempo"].setValue("");
   }
 
   onSelectionChange(obj: any[]) {  
@@ -227,16 +231,19 @@ export class Container4Component implements OnInit {
     console.log(this._registroviewSelected);
     
     if (this._registroviewSelected[0] != undefined && this._registroviewSelected[0] != null){
-      this.setOferta.controls["idrepuesto"].setValue(this._registroviewSelected[0].idRepuesto);
-      this.setOferta.controls["precio"].setValue(this._registroviewSelected[0].precio);
-      this.setOferta.controls["tiempo"].setValue(this._registroviewSelected[0].tiempo);
+      console.log("entre if");
+      this.setOferta.controls["idrepuesto"].setValue(this._registroviewSelected[0].repuesto.id);
+      // this.setOferta.controls["precio"].setValue(this._registroviewSelected[0].precio);
+      // this.setOferta.controls["tiempo"].setValue(this._registroviewSelected[0].tiempo);
     }else{
+      console.log("entre else");
       this.setOferta.controls["idrepuesto"].setValue(-1);
-      this.setOferta.controls["precio"].setValue("");
-      this.setOferta.controls["tiempo"].setValue("");
+      // this.setOferta.controls["precio"].setValue("");
+      // this.setOferta.controls["tiempo"].setValue("");
     }
-     
-
+    
+    console.log("id repuesto selected");
+    console.log(this.setOferta.get("idrepuesto").value);
  }
 
   // isRowDisabled(data: any): boolean {
