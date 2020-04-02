@@ -85,13 +85,13 @@
          <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
             <form [formGroup]="setOferta">
                 <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
-                [rows]="3" [responsive]="true" [(selection)]="_registroviewSelected" datakey="id">
+                [rows]="3" [responsive]="true" [(selection)]="_registroviewSelected" datakey="Repuesto">
                     <ng-template pTemplate="caption">
                         <div style="text-align: right">
-                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                        <input type="text" pInputText size="30" placeholder="Buscar"
-                            (input)="tableResultVerPieza.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                        </div>
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input type="text" pInputText size="30" placeholder="Buscar"
+                              (input)="tableResultVerPieza.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                          </div>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
@@ -108,17 +108,11 @@
                             <td>
                                 <p-tableCheckbox [value]="rowData" (click)="onSelectionChange(rowData)"></p-tableCheckbox>
                             </td>
-                            <td *ngFor="let col of columns;">                                
-                                <span *ngIf="col.field == 'repuesto' && col.subfield == 'nombre'">
+                            <td *ngFor="let col of columns;"> 
+                                <span>
                                     {{rowData[col.field][col.subfield]}}
                                 </span>
-                                <span *ngIf="col.field == 'solicitud' && col.subfield == 'tipoVehiculo'">
-                                    {{rowData[col.field][col.subfield]}}
-                                </span>
-                                <span *ngIf="col.field == 'solicitud' && col.subfield == 'anioCarro'">
-                                    {{rowData[col.field][col.subfield]}}
-                                </span>
-                            </td>
+                            </td>                           
                         </tr>
                     </ng-template>  
                 </p-table>

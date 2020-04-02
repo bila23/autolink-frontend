@@ -141,11 +141,7 @@ export class Container4Component implements OnInit {
 
           for(let re in registro){
             //this.registroview.push(registro[re].repuesto);
-            this.registroview.push(registro[re]);
-            console.log("Console... ver piezas");
-            
-            console.log(registro[re].repuesto);
-            console.log(registro[re]);
+            this.registroview.push(registro[re]);           
           }
         }
       })
@@ -159,12 +155,14 @@ export class Container4Component implements OnInit {
       //   }
       // })
 
+      console.log(this.registroview);
       this.cols_verpiezas = [];
       this.cols_verpiezas=[
         { field: "repuesto", subfield: "nombre"},
         { field: "solicitud", subfield: "tipoVehiculo" },
         { field: "solicitud", subfield: "anioCarro" }        
       ]
+      console.log(this.cols_verpiezas);
     }
   }
 
