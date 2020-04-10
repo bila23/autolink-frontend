@@ -88,7 +88,6 @@ set estadoModelo(value:string){
   }
 
   ngOnInit():void{
-      console.log("Cargando ventana principal de modelos...");
       this.marcasSource = [];
       this.marcasModelo = [];
       this._estadoModelo="";
@@ -97,8 +96,6 @@ set estadoModelo(value:string){
       this.modeloService.getModelos().subscribe({
         next: modelos => {
           this.modelos=modelos;
-          console.log("Lista de modelos registrados...");
-          console.log(JSON.stringify(this.modelos));
           for(let key in this.modelos){
             if(this.modelos.hasOwnProperty(key)){
               this.modelosView[key]={
@@ -116,8 +113,6 @@ set estadoModelo(value:string){
               }
             }
           }
-        
-          console.log("Modelo view: " + JSON.stringify(this.modelosView));
         },
         error: err=>this.errorMessage=err
       });
@@ -128,7 +123,6 @@ set estadoModelo(value:string){
         //this.tiposUsuarios.push({label: "Tipo de usuario", value: null});
         if(this.marcasSource && this.marcasSource.length > 0){
             for(let key in this.marcasSource){
-                 console.log("Llenamos el dropdownList de marcas");
                  if(this.marcasSource.hasOwnProperty(key)){
                      this.marcasModelo.push({label: this.marcasSource[key].nombre, value: {id:this.marcasSource[key].id,nombre:this.marcasSource[key].nombre}});
                  }
@@ -138,7 +132,6 @@ set estadoModelo(value:string){
     }
 
   agregarModelo(){
-    console.log("Abriendo formulario para agregar un nuevo modelo ... ");
     this.displayDialog = true;
 
     this.estadosModelo=[
@@ -153,8 +146,6 @@ set estadoModelo(value:string){
   }
 
   guardarModelo(){
-    console.log("Guardando nuevo modelo ... ");
-
     if(this._estadoModelo == "Activo"){
       this.estado=true;
     }
@@ -164,7 +155,6 @@ set estadoModelo(value:string){
     this.modeloService.guardarModelo(this.registrarModeloForm,this._marcaSeleccionada,this.estado).subscribe({
         next: modeloLog => {
           if(modeloLog != null){
-            console.log("*** Modelo guardado: ");
             this.displayDialog = false;
             this.estadosModelo=[];
             this.msgs = [];
@@ -195,7 +185,6 @@ set estadoModelo(value:string){
   }
 
   editarModelo(){
-    console.log("editaremos el modelo . .. ");
     this._estadoModelo = "";
     this.estadosModelo=[
       {label:'', value:null},
@@ -206,21 +195,24 @@ set estadoModelo(value:string){
     this.dialogEditMdl=true;
     this.updateModeloForm.controls['idMdl'].setValue(this._modeloSelected[0].id);
     this.updateModeloForm.controls['nombre'].setValue(this._modeloSelected[0].nombre);
+
+    if(this._modeloSelected[0].estado)
+      this.updateModeloForm.controls['estadoModelo'].setValue("Activo");
+    else
+      this.updateModeloForm.controls['estadoModelo'].setValue("Inactivo");
   }
 
   actualizarModelo(){
-    console.log("Actualizando el modelo ... ");
-    if ( this._marcaSeleccionada != "" && this._estadoModelo != ""){
+    if ( this._marcaSeleccionada != ""){
       this.modeloService.actualizarModelo(this.updateModeloForm,this._marcaSeleccionada).subscribe({
           next: modeloLog => {
             if(modeloLog != null){
-              console.log("*** Se actualizo la marca y estado: ESTADO" + this._estadoModelo);
-              if(this._estadoModelo=="Activo"){
+              if (this.updateModeloForm.controls['estadoModelo'].value =="Activo"){
                 this.estado=true;
               }else{
                 this.estado=false;
               }
-              if(this._estadoModelo != ""){
+              if (this.updateModeloForm.controls['estadoModelo'].value != ""){
                 this.modeloService.actualizarEstado(this.updateModeloForm.controls['nombre'].value,this.estado).subscribe({
                     next: userAc => {
                       if(userAc != null){
@@ -282,7 +274,6 @@ set estadoModelo(value:string){
       this.modeloService.actualizarModelo(this.updateModeloForm,this._marcaSeleccionada).subscribe({
         next: userLog => {
           if(userLog != null){
-            console.log("*** Se actualizo la marca: ");
             this.dialogEditMdl = false;
             this.estadosModelo=[];
             this._modeloSelected=[];
@@ -323,7 +314,6 @@ set estadoModelo(value:string){
     this.modeloService.actualizarEstado(this.updateModeloForm.controls['nombre'].value,this.estado).subscribe({
             next: userLog => {
               if(userLog != null){
-                console.log("*** Se actualizo estado: ");
                 this.dialogEditMdl = false;
                 this.estadosModelo=[];
                 this._modeloSelected=[];
@@ -361,7 +351,6 @@ set estadoModelo(value:string){
   }
   
   verModelo(){
-    console.log("visualizaremos el modelo . .. ");
     this.dialogVerMdl=true;
     this.verModeloForm.controls['nombre'].setValue(this._modeloSelected[0].nombre);
     this.verModeloForm.controls['marcaModelo'].setValue(this._modeloSelected[0].nombreMarca);

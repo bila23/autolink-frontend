@@ -22,7 +22,6 @@ export class ModeloService {
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
   getModelos(): Observable<IModelo[]> {
-    console.log("Consultando la lista de modelos ... ");
     const httpOptions = {
       headers: { 'Content-Type': 'application/json' },
       params: {}
@@ -51,7 +50,6 @@ export class ModeloService {
   }
 
   guardarModelo(nuevoMdlFrom: FormGroup, _tipoSeleccionado: string, _estadoModelo: boolean): Observable<IModelo> {
-    console.log("Llamaremos al servicio para guardar un nuevo modelo .. ");
     let mydate = new Date();
     this.userL = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem('currentUser'))));
     this.nuevoMdl = JSON.parse(JSON.stringify({
@@ -67,7 +65,6 @@ export class ModeloService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados al servicio para alamacenar el usuario: " + JSON.stringify(body));
     return this.http.post<IModelo>(this.modeloUrlBAse + '/rest/modelo/save', body, httpOptions).pipe(
       tap(data => console.log('Modelo almacenado: ' + JSON.stringify(data))),
       catchError(this.handleError)
@@ -75,7 +72,6 @@ export class ModeloService {
   }
 
   actualizarModelo(updateModeloForm: FormGroup, _marcaSeleccionada: string): Observable<IModelo> {
-    console.log("Llamaremos al servicio para actualizar un modelo ...");
     this.actualizarMdl = JSON.parse(JSON.stringify({
       "id": updateModeloForm.controls['idMdl'].value,
       "nombre": updateModeloForm.controls['nombre'].value,
@@ -87,7 +83,6 @@ export class ModeloService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados al servicio para actualizar el modelo: " + JSON.stringify(body));
     return this.http.put<IModelo>(this.modeloUrlBAse + '/rest/modelo/update', body, httpOptions).pipe(
       tap(data => {
         console.log('Modelo actualizado: ' + JSON.stringify(data));
@@ -97,7 +92,6 @@ export class ModeloService {
   }
 
   actualizarEstado(nombre: string, _estadoModelo: boolean): Observable<IModelo> {
-    console.log("Estado del modelo: " + _estadoModelo);
     this.actualizarMdl = JSON.parse(JSON.stringify({
       "nombre": nombre,
       "estado": (_estadoModelo ? true : false)
@@ -108,7 +102,6 @@ export class ModeloService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados para actualizar el estado: " + JSON.stringify(body));
     return this.http.post<IModelo>(this.modeloUrlBAse + '/rest/modelo/status', body, httpOptions).pipe(
       tap(data => {
         console.log('Estado de Modelo actualizado: ' + JSON.stringify(data));
