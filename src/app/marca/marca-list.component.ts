@@ -51,20 +51,16 @@ export class MarcaListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Cargando ventana principal de marca...");
     this._estadoMarca = "";
     this.marcaService.getMarcas().subscribe({
       next: marcas => {
         this.marcas = marcas;
-        //console.log("Lista de marcas registradas...");
-        //console.log(JSON.stringify(this.marcas));
       },
       error: err => this.errorMessage = err
     });
   }
 
   agregarMarca() {
-    console.log("Abriendo formulario para agregar una nueva marca ... ");
     this.displayDialog = true;
     this.estadosMarca = [
       { label: '', value: null },
@@ -77,8 +73,6 @@ export class MarcaListComponent implements OnInit {
   }
 
   guardarMarca() {
-    console.log("Cargando formulario para crear una nueva marca ... ");
-
     if (this._estadoMarca == "Activo") {
       this.estado = true;
     }
@@ -89,7 +83,6 @@ export class MarcaListComponent implements OnInit {
     this.marcaService.guardarMarca(this.registrarMarcaForm, this.estado).subscribe({
       next: marcaLog => {
         if (marcaLog != null) {
-          console.log("*** Marca guardada: ");
           this.displayDialog = false;
           this.estadosMarca = [];
           this._marcaSelected = [];
@@ -122,7 +115,6 @@ export class MarcaListComponent implements OnInit {
   }
 
   editarMarca() {
-    console.log("editaremos la marca . .. ");
     this._estadoMarca = "";
     this.estadosMarca = [
       { label: '', value: null },
@@ -133,11 +125,54 @@ export class MarcaListComponent implements OnInit {
     this.dialogEditMrc = true;
     this.updateMarcaForm.controls['idMrc'].setValue(this._marcaSelected[0].id);
     this.updateMarcaForm.controls['nombre'].setValue(this._marcaSelected[0].nombre);
+    var est = "";
+    if(this._marcaSelected[0].estado)
+      est = "Activo";
+    else
+      est = "Inactivo";
+    this.updateMarcaForm.controls['estadoMarca'].setValue(est);
+  }
 
+  update_marca(){
+    if (this.updateMarcaForm.controls['estadoMarca'].value == "Activo") {
+      this.estado = true;
+    } else {
+      this.estado = false;
+    }
+
+    this.marcaService.actualizarEstado(this.updateMarcaForm, this.estado).subscribe({
+      next: marcaLog => {
+        if (marcaLog != null) {
+          this.dialogEditMrc = false;
+          this._marcaSelected = [];
+          this.msgs = [];
+          this.msgs.push({ severity: 'success', summary: 'Marca actualizada', detail: '' });
+          this.alertService.success("Se ha actualizado la marca");
+          setTimeout(() => { }, 3000);
+          this.ngOnInit();
+        } else {
+          this.dialogEditMrc = false;
+          this._marcaSelected = [];
+          this.msgs = [];
+          this.msgs.push({ severity: 'danger', summary: 'Error', detail: '' });
+          this.alertService.error("No se pudo actualizar el estado de la marca. Actualice el estado nuevamente.");
+          setTimeout(() => { }, 3000);
+          this.ngOnInit();
+        }
+      },
+      error: err => {
+        this.displayDialog = false;
+        this.errorMessage = err;
+        this.msgs = [];
+        this.msgs.push({ severity: 'danger', summary: 'Error', detail: '' });
+        this.alertService.error("No se pudo actualizar la marca. Intente mas tarde.");
+        setTimeout(() => { }, 3000);
+        this.ngOnInit();
+      }
+    });
   }
 
   actualizarMarca() {
-    console.log("Actualizando una nueva marca ... ");
     if (this._estadoMarca != "") {
       if (this._estadoMarca == "Activo") {
         this.estado = true;
@@ -147,7 +182,6 @@ export class MarcaListComponent implements OnInit {
       this.marcaService.actualizarEstado(this.updateMarcaForm, this.estado).subscribe({
         next: marcaLog => {
           if (marcaLog != null) {
-            console.log("*** Marca actualizada: ");
             this.dialogEditMrc = false;
             this._marcaSelected = [];
             this.msgs = [];
@@ -179,7 +213,6 @@ export class MarcaListComponent implements OnInit {
   }
 
   verMarca() {
-    console.log("visualizaremos la marca . .. ");
     this.dialogVerMarca = true;
     this.verMarcaForm.controls['nombre'].setValue(this._marcaSelected[0].nombre);
     if (this._marcaSelected[0].estado == 1) {

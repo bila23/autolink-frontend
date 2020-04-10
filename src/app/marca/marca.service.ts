@@ -48,7 +48,6 @@ export class MarcaService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados al servicio para almacenar la nueva marca: " + JSON.stringify(body));
     return this.http.post<IMarca>(this.marcaUrlBase + '/rest/marca/save', body, httpOptions).pipe(
       tap(data => console.log('Taller almacenado: ' + JSON.stringify(data))),
       catchError(this.handleError)
@@ -56,7 +55,6 @@ export class MarcaService {
   }
 
   actualizarEstado(updateMarcaForm: FormGroup, estado: boolean): Observable<IMarca> {
-    console.log("Llamaremos al servicio para actualizar una marca ... ");
     this.actualizarMrc = JSON.parse(JSON.stringify({
       //"id": updateTallerForm.controls['idTlr'].value,
       "nombre": updateMarcaForm.controls['nombre'].value,
@@ -68,7 +66,6 @@ export class MarcaService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados al servicio para actualizar la marca: " + JSON.stringify(body));
     return this.http.post<IMarca>(this.marcaUrlBase + '/rest/marca/status', body, httpOptions).pipe(
       tap(data => console.log('Marca actualizada: ' + JSON.stringify(data))),
       catchError(this.handleError)

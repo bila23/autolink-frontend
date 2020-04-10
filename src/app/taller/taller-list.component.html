@@ -122,7 +122,7 @@
             <input pInputText id="idTlr" formControlName="idTlr" style="visibility:hidden;display:none" />
             <div class="form-group">
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled />
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" required />
             </div>
             <div class="form-group">
                 <label for="razonSocial">Raz&oacute;n social</label>
@@ -139,13 +139,18 @@
             </div>
             <div class="form-group">
                 <label for="estadoTaller">Estado</label>
-                <p-dropdown [options]="estadosTaller" formControlName="estadoTaller" [(ngModel)]="_estadoTaller"
-                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                <select class="validate form-control" required formControlName="estadoTaller" id="estadoTaller">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="usuario">Usuario</label>
-                <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado"
-                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                <select class="validate form-control" required formControlName="usuario" id="usuario">
+                    <option *ngFor="let usr of usuariosSource" [value]="usr.nombre">
+                        {{usr.nombre}}
+                    </option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="cargo">Cargo</label>

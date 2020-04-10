@@ -74,36 +74,18 @@ export class TallerListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Cargando ventana principal de talleres...");
     this._estadoTaller = "";
-    //this.usuariosList = [];
     this.tallerService.getTalleres().subscribe({
       next: talleres => {
         this.talleres = talleres
-        console.log("Lista de talleres registrados...");
-        console.log(JSON.stringify(this.talleres));
       },
       error: err => this.errorMessage = err
     });
-
-    //Consultando la lista de usuarios registrados
-    /*this.userService.getUsuariosByTipo("TALLER").subscribe(usuariosSource => {
-      this.usuariosSource = usuariosSource;
-      if(this.usuariosSource && this.usuariosSource.length > 0){
-          for(let key in this.usuariosSource){
-               if(this.usuariosSource.hasOwnProperty(key)){
-                   this.usuariosList.push({label: this.usuariosSource[key].nombre, value: {id:this.usuariosSource[key].id,nombre:this.usuariosSource[key].nombre}});
-               }
-          }
-      }
-   });
-  }*/
 
     this.userService.getUsuarios().subscribe(usuariosSource => {
       this.usuariosSource = usuariosSource;
       if (this.usuariosSource && this.usuariosSource.length > 0) {
         for (let key in this.usuariosSource) {
-          console.log("Llenamos el dropdownList de usuarios");
           if (this.usuariosSource.hasOwnProperty(key)) {
             this.usuariosList.push({ label: this.usuariosSource[key].nombre, value: { id: this.usuariosSource[key].id, nombre: this.usuariosSource[key].nombre } });
           }
@@ -113,9 +95,7 @@ export class TallerListComponent implements OnInit {
   }
 
   agregarTaller() {
-    console.log("Abriendo formulario para agregar un nuevo usuario ... ");
     this.displayDialog = true;
-    //  this.usuariosList = [];
     this.estadosTaller = [
       { label: '', value: null },
       { label: 'Activo', value: "Activo" },
@@ -140,7 +120,6 @@ export class TallerListComponent implements OnInit {
     this.tallerService.guardarTaller(this.registrarTallerForm, this.estado, this._userSeleccionado).subscribe({
       next: tallerLg => {
         if (tallerLg != null) {
-          console.log("*** Taller guardado: ");
           this.displayDialog = false;
           this.estadosTaller = [];
           this.usuariosList = [];
@@ -178,14 +157,6 @@ export class TallerListComponent implements OnInit {
   }
 
   editarTaller() {
-    console.log("editaremos el taller . .. ");
-    this._estadoTaller = "";
-    this.estadosTaller = [
-      { label: '', value: null },
-      { label: 'Activo', value: "Activo" },
-      { label: 'Inactivo', value: "Inactivo" }
-    ];
-
     this.dialogEditTlr = true;
     this.updateTallerForm.controls['idTlr'].setValue(this._tallerSelected[0].id);
     this.updateTallerForm.controls['nombre'].setValue(this._tallerSelected[0].nombre);
@@ -193,76 +164,65 @@ export class TallerListComponent implements OnInit {
     this.updateTallerForm.controls['direccion'].setValue(this._tallerSelected[0].direccion);
     this.updateTallerForm.controls['telefono'].setValue(this._tallerSelected[0].telefono);
     this.updateTallerForm.controls['cargo'].setValue(this._tallerSelected[0].cargo);
-
+    this.updateTallerForm.controls['estadoTaller'].setValue(this._tallerSelected[0].estado);
+    this.updateTallerForm.controls['usuario'].setValue(this._tallerSelected[0].usuario.nombre);
   }
 
-  actualizarTaller() {
-    console.log("Actualizando un taller ... ");
-    this.tallerService.actualizarTaller(this.updateTallerForm, this._userSeleccionado).subscribe({
+  actualizar_estado(estadoUpdate : boolean){
+    this.tallerService.actualizarEstado(this.updateTallerForm, estadoUpdate).subscribe({
       next: tallerLog => {
         if (tallerLog != null) {
-          console.log("Hemos actualizado el taller " + JSON.stringify(tallerLog));
-          if (this._estadoTaller != "") {
-            if (this._estadoTaller == "Activo") {
-              this.estado = true;
-            } else {
-              this.estado = false;
-            }
-            this.tallerService.actualizarEstado(this.updateTallerForm, this.estado).subscribe({
-              next: tallerLog => {
-                if (tallerLog != null) {
-                  console.log("*** Taller actualizado: ");
-                  this.dialogEditTlr = false;
-                  this.estadosTaller = [];
-                  this.usuariosList = [];
-                  this.msgs = [];
-                  this.msgs.push({ severity: 'success', summary: 'Taller actualizado', detail: '' });
-                  this.alertService.success("Se ha actualizado el taller");
+          this.dialogEditTlr = false;
+          this.estadosTaller = [];
+          this.usuariosList = [];
+          this.msgs = [];
+          this.msgs.push({ severity: 'success', summary: 'Taller actualizado', detail: '' });
+          this.alertService.success("Se ha actualizado el taller");
 
-                  setTimeout(() => { }, 3000);
+          setTimeout(() => { }, 3000);
 
-                  this.ngOnInit();
-                } else {
-                  this.dialogEditTlr = false;
-                  this.estadosTaller = [];
-                  this.usuariosList = [];
-                  this.msgs = [];
-                  this.msgs.push({ severity: 'danger', summary: 'Error', detail: '' });
-                  this.alertService.error("No se pudo actualizar el estado del taller. Actualice el estado nuevamente.");
-
-                  setTimeout(() => { }, 3000);
-
-                  this.ngOnInit();
-
-                }
-
-              },
-              error: err => {
-                this.dialogEditTlr = false;
-                this.errorMessage = err;
-                this.msgs = [];
-                this.msgs.push({ severity: 'danger', summary: 'Error', detail: '' });
-                this.alertService.error("No se pudo actualizar el taller. Intente mas tarde.");
-                setTimeout(() => { }, 3000);
-                this.ngOnInit();
-              }
-            });
-          } else {
-            console.log("*** Taller actualizado: ");
-            this.dialogEditTlr = false;
-            this._tallerSelected = [];
-            this.msgs = [];
-            this.msgs.push({ severity: 'success', summary: 'Taller actualizado', detail: '' });
-            this.alertService.success("Se ha actualizado el taller");
-            setTimeout(() => { }, 3000);
-            this.ngOnInit();
-          }
+          this.ngOnInit();
         } else {
           this.dialogEditTlr = false;
-          //this._proveedorSelected = [];
+          this.estadosTaller = [];
+          this.usuariosList = [];
           this.msgs = [];
           this.msgs.push({ severity: 'danger', summary: 'Error', detail: '' });
           this.alertService.error("No se pudo actualizar el estado del taller. Actualice el estado nuevamente.");
+
+          setTimeout(() => { }, 3000);
+
+          this.ngOnInit();
+
+        }
+
+      },
+      error: err => {
+        this.dialogEditTlr = false;
+        this.errorMessage = err;
+        this.msgs = [];
+        this.msgs.push({ severity: 'danger', summary: 'Error', detail: '' });
+        this.alertService.error("No se pudo actualizar el taller. Intente mas tarde.");
+        setTimeout(() => { }, 3000);
+        this.ngOnInit();
+      }
+    });
+  }
+
+  actualizarTaller() {
+    this.tallerService.update_taller(this.updateTallerForm).subscribe({
+      next: tallerLog => {
+        if (tallerLog != null) {
+          if(String(this.updateTallerForm.controls['estadoTaller'].value) == "true")
+            this.estado = true;
+          else
+            this.estado = false;
+          this.actualizar_estado(this.estado);
+          this.dialogEditTlr = false;
+          this._tallerSelected = [];
+          this.msgs = [];
+          this.msgs.push({ severity: 'success', summary: 'Taller actualizado', detail: '' });
+          this.alertService.success("Se ha actualizado el taller");
           setTimeout(() => { }, 3000);
           this.ngOnInit();
         }

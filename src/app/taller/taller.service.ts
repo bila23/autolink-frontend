@@ -19,21 +19,19 @@ export class TallerService{
   constructor(private http: HttpClient){}
 
       getTalleres():Observable<ITaller[]>{
-      console.log("Consultando la lista de talleres ... ");
       const httpOptions = {
          headers: {'Content-Type': 'application/json'},
          params: {}
        };
        return this.http.get<ITaller[]>(this.tallerUrlBase+'/rest/taller/all',httpOptions).pipe(
         tap(data => {
-          console.log('Lista de talleres: ' +JSON.stringify(data));
+          
         }),
         catchError(this.handleError)
       );
     }
 
     guardarTaller(nuevoTlrFrom:FormGroup,_estadoTaller:boolean,_userSeleccionado:string):Observable<ITaller>{
-      console.log("Llamaremos al servicio para guardar un nuevo taller .. ");
       let mydate = new Date();
       this.userL = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem('currentUser'))));
       this.nuevoTlr=JSON.parse(JSON.stringify({
@@ -53,15 +51,34 @@ export class TallerService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para almacenar el nuevo taller: " + JSON.stringify(body));
       return this.http.post<ITaller>(this.tallerUrlBase+'/rest/taller/save', body, httpOptions).pipe(
         tap(data => console.log('Taller almacenado: ' +JSON.stringify(data))),
         catchError(this.handleError)
       );
     }
 
+    update_taller(updateTallerForm: FormGroup){
+      this.actualizarTal = JSON.parse(JSON.stringify({
+        "nombre": updateTallerForm.controls['nombre'].value,
+        "direccion": updateTallerForm.controls['direccion'].value,
+        "telefono": updateTallerForm.controls['telefono'].value,
+        "cargo": updateTallerForm.controls['cargo'].value,
+        "razonsocial": updateTallerForm.controls['razonSocial'].value,
+        "usuario": updateTallerForm.controls['usuario'].value
+      }));
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      var url = this.tallerUrlBase + '/rest/taller/update';
+      return this.http.put<ITaller>(url, this.actualizarTal, httpOptions).pipe(
+        tap(data => console.log('Taller actualizado: ' + JSON.stringify(data))),
+        catchError(this.handleError)
+      );
+    }
+
     actualizarTaller(updateTallerForm: FormGroup,_userSeleccionado:string):Observable<ITaller>{
-      console.log("Llamaeremos al servicio de actualizar taller ... ");
       this.actualizarTal = JSON.parse(JSON.stringify({
         "nombre": updateTallerForm.controls['nombre'].value,
         "direccion": updateTallerForm.controls['direccion'].value,
@@ -76,7 +93,7 @@ export class TallerService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para actualizar el proveedor: " + JSON.stringify(body));
+      
       return this.http.put<ITaller>(this.tallerUrlBase+'/rest/taller/update', body, httpOptions).pipe(
         tap(data => console.log('Taller actualizado: ' +JSON.stringify(data))),
         catchError(this.handleError)
@@ -84,7 +101,6 @@ export class TallerService{
     }
 
     actualizarEstado(updateTallerForm: FormGroup,estado:boolean):Observable<ITaller>{
-      console.log("Llamaremos al servicio para actualizar un taller ... ");
       this.actualizarTal=JSON.parse(JSON.stringify({
         //"id": updateTallerForm.controls['idTlr'].value,
         "nombre": updateTallerForm.controls['nombre'].value,
@@ -96,7 +112,6 @@ export class TallerService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para actualizar el taller: " + JSON.stringify(body));
       return this.http.post<ITaller>(this.tallerUrlBase+'/rest/taller/status', body, httpOptions).pipe(
         tap(data => console.log('Taller actualizado: ' +JSON.stringify(data))),
         catchError(this.handleError)

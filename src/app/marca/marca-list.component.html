@@ -87,7 +87,7 @@
     </form>
 </p-dialog>
 
-<!-- MODAL PARA EDITAR TALLER -->
+<!-- MODAL PARA EDITAR MARCA > -->
 <p-dialog header="Actualizaci&oacute;n de marca" [(visible)]="dialogEditMrc" [contentStyle]="{'overflow':'visible'}"
     [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="updateMarcaForm">
@@ -98,13 +98,18 @@
                 <input type="text" id="nombre" formControlName="nombre" class="validate form-control" />
             </div>
             <div class="form-group">
-                <label for="estadoTaller">Estado</label><br /><br />
-                <p-dropdown [options]="estadosMarca" formControlName="estadoMarca" [(ngModel)]="_estadoMarca"
-                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                <label for="estadoTaller">Estado</label>
+                <select class="validate form-control" required formControlName="estadoMarca" id="_estadoMarca">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+                <!--<p-dropdown [options]="estadosMarca" formControlName="" [(ngModel)]="_estadoMarca"
+                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>-->
             </div>
+            <div class="section"></div>
             <div class="form-group">
                 <button [disabled]="!updateMarcaForm.valid" class="btn btn-primary" type="submit" name="action"
-                    (click)="actualizarMarca()">
+                    (click)="update_marca()">
                     Actualizar marca
                     <i class="material-icons right">send</i>
                 </button>

@@ -16,6 +16,7 @@ import { IUser } from '../_model/user.model';
 import { ITaller } from '../_model/taller.model';
 import { IRepsSolic } from '../_model/repsSol.model';
 import { IRepuestoXSol } from '../_model/repuestpoXSoli.model';
+import { IFotoXSolicitud } from '../_model/FotoxSol.model';
 
 @Component({
   templateUrl: './crearSolicitud.component.html'
@@ -31,6 +32,7 @@ export class CrearSolicitudComponent implements OnInit {
   repuestos: IRepuesto[] = [];
   cod_save: number;
   rep_sol: IRepuestoXSol[] = [];
+  img_sol: IFotoXSolicitud[] = [];
   selectedFile: File = null;
 
   cols: any[];
@@ -173,8 +175,8 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
 
-  delete_repuestos(id_repuesto: number){
-    this.solicitudService.deleteRepXSol(this.cod_save, id_repuesto).subscribe( data =>{
+  delete_repuestos(id_repuesto: number) {
+    this.solicitudService.deleteRepXSol(this.cod_save, id_repuesto).subscribe(data => {
       //RECUPERO LOS REPUESTOS QUE HE GUARDADO
       this.solicitudService.consultarRepXSol(this.cod_save).subscribe({
         next: rep_sol => {
@@ -189,9 +191,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.mostrarImagenes = true;
   }
 
-  fileSelected(event){
+  fileSelected(event) {
     this.selectedFile = <File>event.target.files[0];
-    var reader = new FileReader();      
+    var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
   };
 
@@ -199,12 +201,18 @@ export class CrearSolicitudComponent implements OnInit {
     const dr = new FormData();
     dr.append('dr', this.selectedFile);
 
-    this.solicitudService.guardarFoto(this.cod_save,dr).subscribe({
+    this.solicitudService.guardarFoto(this.cod_save, dr).subscribe({
       next: respxSol => {
-          this.msgs = [];
-          this.msgs.push({severity:'success', summary:'Foto guardada', detail:''});
-          this.alertService.success("Se ha guardado la foto");
-          setTimeout(() => {}, 3000);
+        this.msgs = [];
+        this.msgs.push({ severity: 'success', summary: 'Foto guardada', detail: '' });
+        this.alertService.success("Se ha guardado la foto");
+        setTimeout(() => { }, 3000);
+        //RECUPERO LAS IMAGENES GUARDADAS POR SOLICITUD
+        this.solicitudService.consultarFotoSol(this.cod_save).subscribe({
+          next: img_sol => {
+            this.img_sol = img_sol;
+          }
+        });
       }
     });
   }

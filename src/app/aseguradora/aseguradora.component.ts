@@ -76,8 +76,6 @@ export class AseguradoraListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Cargando ventana principal de aseguradoras...");
-    //this.usuariosList = [];
     this._estadoAseguradora = "";
     this.aseguradoraService.getAseguradoras().subscribe({
       next: aseguradoras => {
@@ -91,7 +89,6 @@ export class AseguradoraListComponent implements OnInit {
       this.usuariosSource = usuariosSource;
       if (this.usuariosSource && this.usuariosSource.length > 0) {
         for (let key in this.usuariosSource) {
-          console.log("Llenamos el dropdownList de usuarios");
           if (this.usuariosSource.hasOwnProperty(key)) {
             this.usuariosList.push({ label: this.usuariosSource[key].nombre, value: { id: this.usuariosSource[key].id, nombre: this.usuariosSource[key].nombre } });
           }
@@ -102,7 +99,6 @@ export class AseguradoraListComponent implements OnInit {
 
 
   agregarAseguradora() {
-    console.log("Abriendo formulario para agregar una nueva aseguradora...");
     this.displayDialog = true;
     //this.usuariosList = [];
     this.estadosAseguradora = [
@@ -121,7 +117,6 @@ export class AseguradoraListComponent implements OnInit {
 
 
   guardarAseguradora() {
-    console.log("Cargando formulario para crear nueva aseguradora ... ");
     if (this._estadoAseguradora == "Activo") {
       this.estado = true;
     }
@@ -132,7 +127,6 @@ export class AseguradoraListComponent implements OnInit {
     this.aseguradoraService.guardarAseguradora(this.registrarAseguradoraForm, this.estado, this._userSeleccionado).subscribe({
       next: userLog => {
         if (userLog != null) {
-          console.log("*** Aseguradora guardada: ");
           this.displayDialog = false;
           this.estadosAseguradora = [];
           this.usuariosList = [];
@@ -165,7 +159,6 @@ export class AseguradoraListComponent implements OnInit {
   }
 
   editarAseguradora() {
-    console.log("editaremos el taller . .. ");
     this.dialogEditAseg = true;
     this._estadoAseguradora = "";
 
@@ -185,11 +178,9 @@ export class AseguradoraListComponent implements OnInit {
   }
 
   actualizarAseguradora() {
-    console.log("Actualizando una aseguradora ... ");
     this.aseguradoraService.actualizarAseguradora(this.updateAsegForm, this._userSeleccionado).subscribe({
       next: asegLog => {
         if (asegLog != null) {
-          console.log("Hemos actualizado la asguradora " + JSON.stringify(asegLog));
 
           if (this._estadoAseguradora != "") {
             if (this._estadoAseguradora == "Activo") {
@@ -201,7 +192,6 @@ export class AseguradoraListComponent implements OnInit {
             this.aseguradoraService.actualizarEstado(this.updateAsegForm, this.estado).subscribe({
               next: asegLog => {
                 if (asegLog != null) {
-                  console.log("*** Aseguradora actualizada: ");
                   this.dialogEditAseg = false;
                   this.estadosAseguradora = [];
                   this.usuariosList = [];
@@ -234,7 +224,6 @@ export class AseguradoraListComponent implements OnInit {
               }
             });
           } else {
-            console.log("*** Aseguradora actualizado: ");
             this.dialogEditAseg = false;
             this._aseguradoraSelected = [];
             this.msgs = [];
