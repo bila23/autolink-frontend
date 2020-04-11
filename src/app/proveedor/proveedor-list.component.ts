@@ -80,13 +80,10 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
 }
 
   ngOnInit():void{
-      console.log("Cargando ventana principal de talleres...");  
       this._estadoProveedor="";
       this.proveedorService.getProveedores().subscribe({
         next: proveedores => {
           this.proveedores=proveedores
-          console.log("Lista de proveedores registrados ...");
-          console.log(JSON.stringify(this.proveedores));
         },
         error: err=>this.errorMessage=err
       });
@@ -106,7 +103,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     }
 
   agregarProveedor(){
-    console.log("Abriendo formulario para agregar un nuevo proveedor ... ");
     this.displayDialog = true;
     this.estadosProveedor=[
       {label:'', value:null},
@@ -127,8 +123,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
   }
 
   guardarProveedor(){
-    console.log("Cargando formulario para crear nuevo proveedor ... ");
-    
     if(this._estadoProveedor == "Activo"){
       this.estado=true;
     }
@@ -139,7 +133,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     this.proveedorService.guardarProveedor(this.registrarProvForm,this.estado,this._userSeleccionado).subscribe({
         next: userLog => {
           if(userLog != null){
-            console.log("*** Proveedor guardado: ");
             this.displayDialog = false;
             this.estadosProveedor=[];
             this._proveedorSelected=[];
@@ -172,7 +165,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
   }
 
   editarProveedor(){
-    console.log("editaremos el proveedor . .. ");
     this._estadoProveedor = "";
     this.dialogEditProv=true;
     this.estadosProveedor=[
@@ -188,19 +180,21 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     this.updateProvForm.controls['razonSocial'].setValue(this._proveedorSelected[0].razonsocial);
     this.updateProvForm.controls['telefono'].setValue(this._proveedorSelected[0].telefono);
     this.updateProvForm.controls['nit'].setValue(this._proveedorSelected[0].nit);
-    this.updateProvForm.controls['usuario'].setValue(this._proveedorSelected[0].usuario.nombre);
+    this.updateProvForm.controls['usuario'].setValue(this._proveedorSelected[0].usuario.usuario);
     this.updateProvForm.controls['cuentaBanc'].setValue(this._proveedorSelected[0].cuentabancaria);
-    this.updateProvForm.controls['cargo'].setValue(this._proveedorSelected[0].cargo);   
+    this.updateProvForm.controls['cargo'].setValue(this._proveedorSelected[0].cargo);
+    if(this._proveedorSelected[0].estado)
+      this.updateProvForm.controls['estadoProveedor'].setValue("Activo");
+    else
+      this.updateProvForm.controls['estadoProveedor'].setValue("Inactivo");
   }
 
   actualizarProveedor(){
-    console.log("Actualizando un proveedor ... ");
-    this.proveedorService.actualizarProv(this.updateProvForm,this._userSeleccionado).subscribe({
+    this.proveedorService.actualizarProv(this.updateProvForm).subscribe({
       next: proveeLog => {
         if(proveeLog != null){
-          console.log("Hemos actualizado al proveedor " + JSON.stringify(proveeLog));
-          if (this._estadoProveedor != ""){
-            if(this._estadoProveedor=="Activo"){
+          if (this.updateProvForm.controls['estadoProveedor'].value != ""){
+            if (this.updateProvForm.controls['estadoProveedor'].value =="Activo"){
               this.estado=true;
             }else{
               this.estado=false;
@@ -208,7 +202,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
             this.proveedorService.actualizarEstado(this.updateProvForm,this.estado).subscribe({
               next: proveedor => {
                 if(proveedor != null){
-                  console.log("*** Proveedor actualizado: ");
                   this.dialogEditProv=false;
                   this._proveedorSelected = [];
                   this.msgs = [];
@@ -237,7 +230,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
               }
           });
           }else{
-            console.log("*** Proveedor actualizado: ");
                   this.dialogEditProv=false;
                   this._proveedorSelected = [];
                   this.msgs = [];
@@ -269,7 +261,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
 }
  
   verProveedor(){
-    console.log("visualizaremos el proveedor . .. ");
     this.dialogVerProv=true;
     this.verProvForm.controls['nombre'].setValue(this._proveedorSelected[0].nombre);
     this.verProvForm.controls['direccion'].setValue(this._proveedorSelected[0].direccion);

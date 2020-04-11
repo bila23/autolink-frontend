@@ -13,11 +13,11 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class ModeloService {
-  private modeloUrlBAse = localStorage.getItem('API');//'http://localhost:8014/autolink';
+  private modeloUrlBAse = localStorage.getItem('API');
   userL: ILoginResponse;
   nuevoMdl: IModelo;
   actualizarMdl: IModelo;
-  //actualizarUsr2:IUser;
+
 
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
@@ -35,16 +35,14 @@ export class ModeloService {
   }
 
   getMarcas(): Observable<IMarca[]> {
-    //console.log("Consultando la lista de marcas ... ");
+
     const httpOptions = {
       headers: { 'Content-Type': 'application/json' },
       params: {}
     };
 
     return this.http.get<IMarca[]>(this.modeloUrlBAse + '/rest/marca/all', httpOptions).pipe(
-      tap(data => {
-        console.log('Marcas disponibles: ' + JSON.stringify(data));
-      }),
+      tap(),
       catchError(this.handleError)
     );
   }
@@ -84,9 +82,7 @@ export class ModeloService {
       })
     };
     return this.http.put<IModelo>(this.modeloUrlBAse + '/rest/modelo/update', body, httpOptions).pipe(
-      tap(data => {
-        console.log('Modelo actualizado: ' + JSON.stringify(data));
-      }),
+      tap(),
       catchError(this.handleError)
     );
   }
@@ -103,10 +99,7 @@ export class ModeloService {
       })
     };
     return this.http.post<IModelo>(this.modeloUrlBAse + '/rest/modelo/status', body, httpOptions).pipe(
-      tap(data => {
-        console.log('Estado de Modelo actualizado: ' + JSON.stringify(data));
-
-      }),
+      tap(),
       catchError(this.handleError)
     );
   }

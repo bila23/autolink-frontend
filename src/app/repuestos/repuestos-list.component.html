@@ -20,9 +20,7 @@
         </ng-template>
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th style="width: 3em">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
+                <th></th>
                 <th>Nombre</th>
                 <th>Valor</th>
                 <th>Estado</th>
@@ -82,6 +80,7 @@
                 <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto" [(ngModel)]="_estadoRepuesto"
                     class="validate" required [style]="{'width':'100%'}"></p-dropdown>
             </div>
+            <div class="section"></div>
             <div class="form-group">
                 <button [disabled]="!registrarRepForm.valid" class="btn btn-primary" type="submit" name="action"
                     (click)="guardarRepuesto()">Guardar nuevo repuesto
@@ -99,16 +98,19 @@
         <p-panel [showHeader]="false">
             <input pInputText id="idRep" formControlName="idRep" style="visibility:hidden;display:none" />
             <div class="form-group">
-                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" disabled />
+                <input type="text" id="nombre" formControlName="nombre" class="validate form-control" required /> 
             </div>
             <div class="form-group">
                 <input type="text" id="valor" formControlName="valor" class="validate form-control" required />
             </div>
             <div class="form-group">
                 <label for="estadoTaller">Estado</label>
-                <p-dropdown [options]="estadosRepuesto" formControlName="estadoRepuesto" [(ngModel)]="_estadoRepuesto"
-                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                <select class="validate form-control" formControlName="estadoRepuesto">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
             </div>
+            <div class="section"></div>
             <div class="form-group">
                 <button [disabled]="!updateRepForm.valid" class="btn btn-primary" type="submit" name="action"
                     (click)="actualizarRepuesto()">Actualizar

@@ -11,7 +11,7 @@ import { ILoginResponse } from '../_model/loginResponse.model';
 })
 
 export class ProveedorService{
-  private provUrlBase = localStorage.getItem('API');//'http://localhost:8014/autolink';
+  private provUrlBase = localStorage.getItem('API');
   userL: ILoginResponse;
   nuevoProv: IProveedor[];
   actualizaProv:IProveedor;
@@ -19,7 +19,6 @@ export class ProveedorService{
   constructor(private http: HttpClient){}
 
   getProveedores():Observable<IProveedor[]>{
-      console.log("Consultando la lista de proveedores ... ");
       const httpOptions = {
          headers: {'Content-Type': 'application/json'},
          params: {}
@@ -33,7 +32,6 @@ export class ProveedorService{
     }
 
     guardarProveedor(nuevoProvFrom:FormGroup,_estadoProveedor:boolean,_userSeleccionado:string):Observable<IProveedor>{
-      console.log("Llamaremos al servicio para guardar un nuevo proveedor .. ");
       let mydate = new Date();
       this.userL = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem('currentUser'))));
       this.nuevoProv=JSON.parse(JSON.stringify({
@@ -55,16 +53,15 @@ export class ProveedorService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para almacenar el nuevo taller: " + JSON.stringify(body));
       return this.http.post<IProveedor>(this.provUrlBase+'/rest/proveedor/save', body, httpOptions).pipe(
         tap(data => console.log('Proveedor almacenado: ' +JSON.stringify(data))),
         catchError(this.handleError)
       );
     }
 
-    actualizarProv(updateProvForm: FormGroup,_userSeleccionado:string):Observable<IProveedor>{
-      console.log("Llamaeremos al servicio de actualizar proveedor ... ");
+    actualizarProv(updateProvForm: FormGroup):Observable<IProveedor>{
       this.actualizaProv = JSON.parse(JSON.stringify({
+        "id": updateProvForm.controls['idProv'].value,
         "nombre": updateProvForm.controls['nombre'].value,
         "direccion": updateProvForm.controls['direccion'].value,
         "cargo": updateProvForm.controls['cargo'].value,
@@ -72,7 +69,7 @@ export class ProveedorService{
         "nit": updateProvForm.controls['nit'].value,
         "telefono": updateProvForm.controls['telefono'].value,
         "cuentabancaria": updateProvForm.controls['cuentaBanc'].value,
-        "usuario": _userSeleccionado
+        "usuario": updateProvForm.controls['usuario'].value
       }));
       let body = this.actualizaProv;
       const httpOptions = {
@@ -80,7 +77,6 @@ export class ProveedorService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para actualizar el proveedor: " + JSON.stringify(body));
       return this.http.put<IProveedor>(this.provUrlBase+'/rest/proveedor/update', body, httpOptions).pipe(
         tap(data => console.log('Proveedor actualizado: ' +JSON.stringify(data))),
         catchError(this.handleError)
@@ -89,7 +85,6 @@ export class ProveedorService{
     }
 
     actualizarEstado(updateProvForm: FormGroup,estado:boolean):Observable<IProveedor>{
-      console.log("Llamaremos al servicio para actualizar el estado del proveedor ... ");
       this.actualizaProv = JSON.parse(JSON.stringify({
         //"id": updateTallerForm.controls['idTlr'].value,
         "nombre": updateProvForm.controls['nombre'].value,
@@ -102,7 +97,6 @@ export class ProveedorService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para actualizar el estado del proveedor: " + JSON.stringify(body));
       return this.http.post<IProveedor>(this.provUrlBase+'/rest/proveedor/status', body, httpOptions).pipe(
         tap(data => console.log('Proveedor actualizado: ' +JSON.stringify(data))),
         catchError(this.handleError)
@@ -116,7 +110,6 @@ export class ProveedorService{
       }else{
         errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
       }
-      console.error(errorMessage);
       return throwError(errorMessage);
     }
 }

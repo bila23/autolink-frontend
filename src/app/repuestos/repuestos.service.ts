@@ -57,8 +57,8 @@ export class RepuestoService{
     }
 
     actualizarRepuesto(updateRepForm: FormGroup):Observable<IRepuesto>{
-      console.log("Llamaeremos al servicio de actualizar repuesto ... ");
       this.actualizaRep = JSON.parse(JSON.stringify({
+        "id": updateRepForm.controls['idRep'].value,
         "nombre": updateRepForm.controls['nombre'].value,
         "valor": updateRepForm.controls['valor'].value
       }));
@@ -68,7 +68,6 @@ export class RepuestoService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para actualizar el proveedor: " + JSON.stringify(body));
       return this.http.put<IRepuesto>(this.repUrlBase+'/rest/repuesto/update', body, httpOptions).pipe(
         tap(data => console.log('Proveedor actualizado: ' +JSON.stringify(data))),
         catchError(this.handleError)
@@ -77,11 +76,8 @@ export class RepuestoService{
     }
 
     actualizarEstado(updateRepForm: FormGroup,estado:boolean):Observable<IRepuesto>{
-      console.log("Llamaremos al servicio para actualizar el estado del repuesto ... ");
       this.actualizaRep = JSON.parse(JSON.stringify({
-        //"id": updateTallerForm.controls['idTlr'].value,
         "nombre": updateRepForm.controls['nombre'].value,
-        //"direccion": updateProvForm.controls['direccion'].value,
         "estado": (estado ? true: false)
       }));
       let body = this.actualizaRep;
@@ -90,7 +86,6 @@ export class RepuestoService{
           'Content-Type': 'application/json' 
         })
       };
-      console.log("Datos enviados al servicio para actualizar el estado del proveedor: " + JSON.stringify(body));
       return this.http.post<IRepuesto>(this.repUrlBase+'/rest/repuesto/status', body, httpOptions).pipe(
         tap(data => console.log('Proveedor actualizado: ' +JSON.stringify(data))),
         catchError(this.handleError)

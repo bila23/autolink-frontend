@@ -70,7 +70,6 @@ constructor(private repuestoService:RepuestoService,private alertService:AlertSe
     }
 
   agregarRepuesto(){
-    console.log("Abriendo formulario para agregar un nuevo repuesto ... ");
     this.displayDialog = true;
     this.estadosRepuesto=[
       {label:'', value:null},
@@ -84,8 +83,6 @@ constructor(private repuestoService:RepuestoService,private alertService:AlertSe
   }
 
   guardarRepuesto(){
-    console.log("Cargando formulario para crear nuevo repuesto ... ");
-    
     if(this._estadoRepuesto == "Activo"){
       this.estado=true;
     }
@@ -96,7 +93,6 @@ constructor(private repuestoService:RepuestoService,private alertService:AlertSe
     this.repuestoService.guardarRepuesto(this.registrarRepForm,this.estado).subscribe({
         next: repLog => {
           if(repLog != null){
-            console.log("*** Repuesto guardado: ");
             this.displayDialog = false;
             this.estadosRepuesto=[];
             this._repuestoSelected=[];
@@ -130,7 +126,6 @@ constructor(private repuestoService:RepuestoService,private alertService:AlertSe
   }
 
   editarRepuesto(){
-    console.log("editaremos el repuesto . .. ");
     this._estadoRepuesto = "";
     this.estadosRepuesto=[
       {label:'', value:null},
@@ -142,16 +137,18 @@ constructor(private repuestoService:RepuestoService,private alertService:AlertSe
     this.updateRepForm.controls['idRep'].setValue(this._repuestoSelected[0].id);
     this.updateRepForm.controls['nombre'].setValue(this._repuestoSelected[0].nombre);
     this.updateRepForm.controls['valor'].setValue(this._repuestoSelected[0].valor);
+    if (this._repuestoSelected[0].estado)
+      this.updateRepForm.controls['estadoRepuesto'].setValue("Activo");
+    else
+      this.updateRepForm.controls['estadoRepuesto'].setValue("Inactivo");
   }
 
   actualizarRepuesto(){
-    console.log("Actualizando un repuesto ... ");
     this.repuestoService.actualizarRepuesto(this.updateRepForm).subscribe({
       next: proveeLog => {
         if(proveeLog != null){
-            console.log("Hemos actualizado al repuesto " + JSON.stringify(proveeLog));
-            if (this._estadoRepuesto != ""){
-              if(this._estadoRepuesto=="Activo"){
+          if (this.updateRepForm.controls['estadoRepuesto'].value != ""){
+            if (this.updateRepForm.controls['estadoRepuesto'].value=="Activo"){
                 this.estado=true;
               }else{
                 this.estado=false;

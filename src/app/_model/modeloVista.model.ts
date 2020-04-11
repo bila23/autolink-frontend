@@ -1,3 +1,5 @@
+import { IMarca } from './marca.model';
+
 export interface IModeloVista{
     id: number;
     nombre: string;
@@ -10,4 +12,5 @@ export interface IModeloVista{
     estadoMarca: number;
     fechacreacionMarca: Date;
     usuariocreaMarca: string;
+    marca: IMarca;
 }

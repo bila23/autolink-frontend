@@ -59,6 +59,7 @@ export class TallerService{
 
     update_taller(updateTallerForm: FormGroup){
       this.actualizarTal = JSON.parse(JSON.stringify({
+        "id": updateTallerForm.controls['idTlr'].value,
         "nombre": updateTallerForm.controls['nombre'].value,
         "direccion": updateTallerForm.controls['direccion'].value,
         "telefono": updateTallerForm.controls['telefono'].value,

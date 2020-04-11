@@ -96,7 +96,7 @@ set estadoModelo(value:string){
       this.modeloService.getModelos().subscribe({
         next: modelos => {
           this.modelos=modelos;
-          for(let key in this.modelos){
+          /*for(let key in this.modelos){
             if(this.modelos.hasOwnProperty(key)){
               this.modelosView[key]={
                 id:this.modelos[key].id,
@@ -112,7 +112,7 @@ set estadoModelo(value:string){
                 usuariocreaMarca: this.modelos[key].marca.usuariocrea
               }
             }
-          }
+          }*/
         },
         error: err=>this.errorMessage=err
       });
@@ -353,7 +353,7 @@ set estadoModelo(value:string){
   verModelo(){
     this.dialogVerMdl=true;
     this.verModeloForm.controls['nombre'].setValue(this._modeloSelected[0].nombre);
-    this.verModeloForm.controls['marcaModelo'].setValue(this._modeloSelected[0].nombreMarca);
+    this.verModeloForm.controls['marcaModelo'].setValue(this._modeloSelected[0].marca.nombre);
     if(this._modeloSelected[0].estado==1){
       this.verModeloForm.controls['estadoModelo'].setValue("Activo");
     }else{

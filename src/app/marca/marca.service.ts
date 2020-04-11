@@ -56,7 +56,7 @@ export class MarcaService {
 
   actualizarEstado(updateMarcaForm: FormGroup, estado: boolean): Observable<IMarca> {
     this.actualizarMrc = JSON.parse(JSON.stringify({
-      //"id": updateTallerForm.controls['idTlr'].value,
+      "id": updateMarcaForm.controls['idMrc'].value,
       "nombre": updateMarcaForm.controls['nombre'].value,
       "estado": (estado ? true : false)
     }));
