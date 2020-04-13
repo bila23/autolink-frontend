@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { SolicitudtableroService } from './solicitudtablero.service'
 import { IResultByStates } from '../_model/resultbystates.module'
 import { SelectItem, Message } from 'primeng/api';
@@ -9,6 +9,9 @@ import { IListRepuestosModule } from '../_model/list-repuestos.module';
 import { stringify } from 'querystring';
 import { format } from 'url';
 import { IRepuesto } from '../_model/repuesto.model';
+import { IOferta } from '../_model/oferta.model'
+import { ListofertprovComponent } from '../listofertprov/listofertprov.component'
+import { ContenedorListProvOferDirective } from '../listofertprov/contenedor-list-prov-ofer.directive'
 
 @Component({
   selector: 'app-container2',
@@ -16,6 +19,7 @@ import { IRepuesto } from '../_model/repuesto.model';
   styleUrls: ['./container2.component.css']
 })
 export class Container2Component implements OnInit {
+  @ViewChild(ContenedorListProvOferDirective, {static: true}) tablaDinamica: ContenedorListProvOferDirective;
   registro: IResultByStates[]=[];
   _registroSelected: IResultByStates[];
   cols: any[];
@@ -25,7 +29,7 @@ export class Container2Component implements OnInit {
   _estadoSoli: string;
   updateSoliForm: FormGroup;
   resultUpdateCometAsegu: IResultUpdateModule;
-
+  array_OferaProv: any[];
 
   dialogVerPieza: boolean;
   cols_verpiezas: any[];
@@ -34,11 +38,17 @@ export class Container2Component implements OnInit {
   _viewSoliSelected: IListRepuestosModule;
   // registroview: IRepuesto[]=[];
   registroview: IListRepuestosModule[]=[];
+  registroViewOfer: IOferta[]=[];
   _registroviewSelected: IRepuesto[];
   
   registroViewPiezaSoli: IVerPiezaSoliModule[]=[];
 
-  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef) { 
+  condicionPendienteAprobar: boolean;
+
+  viewOferProv: FormGroup;  
+  dialogOfertProv: boolean;
+
+  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef, private cfr: ComponentFactoryResolver) { 
     this.updateSoliForm = new FormGroup({
       id: new FormControl('',Validators.required),
       NoReclamo: new FormControl('',Validators.required),
@@ -61,10 +71,15 @@ export class Container2Component implements OnInit {
       idRepuesto: new FormControl(''),
       idSolicitud: new FormControl('')
     })
+
+    this.viewOferProv = new FormGroup({
+      id: new FormControl('')
+    })
   }
 
   ngOnInit() {
-    console.log("entramos en container para perfil de no adm");
+    console.log("entramos en container para container2");
+    this.condicionPendienteAprobar = false;
     this.BuildStatus("ing");
   }
 
@@ -93,6 +108,12 @@ export class Container2Component implements OnInit {
     ];
 
     this.ChangeUlSelected(estado);
+
+    if (estado.toUpperCase() === "PEA"){
+      this.condicionPendienteAprobar = true;
+    } else{
+      this.condicionPendienteAprobar = false;
+    }
   }
 
   ChangeUlSelected(estado:string){
@@ -222,6 +243,30 @@ export class Container2Component implements OnInit {
         { field: "repuesto", subfield: "valor" },
         { field: "aplica", header: "aplica" }
       ]
+      //registroViewOfer
+
+      // this.solicitudService.getPiezasSoliByOfer(id_selected.toString()).subscribe({
+      //   next: registro =>{
+
+      //     for(let re in registro){
+      //       //this.registroview.push(registro[re].repuesto);
+      //       this.registroViewOfer.push(registro[re]);
+      //       console.log("Console... ver piezas");
+            
+      //       console.log(registro[re].repuesto);
+      //       console.log(registro[re]);
+      //     }
+      //   }
+      // })
+
+      // this.cols_verpiezas = [];
+      // this.cols_verpiezas=[
+      //   { field: "proveedor", header: "proveedor"},
+      //   { field: "repuesto", header: "repuesto"},
+      //   { field: "cantidad", header: "cantidad" },
+      //   { field: "tiempo", header: "tiempo" },
+      //   { field: "precio", header: "precio" }
+      // ]
     }
   }
 
@@ -271,4 +316,96 @@ export class Container2Component implements OnInit {
       }
     });
   }
+
+  verOfertas(){
+    this.dialogOfertProv = true;
+    this.OfertaProv();
+  }
+
+  componenteDinamico(mensaje: string, color: string) {  
+    let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);
+    let vcr = this.tablaDinamica.viewContainerRef;
+    vcr.createComponent(cf, 0);
+  }
+
+
+  OfertaProv(){
+    this.array_OferaProv = [];
+    console.log(this._registroSelected);
+
+    //if (typeof this._registroSelected !== typeof undefined){
+      //let id_selected = this._registroSelected[0].id;
+      let id_selected = 1; //por prueba
+      let array= [];
+      let prov_actual = -1;
+      let prov_next = -1;
+      let n_registros = -1;
+      let contador = 0;
+      let bandera_entradaData = false;
+      this.solicitudService.getPiezasSoliByOfer(id_selected.toString()).subscribe({
+        next: registro =>{
+          prov_actual = registro[0].idProveedor;
+          n_registros = registro.length;
+
+          for(let re in registro){
+            contador++;
+
+            prov_next = registro[re].idProveedor;
+
+            if (prov_actual === prov_next){                           
+              array.push({
+                "id": registro[re].id,
+                "idRepuesto": registro[re].idRepuesto,
+                "repuesto": registro[re].repuesto,                
+                "idProveedor": registro[re].idProveedor,
+                "proveedor": registro[re].proveedor,
+                "cantidad": registro[re].cantidad,
+                "estado": registro[re].estado,
+                "ganador": registro[re].ganador,
+                "tiempo": registro[re].tiempo,
+                "precio": registro[re].precio
+              });
+              bandera_entradaData = true;
+            }else{              
+              prov_actual = prov_next;
+
+              console.log("aqui se hace el envio al objeto dinamico");                            
+              // localStorage.setItem("OfertaProv", JSON.stringify(array));
+              // console.log(JSON.parse(JSON.stringify(localStorage.getItem("OfertaProv"))));
+
+              let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);
+              let instance = this.tablaDinamica.viewContainerRef.createComponent(cf, 0).instance;
+              instance.array_string = JSON.stringify(array);
+              
+              array = [];
+              array.push({
+                "id": registro[re].id,
+                "idRepuesto": registro[re].idRepuesto,
+                "repuesto": registro[re].repuesto,                
+                "idProveedor": registro[re].idProveedor,
+                "proveedor": registro[re].proveedor,
+                "cantidad": registro[re].cantidad,
+                "estado": registro[re].estado,
+                "ganador": registro[re].ganador,
+                "tiempo": registro[re].tiempo,
+                "precio": registro[re].precio
+              });
+              bandera_entradaData = false;
+            }
+
+            if (n_registros === contador){             
+              //mandamos a llamar al ultimo registro
+              console.log("aqui se hace el envio al objeto dinamico");              
+              //console.log(JSON.parse(JSON.stringify(localStorage.getItem("OfertaProv"))));
+
+              let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);              
+              let instance = this.tablaDinamica.viewContainerRef.createComponent(cf, 0).instance;
+              instance.array_string = JSON.stringify(array);              
+            }
+                  
+          }
+        }
+      })
+  }
+
 }

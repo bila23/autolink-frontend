@@ -10,6 +10,7 @@ import { IUpdateRepuestoSoliModule } from '../_model/update-repuesto-soli.module
 import { IUpdateComentarioaseguradoraModule } from '../_model/update-comentarioaseguradora.module'
 import { tap, catchError } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
+import { IOferta } from '../_model/oferta.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,20 @@ export class SolicitudtableroService {
     };
 
     return this.http.get<IListRepuestosModule[]>(this.usuariosUrlBAse + "/rest/solicitud/repuesto?id=" + id.toString()).pipe(
+      tap(data => {
+        console.log("piezas segun id " + JSON.stringify(data));
+      })
+    );
+  }
+
+  getPiezasSoliByOfer(id: string):Observable<IOferta[]>{
+    console.log("consulta para traer la lista de piezas");
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+
+    return this.http.get<IOferta[]>(this.usuariosUrlBAse + "/rest/oferta/bySolicitud?id=" + id.toString()).pipe(
       tap(data => {
         console.log("piezas segun id " + JSON.stringify(data));
       })

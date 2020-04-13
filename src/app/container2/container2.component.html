@@ -46,7 +46,7 @@
             </p-table>
         </div>
         <!-- <div style="color:#94a1aa; text-align: center;" id="pag"> -->
-        <div style="color:#94a1aa; text-align: center;">
+        <div style="color:#94a1aa; text-align: center;" [style.visibility]=" condicionPendienteAprobar ? 'hidden' : 'visible' ">
             <span id="nw" style="float:right">
               <button class="btn-al" (click)='EditarSolicitud()' style="margin-right:8px">
                 <i class="material-icons" style="vertical-align:middle">edit</i>
@@ -59,6 +59,18 @@
             </span>
             <div style="clear:both"></div>
         </div>
+
+        <div style="color:#94a1aa; text-align: center;" [style.visibility]=" condicionPendienteAprobar ? 'visible' : 'hidden' ">
+            <span id="nw" style="float:right">             
+              <button class="btn-al" (click)='verOfertas()' style="margin-right:8px">
+                <i class="material-icons" style="vertical-align:middle">visibility</i>
+                VER OFERTAS
+              </button>
+            </span>
+            <div style="clear:both"></div>
+        </div>
+
+
 
         <!-- MODAL PARA EDITAR SOLICITUD -->
         <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
@@ -117,7 +129,7 @@
         </p-dialog>
 
 
-         <!-- MODAL PARA VER PIEZA -->
+        <!-- MODAL PARA VER PIEZA -->
         <p-dialog header="Ver piezas" [(visible)]="dialogVerPieza" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
             <form [formGroup]="viewSoliForm">
                 <p-table class="table" #tableResultVerPieza [columns]="cols_verpiezas" [value]="registroview" [paginator]="true" 
@@ -167,6 +179,15 @@
                     </ng-template>  
                 </p-table>
             </form>
+        </p-dialog>
+
+        <p-dialog header="Ver ofertas" [(visible)]="dialogOfertProv" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+            <!-- <form [formGroup]="viewOferProv"> -->
+                <!-- <button (click)="OfertaProv()">Crear component</button> -->
+                <div>
+                    <ng-template appContenedorListProvOfer></ng-template>
+                </div>
+            <!-- </form> -->
         </p-dialog>
         <!-- <div id="2" class="col s12 tab-white">ANULADAS</div>
         <div id="3" class="col s12 tab-white">ENTREGADAS</div>

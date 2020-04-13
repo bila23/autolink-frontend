@@ -54,12 +54,14 @@ import { Container4Component } from './container4/container4.component';
 import { CrearSolicitudComponent } from './crearSolicitud/crearSolicitud.component';
 import { SolicitudProveedorComponent } from './solicitudProveedor/solicitudProveedor.component';
 import { VerSolicitudComponent } from './verSolicitud/verSolicitud.component';
+import { ListofertprovComponent } from './listofertprov/listofertprov.component';
+import { ContenedorListProvOferDirective } from './listofertprov/contenedor-list-prov-ofer.directive';
 
 @NgModule({
   declarations: [
     AppComponent, HeaderComponent, UserListComponent, ConvertToSpacesPipe, StarComponent, LoginComponent, PreguntasUserComponent, ProductDetailComponent,
     WelcomeComponent, SolicitudCorreoComponent, SideMenuComponent, ResetPassComponent, TallerListComponent, AseguradoraListComponent, MarcaListComponent, ProveedorListComponent, ModeloListComponent, AlertComponent, RepuestoListComponent, CallCenterComponent, PruebaComponent, Headerview2Component, Container2Component, BoardByStatusComponent,
-    TallerSolicitudComponent, FormularioComponent, Container4Component, CrearSolicitudComponent, SolicitudProveedorComponent, VerSolicitudComponent
+    TallerSolicitudComponent, FormularioComponent, Container4Component, CrearSolicitudComponent, SolicitudProveedorComponent, VerSolicitudComponent, ListofertprovComponent, ContenedorListProvOferDirective
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, FormsModule, PanelModule, DropdownModule, TableModule, HttpClientModule, ReactiveFormsModule, DialogModule, InputTextModule, PaginatorModule, GrowlModule, NgbModule, AutoCompleteModule, FileUploadModule, MatDatepickerModule, MatNativeDateModule, CalendarModule,ListboxModule,CarouselModule,CalendarModule,
@@ -91,6 +93,9 @@ import { VerSolicitudComponent } from './verSolicitud/verSolicitud.component';
     ]) //,{useHash: true})
   ],
   providers: [DatePipe],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ListofertprovComponent
+  ]
 })
 export class AppModule { }
