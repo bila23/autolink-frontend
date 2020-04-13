@@ -21,13 +21,9 @@
         </ng-template>
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th style="width: 3em">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
+                <th></th>
                 <th>Nombre</th>
-                <th>Direcci&oacute;n</th>
                 <th>Usuario</th>
-                <th>Raz&oacute;n social</th>
                 <th>Estado</th>
             </tr>
         </ng-template>
@@ -37,9 +33,7 @@
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
                 <td>{{rowData.nombre}}</td>
-                <td>{{rowData.direccion}}</td>
                 <td>{{rowData.usuario.usuario}}</td>
-                <td>{{rowData.razonsocial}}</td>
                 <td *ngIf="rowData.estado == true">
                     Activo
                 </td>
@@ -73,46 +67,55 @@
     [responsive]="true" [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="registrarProvForm">
         <p-panel [showHeader]="false">
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" id="name" formControlName="nombre" class="validate form-control" required />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="name" formControlName="nombre" class="validate form-control" required />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="direccion">Direcci&oacute;n</label>
+                    <input type="text" id="direccion" formControlName="direccion" class="validate form-control" required />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="direccion">Direcci&oacute;n</label>
-                <input type="text" id="direccion" formControlName="direccion" class="validate form-control" required />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="razonSocial">Raz&oacute;n Social</label>
+                    <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control"
+                        required />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="nit">NIT</label>
+                    <input type="text" id="nit" formControlName="nit" class="validate form-control" required />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="razonSocial">Raz&oacute;n Social</label>
-                <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control"
-                    required />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="cuentaBanc">Cuenta Bancaria</label>
+                    <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="validate form-control"
+                        required />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="telefono">Telefono</label>
+                    <input type="text" id="telefono" formControlName="telefono" class="validate form-control" required />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="nit">NIT</label>
-                <input type="text" id="nit" formControlName="nit" class="validate form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="cuentaBanc">Cuenta Bancaria</label>
-                <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="validate form-control"
-                    required />
-            </div>
-            <div class="form-group">
-                <label for="telefono">Telefono</label>
-                <input type="text" id="telefono" formControlName="telefono" class="validate form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="estadoUsuario">Estado</label>
-                <p-dropdown [options]="estadosProveedor" formControlName="estadoProveedor"
-                    [(ngModel)]="_estadoProveedor" [style]="{'width':'100%'}" class="validate" required></p-dropdown>
-            </div>
-            <div class="form-group">
-                <label for="usuario">Usuario</label>
-                <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado"
-                    class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="estadoUsuario">Estado</label>
+                    <p-dropdown [options]="estadosProveedor" formControlName="estadoProveedor"
+                        [(ngModel)]="_estadoProveedor" [style]="{'width':'100%'}" class="validate" required></p-dropdown>
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="usuario">Usuario</label>
+                    <p-dropdown [options]="usuariosList" formControlName="usuario" [(ngModel)]="_userSeleccionado"
+                        class="validate" required [style]="{'width':'100%'}"></p-dropdown>
+                </div>
             </div>
             <div class="form-group">
                 <label for="cargo">Cargo</label>
                 <input type="text" id="cargo" formControlName="cargo" class="validate form-control" required />
             </div>
+            <div class="section"></div>
             <div class="form-group">
                 <button [disabled]="!registrarProvForm.valid" class="btn btn-primary" type="submit" name="action"
                     (click)="guardarProveedor()">Guardar nuevo proveedor
@@ -129,43 +132,56 @@
     [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="updateProvForm">
         <input pInputText id="idProv" formControlName="idProv" style="visibility:hidden;display: none;" />
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
+        <div class="row">
+            <div class="form-group col s6">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" formControlName="nombre" class="form-control validate" required />
+            </div>
+            <div class="form-group col s6">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" formControlName="cargo" class="form-control validate" required />
+            </div>
         </div>
         <div class="form-group">
             <label for="direccion">Direcci&oacute;n</label>
             <input type="text" id="direccion" formControlName="direccion" class="form-control validate" required />
         </div>
-        <div class="form-group">
-            <label for="telefono">Telefono</label>
-            <input type="text" id="telefono" formControlName="telefono" class="form-control validate" required />
+        <div class="row">
+            <div class="form-group col s6">
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" formControlName="telefono" class="form-control validate" required />
+            </div>
+            <div class="form-group col s6">
+                <label for="razonSocial">Raz&oacute;n Social</label>
+                <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate" required />
+            </div>
         </div>
-        <div class="form-group">
-            <label for="razonSocial">Raz&oacute;n Social</label>
-            <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate" required />
+        <div class="row">
+            <div class="form-group col s6">
+                <label for="nit">NIT</label>
+                <input type="text" id="nit" formControlName="nit" class="form-control validate" required />
+            </div>
+            <div class="form-group col s6">
+                <label for="cuentaBanc">Cuenta Bancaria</label>
+                <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="form-control validate" required />
+            </div>
         </div>
-        <div class="form-group">
-            <label for="nit">NIT</label>
-            <input type="text" id="nit" formControlName="nit" class="form-control validate" required />
-        </div>
-        <div class="form-group">
-            <label for="cuentaBanc">Cuenta Bancaria</label>
-            <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="form-control validate" required />
-        </div>
-        <div class="form-group">
-            <label for="estadoTaller">Estado</label>
-            <p-dropdown [options]="estadosProveedor" formControlName="estadoProveedor" [(ngModel)]="_estadoProveedor"
-                [style]="{'width':'100%'}" class="validate" required></p-dropdown>
-        </div>
-        <div class="form-group">
-            <label for="usuario">Usuario</label>
-            <p-dropdown [options]="usuariosList" [style]="{'width':'100%'}" formControlName="usuario"
-                [(ngModel)]="_userSeleccionado" class="validate" required></p-dropdown>
-        </div>
-        <div class="form-group">
-            <label for="cargo">Cargo</label>
-            <input type="text" id="cargo" formControlName="cargo" class="form-control validate" required />
+        <div class="row">
+            <div class="form-group col s6">
+                <label for="estadoTaller">Estado</label>
+                <select class="validate form-control" formControlName="estadoProveedor">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+            <div class="form-group col s6">
+                <label for="usuario">Usuario</label>
+                <select class="validate form-control" required formControlName="usuario" id="usuario">
+                    <option *ngFor="let usr of usuariosSource" [value]="usr.usuario">
+                        {{usr.nombre}}
+                    </option>
+                </select>
+            </div>
         </div>
         <div class="form-group">
             <button [disabled]="!updateProvForm.valid" class="btn btn-primary" type="submit" name="action"
@@ -181,39 +197,47 @@
     [showHeader]="true" showEffect="fade" [modal]="true" [style]="{width: '720px', height: '48px'}">
     <form [formGroup]="verProvForm">
         <p-panel [showHeader]="false">
-            <div>
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" formControlName="nombre" class="form-control validate" disabled />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="direccion">Direcci&oacute;n</label>
+                    <input type="text" id="direccion" formControlName="direccion" class="form-control validate" disabled />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="direccion">Direcci&oacute;n</label>
-                <input type="text" id="direccion" formControlName="direccion" class="form-control validate" disabled />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="telefono">Telefono</label>
+                    <input type="text" id="telefono" formControlName="telefono" class="form-control validate" disabled />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="razonSocial">Raz&oacute;n Social</label>
+                    <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate"
+                        disabled />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="telefono">Telefono</label>
-                <input type="text" id="telefono" formControlName="telefono" class="form-control validate" disabled />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="nit">NIT</label>
+                    <input type="text" id="nit" formControlName="nit" class="form-control validate" disabled />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="cuentaBanc">Cuenta Bancaria</label>
+                    <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="form-control validate"
+                        disabled />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="razonSocial">Raz&oacute;n Social</label>
-                <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate"
-                    disabled />
-            </div>
-            <div class="form-group">
-                <label for="nit">NIT</label>
-                <input type="text" id="nit" formControlName="nit" class="form-control validate" disabled />
-            </div>
-            <div class="form-group">
-                <label for="cuentaBanc">Cuenta Bancaria</label>
-                <input type="text" id="cuentaBanc" formControlName="cuentaBanc" class="form-control validate"
-                    disabled />
-            </div>
-            <div class="form-group">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" formControlName="usuario" class="form-control validate" disabled />
-            </div>
-            <div class="form-group">
-                <label for="cargo">Cargo</label>
-                <input type="text" id="cargo" formControlName="cargo" class="form-control validate" disabled />
+            <div class="row">
+                <div class="form-group col s12 m6">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" formControlName="usuario" class="form-control validate" disabled />
+                </div>
+                <div class="form-group col s12 m6">
+                    <label for="cargo">Cargo</label>
+                    <input type="text" id="cargo" formControlName="cargo" class="form-control validate" disabled />
+                </div>
             </div>
             <div class="form-group">
                 <label for="estadoTaller">Estado</label>

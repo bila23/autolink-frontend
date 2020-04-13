@@ -61,7 +61,6 @@ export class AseguradoraService {
   }
 
   actualizarAseguradora(updateAsegForm: FormGroup, _userSeleccionado: string): Observable<IAseguradora> {
-    console.log("Llamaeremos al servicio de actualizar aseguradora ... ");
     this.actualizarAseg = JSON.parse(JSON.stringify({
       "nombre": updateAsegForm.controls['nombre'].value,
       "cargo": updateAsegForm.controls['cargo'].value,
@@ -76,7 +75,7 @@ export class AseguradoraService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados al servicio para actualizar el proveedor: " + JSON.stringify(body));
+
     return this.http.put<IAseguradora>(this.aseguradoraUrlBase + '/rest/aseguradora/update', body, httpOptions).pipe(
       tap(data => console.log('Taller actualizado: ' + JSON.stringify(data))),
       catchError(this.handleError)
@@ -84,9 +83,7 @@ export class AseguradoraService {
   }
 
   actualizarEstado(updateAsegForm: FormGroup, estado: boolean): Observable<IAseguradora> {
-    console.log("Llamaremos al servicio para actualizar una aseguradora ... ");
     this.actualizarAseg = JSON.parse(JSON.stringify({
-      //"id": updateAsegForm.controls['idAseg'].value,
       "nombre": updateAsegForm.controls['nombre'].value,
       "estado": (estado ? true : false)
     }));
@@ -96,8 +93,7 @@ export class AseguradoraService {
         'Content-Type': 'application/json'
       })
     };
-    console.log("Datos enviados al servicio para actualizar la aseguradora: " + JSON.stringify(body));
-    return this.http.post<IAseguradora>(this.aseguradoraUrlBase + '/rest/aseguradora/status', body, httpOptions).pipe(
+    return this.http.post<IAseguradora>(this.aseguradoraUrlBase + '/rest/aseguradora/update', body, httpOptions).pipe(
       tap(data => console.log('Aseguradora actualizada: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
