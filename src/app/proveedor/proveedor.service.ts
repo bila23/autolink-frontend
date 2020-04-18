@@ -24,9 +24,7 @@ export class ProveedorService{
          params: {}
        };
        return this.http.get<IProveedor[]>(this.provUrlBase+'/rest/proveedor/all',httpOptions).pipe(
-        tap(data => {
-          console.log('Lista de proveedores: ' +JSON.stringify(data));
-        }),
+        tap(data => {}),
         catchError(this.handleError)
       );
     }
@@ -45,7 +43,8 @@ export class ProveedorService{
         "telefono":nuevoProvFrom.controls['telefono'].value,
         "cuentabancaria":nuevoProvFrom.controls['cuentaBanc'].value,
         "nit":nuevoProvFrom.controls['nit'].value,
-        "usuario":_userSeleccionado
+        "usuario":_userSeleccionado,
+        "porcentajepago": nuevoProvFrom.controls['porcentajepago'].value,
       }));
       let body = this.nuevoProv;
       const httpOptions = {
@@ -69,7 +68,8 @@ export class ProveedorService{
         "nit": updateProvForm.controls['nit'].value,
         "telefono": updateProvForm.controls['telefono'].value,
         "cuentabancaria": updateProvForm.controls['cuentaBanc'].value,
-        "usuario": updateProvForm.controls['usuario'].value
+        "usuario": updateProvForm.controls['usuario'].value,
+        "porcentajepago": updateProvForm.controls['porcentajepago'].value,
       }));
       let body = this.actualizaProv;
       const httpOptions = {

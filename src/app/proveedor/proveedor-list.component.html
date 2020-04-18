@@ -22,8 +22,9 @@
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th></th>
-                <th>Nombre</th>
                 <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Porcentaje</th>
                 <th>Estado</th>
             </tr>
         </ng-template>
@@ -32,8 +33,9 @@
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
-                <td>{{rowData.nombre}}</td>
                 <td>{{rowData.usuario.usuario}}</td>
+                <td>{{rowData.nombre}}</td>
+                <td>{{rowData.porcentajepago}}</td>
                 <td *ngIf="rowData.estado == true">
                     Activo
                 </td>
@@ -78,14 +80,18 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col s12 m6">
+                <div class="form-group col s12 m5">
                     <label for="razonSocial">Raz&oacute;n Social</label>
                     <input type="text" id="razonSocial" formControlName="razonSocial" class="validate form-control"
                         required />
                 </div>
-                <div class="form-group col s12 m6">
+                <div class="form-group col s12 m5">
                     <label for="nit">NIT</label>
                     <input type="text" id="nit" formControlName="nit" class="validate form-control" required />
+                </div>
+                <div class="form-group col s12 m2">
+                    <label for="porcentajepago">Porcentaje</label>
+                    <input type="text" id="porcentajepago" formControlName="porcentajepago" class="validate form-control" required />
                 </div>
             </div>
             <div class="row">
@@ -147,13 +153,17 @@
             <input type="text" id="direccion" formControlName="direccion" class="form-control validate" required />
         </div>
         <div class="row">
-            <div class="form-group col s6">
+            <div class="form-group col s12 m5">
                 <label for="telefono">Telefono</label>
                 <input type="text" id="telefono" formControlName="telefono" class="form-control validate" required />
             </div>
-            <div class="form-group col s6">
+            <div class="form-group col s12 m5">
                 <label for="razonSocial">Raz&oacute;n Social</label>
                 <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate" required />
+            </div>
+            <div class="form-group col s12 m2">
+                <label for="porcentajepago">Porcentaje</label>
+                <input type="text" id="porcentajepago" formControlName="porcentajepago" class="validate form-control" required />
             </div>
         </div>
         <div class="row">
@@ -208,14 +218,18 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col s12 m6">
+                <div class="form-group col s12 m5">
                     <label for="telefono">Telefono</label>
                     <input type="text" id="telefono" formControlName="telefono" class="form-control validate" disabled />
                 </div>
-                <div class="form-group col s12 m6">
+                <div class="form-group col s12 m5">
                     <label for="razonSocial">Raz&oacute;n Social</label>
                     <input type="text" id="razonSocial" formControlName="razonSocial" class="form-control validate"
                         disabled />
+                </div>
+                <div class="form-group col s12 m2">
+                    <label for="porcentajepago">Porcentaje</label>
+                    <input type="text" id="porcentajepago" formControlName="porcentajepago" class="validate form-control" disabled />
                 </div>
             </div>
             <div class="row">

@@ -49,7 +49,8 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     nit: new FormControl('',Validators.required),
     usuario: new FormControl('',Validators.required),
     cuentaBanc: new FormControl('',Validators.required),
-    cargo: new FormControl('',Validators.required)
+    cargo: new FormControl('',Validators.required),
+    porcentajepago : new FormControl('', Validators.required)
   });
 
   this.verProvForm = new FormGroup({
@@ -62,7 +63,8 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     nit: new FormControl('',Validators.required),
     usuario: new FormControl('',Validators.required),
     cuentaBanc: new FormControl('',Validators.required),
-    cargo: new FormControl('',Validators.required)
+    cargo: new FormControl('',Validators.required),
+    porcentajepago: new FormControl('', Validators.required)
   });
 
   this.updateProvForm = new FormGroup({
@@ -75,7 +77,8 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     nit: new FormControl('',Validators.required),
     usuario: new FormControl('',Validators.required),
     cuentaBanc: new FormControl('',Validators.required),
-    cargo: new FormControl('',Validators.required)
+    cargo: new FormControl('',Validators.required),
+    porcentajepago: new FormControl('', Validators.required)
   });
 }
 
@@ -118,6 +121,7 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     this.registrarProvForm.controls['usuario'].setValue("");
     this.registrarProvForm.controls['cuentaBanc'].setValue("");
     this.registrarProvForm.controls['cargo'].setValue("");
+    this.registrarProvForm.controls['porcentajepago'].setValue("");
 
     this._estadoProveedor = "";
   }
@@ -183,6 +187,7 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     this.updateProvForm.controls['usuario'].setValue(this._proveedorSelected[0].usuario.usuario);
     this.updateProvForm.controls['cuentaBanc'].setValue(this._proveedorSelected[0].cuentabancaria);
     this.updateProvForm.controls['cargo'].setValue(this._proveedorSelected[0].cargo);
+    this.updateProvForm.controls['porcentajepago'].setValue(this._proveedorSelected[0].porcentajepago);
     if(this._proveedorSelected[0].estado)
       this.updateProvForm.controls['estadoProveedor'].setValue("Activo");
     else
@@ -276,5 +281,6 @@ constructor(private proveedorService:ProveedorService,private userService:UserSe
     this.verProvForm.controls['usuario'].setValue(this._proveedorSelected[0].usuario.nombre);
     this.verProvForm.controls['cuentaBanc'].setValue(this._proveedorSelected[0].cuentabancaria);
     this.verProvForm.controls['cargo'].setValue(this._proveedorSelected[0].cargo);
+    this.verProvForm.controls['porcentajepago'].setValue(this._proveedorSelected[0].porcentajepago);
   }
 }

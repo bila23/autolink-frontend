@@ -12,5 +12,6 @@ export interface IProveedor{
 	nit:string;
 	telefono:string;
 	cuentabancaria:string;
-	usuario: IUser
+    usuario: IUser;
+    porcentajepago : number;
 }

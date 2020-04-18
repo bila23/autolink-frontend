@@ -5,6 +5,7 @@ import { IResultByStates } from '../_model/resultbystates.module'
 import { IRepuesto } from '../_model/repuesto.model'
 import { SelectItem, Message } from 'primeng/api';
 import { Router } from '@angular/router';
+import { AlertService } from '../alert/alert.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IResultUpdateModule } from '../_model/result-update.module'
 
@@ -14,6 +15,7 @@ import { IResultUpdateModule } from '../_model/result-update.module'
   styleUrls: ['./taller-solicitud.component.css']
 })
 export class TallerSolicitudComponent implements OnInit {
+  msgs: Message[] = [];
   repuestos: IRepuesto[] = [];
   registro: IResultByStates[] = [];
   _registroSelected: IResultByStates[];
@@ -32,7 +34,7 @@ export class TallerSolicitudComponent implements OnInit {
   MostrarTabla: boolean;
 
 
-  constructor(private solicitudService: SolicitudtableroService, private el: ElementRef, private tallerService: tallerSolicitudService, private router: Router) {
+  constructor(private solicitudService: SolicitudtableroService, private el: ElementRef, private tallerService: tallerSolicitudService, private router: Router, private alertService: AlertService) {
     this.estadoSolForm = new FormGroup({});
     this.updateSoliForm = new FormGroup({
       id: new FormControl('', Validators.required),
@@ -44,8 +46,14 @@ export class TallerSolicitudComponent implements OnInit {
     });
   }
 
+  finish_sol(){
+    this.backToForm();
+    this.msgs = [];
+    this.msgs.push({ severity: 'success', summary: 'Solicitud almacenada', detail: '' });
+    this.alertService.success("Se ha ingresado correctamente su solicitud");
+  }
+
   goToForm() {
-    // alert('ir a formulario');
     this.MostrarTabla = false;
     this.router.navigate(['/crearsolicitud']);
   }

@@ -19,21 +19,17 @@ export class MarcaService {
   constructor(private http: HttpClient) { }
 
   getMarcas(): Observable<IMarca[]> {
-    //console.log("Consultando la lista de marcas ... ");
     const httpOptions = {
       headers: { 'Content-Type': 'application/json' },
       params: {}
     };
     return this.http.get<IMarca[]>(this.marcaUrlBase + '/rest/marca/all', httpOptions).pipe(
-      tap(data => {
-        //console.log('Lista de marcas: ' +JSON.stringify(data));
-      }),
+      tap(data => {}),
       catchError(this.handleError)
     );
   }
 
   guardarMarca(nuevoMrcFrom: FormGroup, _estadoMarca: boolean): Observable<IMarca> {
-    console.log("Llamaremos al servicio para guardar una nueva marca .. ");
     let mydate = new Date();
     this.userL = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem('currentUser'))));
     this.nuevoMrc = JSON.parse(JSON.stringify({

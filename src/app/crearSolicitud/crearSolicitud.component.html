@@ -22,13 +22,8 @@
         </div>
         <div class="row">
             <div class="input-field col s12 m3">
-                <p-dropdown [options]="marcasModelo" formControlName="marca" [(ngModel)]="_marcaSeleccionada"
-                    class="validate" required id="marca"></p-dropdown>
+                <p-dropdown placeholder="Marca del carro" [options]="marcasModelo" formControlName="marca" [(ngModel)]="_marcaSeleccionada" class="validate" required id="marca"></p-dropdown>
             </div>
-            <!--<div class="input-field col s12 m3">
-                <input type="text" id="modelo" formControlName="modelo" class="validate" required />
-                <label for="modelo">Modelo</label>
-            </div>-->
             <div class="input-field col s12 m3">
                 <input type="text" id="chasis" formControlName="chasis" class="validate" required />
                 <label for="chasis">N° de chasis</label>
@@ -60,9 +55,7 @@
                 <label for="poliza">Poliza</label>
             </div>
             <div class="input-field col s12 m3">
-                <p-dropdown [options]="aseguradoras" formControlName="aseguradora"
-                    [(ngModel)]="_aseguradoraSeleccionada" class="validate" required></p-dropdown>
-                <label for="aseguradora">Aseguradora</label>
+                <p-dropdown placeholder="Aseguradora" [options]="aseguradoras" formControlName="aseguradora" [(ngModel)]="_aseguradoraSeleccionada" class="validate" required></p-dropdown>
             </div>
         </div>
 
@@ -138,7 +131,9 @@
                 <ul class="collection">
                     <li class="collection-item avatar" *ngFor="let imgsol of img_sol"
                         style="min-height: 0px !important;padding-left: 10px !important;">
-                        <span class="title">{{imgsol.id}}</span>
+                        <span class="title">
+                            <img id="mi{{imgsol.id}}" [src]="retrievedImage" />
+                        </span>
                         <button class="btn waves-effect waves-light secondary-content" type="submit" style="top:3px">
                             <i class="material-icons">delete</i>
                         </button>
@@ -147,6 +142,14 @@
             </div>
         </div>
         <!--FIN DE CODIGO PARA INGRESAR IMAGENES-->
+
+        <!-- FIN DE LA SOLICITUD-->
+        <br /><br />
+        <div class="row">
+            <div class="col s12">
+                <h5>Paso 4 - Haz clic en el bot&oacute;n para finalizar la solicitud</h5>
+            </div>
+        </div>
 
     </div>
 

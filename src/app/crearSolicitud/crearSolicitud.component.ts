@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { HttpClientModule, HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { SelectItem, Message } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertService } from '../alert/alert.service';
@@ -17,11 +18,18 @@ import { ITaller } from '../_model/taller.model';
 import { IRepsSolic } from '../_model/repsSol.model';
 import { IRepuestoXSol } from '../_model/repuestpoXSoli.model';
 import { IFotoXSolicitud } from '../_model/FotoxSol.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './crearSolicitud.component.html'
 })
 export class CrearSolicitudComponent implements OnInit {
+  private url = localStorage.getItem('API');
+
+  retrievedImage: any;
+  base64Data: any;
+  retrieveResonse: any;
+
   msgs: Message[] = [];
   errorMessage: string;
   userL: ILoginResponse;
@@ -64,7 +72,7 @@ export class CrearSolicitudComponent implements OnInit {
     this._marcaSeleccionada = value;
   }
 
-  constructor(private marcaService: MarcaService, private asegService: AseguradoraService, private solicitudService: SolicitudService, private alertService: AlertService) {
+  constructor(private httpClient: HttpClient, private marcaService: MarcaService, private asegService: AseguradoraService, private solicitudService: SolicitudService, private alertService: AlertService, private sanitizer: DomSanitizer) {
 
     this.crearSolicitudTaller = new FormGroup({
       codigoSol: new FormControl('', Validators.required),
@@ -134,22 +142,6 @@ export class CrearSolicitudComponent implements OnInit {
     });
   }//CIERRE DE ONINIT
 
-  /*onRowEditInit(rep: IRepsSolic) {
-    this.clonedRepuestos[rep.nombre] = {...rep};
-  } */
-
-  /*onRowEditSave(rep: IRepsSolic) {
-      if (rep.cantidad > 0) {
-        delete this.clonedRepuestos[rep.nombre];
-          console.log("Valor a guardar " + JSON.stringify(rep)); 
-        
-      }
-      else {
-         
-      }
-  } */
-
-
   limpiarForm() {
     this.crearSolicitudTaller.reset();
     this.ngOnInit();
@@ -208,11 +200,45 @@ export class CrearSolicitudComponent implements OnInit {
         this.alertService.success("Se ha guardado la foto");
         setTimeout(() => { }, 3000);
         //RECUPERO LAS IMAGENES GUARDADAS POR SOLICITUD
-        this.solicitudService.consultarFotoSol(this.cod_save).subscribe({
-          next: img_sol => {
-            this.img_sol = img_sol;
+        // this.solicitudService.consultarFotoSol(this.cod_save).subscribe({
+        //   next: img_sol => {
+        //     this.img_sol = img_sol;
+        //     console.log(this.img_sol);
+        //   }
+        // });
+
+        // this.solicitudService.consultarFotoSol(this.cod_save).subscribe({
+        //   next: img_sol => {
+        //     this.img_sol = img_sol;
+        //     this.retrieveResonse = this.img_sol[0].foto;
+        //     this.base64Data = this.retrieveResonse.picByte;
+        //     this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+        //   }
+        // });
+
+        // this.solicitudService.consultarFotoSol(this.cod_save).subscribe((baseImage: any) =>{
+        //   let objectURL = 'data:image/jpeg;base64,' + baseImage.foto;
+        //   this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        // });
+        const httpOptions = {
+          headers: { 'Content-Type': 'application/json', 
+                     'Access-Control-Allow-Origin': '*' ,
+                     'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+          },
+          params: { id: this.cod_save.toString() }
+        };
+        console.log('1');
+        this.httpClient.get(this.url + '/rest/solicitud/foto', httpOptions).subscribe(
+          res => {
+            console.log('2');
+            this.retrieveResonse = res;
+            console.log('3');
+            this.base64Data = this.retrieveResonse.foto;
+            console.log('4');
+            this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+            console.log('5');
           }
-        });
+        )
       }
     });
   }
@@ -270,6 +296,5 @@ export class CrearSolicitudComponent implements OnInit {
       }//cierre validacion de usuario != null
     }); // cierre consultar usuario
   }//CIERRE DE GUARDAR SOLICITUD
-
 
 }
