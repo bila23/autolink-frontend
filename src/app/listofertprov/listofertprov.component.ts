@@ -3,6 +3,10 @@ import { IOferta } from '../_model/oferta.model'
 import { empty } from 'rxjs';
 import { Respuesta } from '../_model/respuesta-api.module'
 import { ListofertprovService } from './listofertprov.service'
+import { SelectItem, Message } from 'primeng/api';
+import { AlertService } from '../alert/alert.service';
+// import { SolicitudtableroService } from './solicitudtablero.service'
+import { SolicitudtableroService } from '../container2/solicitudtablero.service'
 
 @Component({
   selector: 'app-listofertprov',
@@ -11,7 +15,8 @@ import { ListofertprovService } from './listofertprov.service'
 })
 export class ListofertprovComponent implements OnInit {
 
-  constructor(private solicitudService: ListofertprovService) { }  
+  constructor(private solicitudService: ListofertprovService, private solicitudService_estado:SolicitudtableroService, private alertService: AlertService) { }  
+  msgs: Message[] = [];
   array_string: string;
   cols: any[];
   registro: IOferta[]=[];
@@ -61,14 +66,21 @@ export class ListofertprovComponent implements OnInit {
   ElegirProv(){
     console.log("Elegir prov");
 
+    console.log(this.idSoli);
     this.solicitudService.setGanador(this.idSoli, this.idProveedor).subscribe({
       next: result=>{
         this.respuesta = result;
         
         console.log("respuesta..");
         console.log(this.respuesta);
-
-        alert("El ganador es: " + this.provNombre);
+        let estado_next  ="GOC";
+        this.solicitudService_estado.SetProcesarSoli(Number(this.idSoli), estado_next).subscribe({
+          next: result =>{
+            this.msgs = [];
+            this.msgs.push({ severity: 'success', summary: 'Aseguradora actualizada', detail: '' });
+            this.alertService.success("Se ha generado la orden de compra");      
+          }
+        });         
       }
     });
   }

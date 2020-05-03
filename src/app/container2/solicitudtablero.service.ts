@@ -102,6 +102,41 @@ export class SolicitudtableroService {
     );
   }
 
+
+  SetFechaInicial(id:number, fecha:string){
+    console.log("metodo para actualizar la fecha inicial");
+    this.actualizarSoli = JSON.parse(JSON.stringify({
+      "fecha": fecha
+    }));
+    let body = this.actualizarSoli;
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+
+    return this.http.put<IResultUpdateModule[]>(this.usuariosUrlBAse + "/rest/solicitud/FechaInicio/" + id.toString(), body, httpOptions).pipe(
+      tap(data => console.log("Llamado a proceso en bd update estado" + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  SetFechaFin(id:number, fecha:string){
+    console.log("metodo para actualizar la fecha inicial");
+    this.actualizarSoli = JSON.parse(JSON.stringify({
+      "fecha": fecha
+    }));
+    let body = this.actualizarSoli;
+    const httpOptions = {
+      headers: {'Content-Type': 'application/json'},
+      params: {}
+    };
+
+    return this.http.put<IResultUpdateModule[]>(this.usuariosUrlBAse + "/rest/solicitud/FechaFin/" + id.toString(), body, httpOptions).pipe(
+      tap(data => console.log("Llamado a proceso en bd update estado" + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
   SetAplicaRepuesto(id:number, idRepuesto:number, estado: string, aplica: boolean){
     console.log("metodo para colocar si aplica o no un repuesto");
     this.actualizarRepuestoSoli = JSON.parse(JSON.stringify({

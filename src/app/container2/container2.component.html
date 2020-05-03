@@ -82,32 +82,17 @@
                 <label for="NoReclamo">No Reclamo</label>
                 <input type="text" id="NoReclamo" formControlName="NoReclamo" class="validate form-control" disabled />
             </div>
-            <!-- <div class="form-group">
-                <label for="placa">Placa</label>
-                <input type="text" id="placa" formControlName="placa" class="validate form-control" disabled />
-            </div>
-            <div class="form-group">
-                <label for="chasis">Chasis</label>
-                <input type="text" id="chasis" formControlName="chasis" class="validate form-control" disabled />
-            </div>
-            <div class="form-group">
-                <label for="motor">Motor</label>
-                <input type="text" id="motor" formControlName="motor" class="validate form-control" disabled />
-            </div> -->
             <div class="form-group">
                 <label for="comentariosAseguradora">Comentarios</label>
                 <input type="text" id="comentariosAseguradora" formControlName="comentariosAseguradora" class="validate form-control" />
             </div>
             <div class="form-group">
-                <label for="fechad">Fecha Inicial</label>
-                <!-- <p-calendar [(ngModel)]="dateValue" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030"></p-calendar> -->
-                <p-calendar id="fechad" [(ngModel)]="fechaInicio" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaInicio" hourFormat="24" class="validate form-control"></p-calendar>
-                <!-- <input type="text" id="fechad" formControlName="fechaInicio" class="validate form-control" /> -->
+                <label for="fechad">Fecha Inicial</label>                
+                <p-calendar id="calendar_fechad" [(ngModel)]="fechaInicio" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaInicio" hourFormat="24" class="validate form-control"></p-calendar>                
             </div>
             <div class="form-group">
                 <label for="fechaa">Fecha Final</label>
-                <p-calendar id="fechaa" [(ngModel)]="fechaFin" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaFin" hourFormat="24" class="validate form-control"></p-calendar>
-                <!-- <input type="text" id="fechaa" formControlName="fechaFin" class="validate form-control" /> -->
+                <p-calendar id="calendar_fechaa" [(ngModel)]="fechaFin" showTime="true" dateFormat="dd/mm/yy" formControlName="fechaFin" hourFormat="24" class="validate form-control"></p-calendar>                
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <div style="width: 100%; display: flex;">
@@ -181,7 +166,7 @@
             </form>
         </p-dialog>
 
-        <p-dialog header="Ver ofertas" [(visible)]="dialogOfertProv" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+        <p-dialog header="Ver ofertas" [(visible)]="dialogOfertProv" [contentStyle]="{'overflow-y':'auto'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '100%; overflow-y: auto;'}">
             <!-- <form [formGroup]="viewOferProv"> -->
                 <!-- <button (click)="OfertaProv()">Crear component</button> -->
                 <div>

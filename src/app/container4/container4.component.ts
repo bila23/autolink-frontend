@@ -6,6 +6,8 @@ import { IListRepuestosModule } from '../_model/list-repuestos.module';
 import { IListPiezasModule } from '../_model/list-piezas.module'
 import { SelectItem, Message } from 'primeng/api';
 import { $ } from 'protractor';
+import { SolicitudtableroService } from '../container2/solicitudtablero.service'
+import { AlertService } from '../alert/alert.service';
 
 @Component({
   selector: 'app-container4',
@@ -14,20 +16,22 @@ import { $ } from 'protractor';
 })
 export class Container4Component implements OnInit {
   registro: IResultByStates[]=[];
+  _registroSelected: IResultByStates[];
+  msgs: Message[] = [];
   registro_viewpieza: IListPiezasModule[]=[];
   cols: any[];
   dialogEditSoli: boolean;
   dialogVerPieza: boolean;  
   registroview: IListRepuestosModule[]=[];
   _registroviewSelected: IListRepuestosModule[];
-  verpiezaSoli: SelectItem[];
-  _registroSelected: IResultByStates[];
+  verpiezaSoli: SelectItem[];  
   cols_verpiezas: any[];
   cols_verpiezas_prov: any[];
   updateSoliForm: FormGroup;
   viewSoliForm: FormGroup;
   setOferta: FormGroup;
-  constructor(private solicitudService:SolicitudtableroprovService) { 
+
+  constructor(private alertService: AlertService, private solicitudService:SolicitudtableroprovService, private solicitudService_estatus:SolicitudtableroService) { 
     this.updateSoliForm = new FormGroup({
       id: new FormControl('',Validators.required),
       NoReclamo: new FormControl('',Validators.required),
@@ -66,7 +70,7 @@ export class Container4Component implements OnInit {
     })
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     console.log("entramos en container para perfil de no adm");
     this.BuildStatus("COA");
   }
@@ -121,6 +125,7 @@ export class Container4Component implements OnInit {
   VerPiezasSolicitud(){
     this.registroview = [];
     console.log("Ver piezas solicitud container 4");
+    
     let idprov = localStorage.getItem("idUser").toString();;
     this.verpiezaSoli=[
       {label:'', value:null},
@@ -189,10 +194,30 @@ export class Container4Component implements OnInit {
   }
 
   AceptarSoli(){
+    console.log("aceptar soli");
+    let id ="";
+    let comentario = "";
 
+    if (typeof this._registroSelected !== typeof undefined){
+      id = this.updateSoliForm.get("id").value.toString();
+      comentario = this.updateSoliForm.get("comentariosAseguradora").value.toString();
+      console.log("Se escribio el comentario: "+comentario);
+      this.solicitudService_estatus.SetComentariosAseguradora(Number(id), comentario).subscribe({
+        next: result =>{          
+          this.dialogEditSoli = false;
+          this.updateSoliForm.controls["comentariosAseguradora"].setValue("");
+          this._registroSelected = [];
+          this.ngOnInit();
+        }
+      });
+    }    
   }
 
   saveRow(){   
+      // this.msgs = [];
+      // this.msgs.push({ severity: 'success', summary: 'Se cambio el estatus', detail: '' });
+      // this.alertService.success("Se ha cambiado de estado");
+      
       console.log(this._registroSelected[0]);
       let idsolicitud = this._registroSelected[0].id;
       let idrepuesto = this.setOferta.get("idrepuesto").value;
@@ -203,25 +228,15 @@ export class Container4Component implements OnInit {
       let tiempo = this.setOferta.get("tiempo").value;
       let cantidad = this.setOferta.get("cantidad").value;
 
-      console.log("idsolicitud:" + idsolicitud);
-      console.log("idrepuesto:" + idrepuesto);
-      console.log("idproveedor" + idproveedor);
-      console.log("estado:" + estado);
-      console.log("ganador:" + ganador);
-      console.log("precio:" + precio);
-      console.log("tiempo:" + tiempo);
-      console.log("cantidad:" + cantidad);
       this.solicitudService.setOfertaSave(Number(idsolicitud), Number(idrepuesto), Number(idproveedor), Number(cantidad), estado, Number(tiempo), ganador, Number(precio)).subscribe({
         next: registro =>{
           console.log(registro);
+          
         }
       });
 
       //this.dialogVerPieza = true;
-      this.VerPiezasSolicitud();
-      this.setOferta.controls["cantidad"].setValue("");
-      this.setOferta.controls["precio"].setValue("");
-      this.setOferta.controls["tiempo"].setValue("");
+      this.VerPiezasSolicitud();     
   }
 
   onSelectionChange(obj: any[]) {  
@@ -230,14 +245,51 @@ export class Container4Component implements OnInit {
     
     if (this._registroviewSelected[0] != undefined && this._registroviewSelected[0] != null){
       console.log("entre if");
+      // console.log(this._registroSelected[0].id);
+      // console.log(this._registroviewSelected[0].repuesto.id);
+      // console.log(localStorage.getItem("idUser").toString());
+      
       this.setOferta.controls["idrepuesto"].setValue(this._registroviewSelected[0].repuesto.id);
-      // this.setOferta.controls["precio"].setValue(this._registroviewSelected[0].precio);
-      // this.setOferta.controls["tiempo"].setValue(this._registroviewSelected[0].tiempo);
+      
+      const id_soli = this._registroSelected[0].id.toString();
+      const id_prov = localStorage.getItem("idUser").toString();
+      const id_repuesto = this._registroviewSelected[0].repuesto.id;
+
+      this.solicitudService.getPiezaSoliProv(id_soli, id_prov).subscribe({
+        next: result =>{     
+          for(let re in result){
+            //this.registroview.push(registro[re].repuesto);
+            if (result[re].idRepuesto === id_repuesto){
+              let cantidad = result[re].cantidad;
+              let precio = result[re].precio;
+              let tiempo = result[re].tiempo;
+
+              if (cantidad === null || cantidad === undefined){
+                cantidad = 0;
+              }
+              if (precio === null || precio === undefined){
+                precio = 0;
+              }
+              if (tiempo === null || tiempo === undefined){
+                tiempo = 0;
+              }
+
+              this.setOferta.controls["cantidad"].setValue(cantidad);
+              this.setOferta.controls["precio"].setValue(precio);
+              this.setOferta.controls["tiempo"].setValue(tiempo);
+
+            }
+          }
+        }
+      });
+
     }else{
       console.log("entre else");
       this.setOferta.controls["idrepuesto"].setValue(-1);
-      // this.setOferta.controls["precio"].setValue("");
-      // this.setOferta.controls["tiempo"].setValue("");
+      
+      this.setOferta.controls["cantidad"].setValue("");
+      this.setOferta.controls["precio"].setValue("");
+      this.setOferta.controls["tiempo"].setValue("");
     }
     
     console.log("id repuesto selected");

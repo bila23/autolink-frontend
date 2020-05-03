@@ -12,6 +12,8 @@ import { IRepuesto } from '../_model/repuesto.model';
 import { IOferta } from '../_model/oferta.model'
 import { ListofertprovComponent } from '../listofertprov/listofertprov.component'
 import { ContenedorListProvOferDirective } from '../listofertprov/contenedor-list-prov-ofer.directive'
+import { AlertService } from '../alert/alert.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-container2',
@@ -21,6 +23,7 @@ import { ContenedorListProvOferDirective } from '../listofertprov/contenedor-lis
 export class Container2Component implements OnInit {
   @ViewChild(ContenedorListProvOferDirective, {static: true}) tablaDinamica: ContenedorListProvOferDirective;
   registro: IResultByStates[]=[];
+  msgs: Message[] = [];
   _registroSelected: IResultByStates[];
   cols: any[];
   dialogVerSoli: boolean;
@@ -30,6 +33,7 @@ export class Container2Component implements OnInit {
   updateSoliForm: FormGroup;
   resultUpdateCometAsegu: IResultUpdateModule;
   array_OferaProv: any[];
+  
 
   dialogVerPieza: boolean;
   cols_verpiezas: any[];
@@ -48,7 +52,7 @@ export class Container2Component implements OnInit {
   viewOferProv: FormGroup;  
   dialogOfertProv: boolean;
 
-  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef, private cfr: ComponentFactoryResolver) { 
+  constructor(private solicitudService:SolicitudtableroService, private el: ElementRef, private cfr: ComponentFactoryResolver, private alertService: AlertService, private datePipe: DatePipe) { 
     this.updateSoliForm = new FormGroup({
       id: new FormControl('',Validators.required),
       NoReclamo: new FormControl('',Validators.required),
@@ -151,8 +155,13 @@ export class Container2Component implements OnInit {
     let comentariosAseguradora = this.updateSoliForm.get("comentariosAseguradora").value;
     let id = this.updateSoliForm.get("id").value;
     let estado = this.updateSoliForm.get("estado").value;
-    console.log("Estado actual: " + estado);
-    console.log(comentariosAseguradora);
+    let fechad = this.updateSoliForm.get("fechaInicio").value;
+    let fechaa = this.updateSoliForm.get("fechaFin").value;
+
+    fechad = this.datePipe.transform(fechad, 'yyyy-MM-ddThh:mm:ss');
+    fechaa = this.datePipe.transform(fechaa, 'yyyy-MM-ddThh:mm:ss')
+    console.log("fecha d: " + fechad);
+    console.log("fecha a:" + fechaa);
 
     this.solicitudService.SetComentariosAseguradora(id, comentariosAseguradora).subscribe({
       next: result =>{
@@ -170,10 +179,29 @@ export class Container2Component implements OnInit {
               this.resultUpdateCometAsegu=result[0];
               console.log("update estado...");
               console.log(result);
-              //refrescar toda la vista pendiente de preguntar
+              //refrescar toda la vista pendiente de preguntar              
+              
+              //actualizamos las fechas
+              console.log("Actualizamos las fechas");
+              this.solicitudService.SetFechaInicial(id, fechad).subscribe({
+                next: result =>{
+                  console.log("se actualizo la fecha Inicio");
+                }
+              });
+              
+              this.solicitudService.SetFechaFin(id, fechaa).subscribe({
+                next: result =>{
+                  console.log("se actualizo la fecha Fin");
+                }
+              });
+
               console.log("volver a construir la vista....");
+              console.log(estado_next);
               this.BuildStatus(estado_next.toUpperCase());
               this.dialogEditSoli = false;
+              this.msgs = [];
+              this.msgs.push({ severity: 'success', summary: 'Se cambio el estatus', detail: '' });
+              this.alertService.success("Se ha cambiado de estado");
             }
           });
         }
@@ -202,8 +230,27 @@ export class Container2Component implements OnInit {
       this.updateSoliForm.controls["motor"].setValue(this._registroSelected[0].motor);
       this.updateSoliForm.controls["comentariosAseguradora"].setValue(this._registroSelected[0].comentariosAseguradora);
       this.updateSoliForm.controls["estado"].setValue(this._registroSelected[0].estado);
-      this.updateSoliForm.controls["fechaInicio"].setValue(this._registroSelected[0].fechaInicio);
-      this.updateSoliForm.controls["fechaFin"].setValue(this._registroSelected[0].fechaFin);
+
+      let fecha_D = new Date();
+      let fecha_A = new Date();
+      if (this._registroSelected[0].fechaInicio !== undefined && this._registroSelected[0].fechaInicio !== null){
+        fecha_D = new Date(this._registroSelected[0].fechaInicio)
+        this.updateSoliForm.controls["fechaInicio"].setValue(fecha_D);
+      } else{
+        this.updateSoliForm.controls["fechaInicio"].setValue(fecha_D);
+      }
+      if (this._registroSelected[0].fechaFin !== undefined && this._registroSelected[0].fechaFin !== null){
+        fecha_A = new Date(this._registroSelected[0].fechaFin)
+        this.updateSoliForm.controls["fechaFin"].setValue(fecha_A);
+      }else{
+        this.updateSoliForm.controls["fechaInicio"].setValue(fecha_A);
+      }
+      // this.updateSoliForm.controls["fechaInicio"].setValue(this._registroSelected[0].fechaInicio);
+      // this.updateSoliForm.controls["fechaFin"].setValue(this._registroSelected[0].fechaFin);
+
+      console.log("asignando fechas");
+      console.log(this.datePipe.transform(fecha_D, 'yyyy-MM-dd'));
+      console.log(this.datePipe.transform(fecha_A, 'yyyy-MM-dd'));
     }
   }
 
@@ -270,7 +317,7 @@ export class Container2Component implements OnInit {
     }
   }
 
-  Anular(){
+  Anular(){    
     let id = this.updateSoliForm.get("id").value;
     let estado = "ANU";
     this.solicitudService.SetProcesarSoli(id, estado).subscribe({
@@ -323,9 +370,10 @@ export class Container2Component implements OnInit {
   }
 
   componenteDinamico(mensaje: string, color: string) {  
-    let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);
-    let vcr = this.tablaDinamica.viewContainerRef;
-    vcr.createComponent(cf, 0);
+    // let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);
+    // let vcr = this.tablaDinamica.viewContainerRef;    
+    // vcr.createComponent(cf, 0);    
+
   }
 
 
@@ -333,6 +381,8 @@ export class Container2Component implements OnInit {
     this.array_OferaProv = [];
     console.log(this._registroSelected);
 
+    this.tablaDinamica.viewContainerRef.remove();
+    this.tablaDinamica.viewContainerRef.clear();
     //if (typeof this._registroSelected !== typeof undefined){
       //let id_selected = this._registroSelected[0].id;
       let id_selected = 1; //por prueba
@@ -370,9 +420,7 @@ export class Container2Component implements OnInit {
               prov_actual = prov_next;
 
               console.log("aqui se hace el envio al objeto dinamico");                            
-              // localStorage.setItem("OfertaProv", JSON.stringify(array));
-              // console.log(JSON.parse(JSON.stringify(localStorage.getItem("OfertaProv"))));
-
+              
               let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);
               let instance = this.tablaDinamica.viewContainerRef.createComponent(cf, 0).instance;
               instance.array_string = JSON.stringify(array);
@@ -396,7 +444,6 @@ export class Container2Component implements OnInit {
             if (n_registros === contador){             
               //mandamos a llamar al ultimo registro
               console.log("aqui se hace el envio al objeto dinamico");              
-              //console.log(JSON.parse(JSON.stringify(localStorage.getItem("OfertaProv"))));
 
               let cf = this.cfr.resolveComponentFactory(ListofertprovComponent);              
               let instance = this.tablaDinamica.viewContainerRef.createComponent(cf, 0).instance;
