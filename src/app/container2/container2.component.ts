@@ -383,9 +383,10 @@ export class Container2Component implements OnInit {
 
     this.tablaDinamica.viewContainerRef.remove();
     this.tablaDinamica.viewContainerRef.clear();
-    //if (typeof this._registroSelected !== typeof undefined){
-      //let id_selected = this._registroSelected[0].id;
-      let id_selected = 1; //por prueba
+    if (typeof this._registroSelected !== typeof undefined){
+      let id_selected = this._registroSelected[0].id;
+      console.log("registro id: " + id_selected);
+      //let id_selected = 1; //por prueba
       let array= [];
       let prov_actual = -1;
       let prov_next = -1;
@@ -453,6 +454,7 @@ export class Container2Component implements OnInit {
           }
         }
       })
+    }
   }
 
 }
