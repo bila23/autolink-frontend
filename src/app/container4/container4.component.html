@@ -1,5 +1,8 @@
 <div class="row">
     <div class="col s12 m12 l12 xl12">
+        <div>
+            <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        </div>        
         <ul id="tabs-sw" class="tabs" style="width: 100%; display: flex; overflow-x: hidden;">
             <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa" #a_ing class="active" (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
             <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_goc" #a_goc (click)="BuildStatus('GOC')">GENERAR ORDEN DE COMPRA</a></li>
@@ -57,7 +60,7 @@
         </div>
 
         <!-- MODAL PARA EDITAR SOLICITUD -->
-        <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">
+        <p-dialog header="Actualizaci&oacute;n de solicitud" [(visible)]="dialogEditSoli" [contentStyle]="{'overflow':'visible'}" [responsive]="true" [closable]="true" showEffect="fade" [modal]="true" [maximizable]="true" [style]="{width: '720px', height: '48px'}">            
             <form [formGroup]="updateSoliForm">
                 <div class="form-group">
                     <input pInputText id="id" formControlName="id" style="visibility: hidden;" />

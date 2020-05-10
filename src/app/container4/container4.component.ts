@@ -204,6 +204,9 @@ export class Container4Component implements OnInit {
       console.log("Se escribio el comentario: "+comentario);
       this.solicitudService_estatus.SetComentariosAseguradora(Number(id), comentario).subscribe({
         next: result =>{          
+          this.msgs = [];
+          this.msgs.push({ severity: 'success', summary: 'El comentario ha sido guardado.', detail: '' });
+          this.alertService.success("El comentario ha sido guardado.");
           this.dialogEditSoli = false;
           this.updateSoliForm.controls["comentariosAseguradora"].setValue("");
           this._registroSelected = [];
@@ -213,10 +216,7 @@ export class Container4Component implements OnInit {
     }    
   }
 
-  saveRow(){   
-      // this.msgs = [];
-      // this.msgs.push({ severity: 'success', summary: 'Se cambio el estatus', detail: '' });
-      // this.alertService.success("Se ha cambiado de estado");
+  saveRow(){                   
       
       console.log(this._registroSelected[0]);
       let idsolicitud = this._registroSelected[0].id;
@@ -231,7 +231,9 @@ export class Container4Component implements OnInit {
       this.solicitudService.setOfertaSave(Number(idsolicitud), Number(idrepuesto), Number(idproveedor), Number(cantidad), estado, Number(tiempo), ganador, Number(precio)).subscribe({
         next: registro =>{
           console.log(registro);
-          
+            this.msgs = [];
+            this.msgs.push({ severity: 'success', summary: 'Los datos han sido guardados.', detail: '' });
+            this.alertService.success("Los datos han sido guardados.");
         }
       });
 
