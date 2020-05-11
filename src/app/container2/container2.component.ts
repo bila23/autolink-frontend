@@ -200,8 +200,8 @@ export class Container2Component implements OnInit {
               this.BuildStatus(estado_next.toUpperCase());
               this.dialogEditSoli = false;
               this.msgs = [];
-              this.msgs.push({ severity: 'success', summary: 'Se cambio el estatus', detail: '' });
-              this.alertService.success("Se ha cambiado de estado");
+              this.msgs.push({ severity: 'success', summary: 'La solicitud ha sido actualizada y procesada.', detail: '' });
+              this.alertService.success("La solicitud ha sido actualizada y procesada.");
             }
           });
         }
@@ -324,6 +324,9 @@ export class Container2Component implements OnInit {
       next: result =>{
         this.resultUpdateCometAsegu=result[0];
         console.log("actualizado a ANULADO");
+        this.msgs = [];
+        this.msgs.push({ severity: 'success', summary: 'La solicitud ha sido anulada.', detail: '' });
+        this.alertService.success("La solicitud ha sido anulada.");
         this.BuildStatus(estado.toUpperCase());
         this.dialogEditSoli = false;
       }
@@ -337,7 +340,10 @@ export class Container2Component implements OnInit {
     this.solicitudService.SetProcesarSoli(id, estado).subscribe({
       next: result =>{
         this.resultUpdateCometAsegu=result[0];
-        console.log("actualizado a ANULADO");
+        console.log("actualizado a cerrado");
+        this.msgs = [];
+        this.msgs.push({ severity: 'success', summary: 'La solicitud ha sido cerrada.', detail: '' });
+        this.alertService.success("La solicitud ha sido cerrada.");
         this.BuildStatus(estado.toUpperCase());
         this.dialogEditSoli = false;
       }

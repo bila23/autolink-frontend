@@ -1,5 +1,8 @@
 <div class="row">
     <div class="col s12 m12 l12 xl12">
+        <div>
+            <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        </div> 
         <ul id="tabs-sw" class="tabs" style="width: 100%; display: flex; overflow-x: hidden;">
             <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_ing" #a_ing class="active" (click)="BuildStatus('ing')">INGRESADAS</a></li>
             <li class="tab col s2 hoverable" style="width: 100%; display: flex; cursor: pointer;"><a id="a_coa"  (click)="BuildStatus('COA')">COTIZACION ABIERTA</a></li>
